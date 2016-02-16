@@ -12,6 +12,8 @@ class Settings:
         with open(config_file, 'r') as f:
             self.data = json.load(f)
 
+        self.snippets = self.data['code_snippets']
+
         # TODO: validate
 
     def languages(self):

@@ -56,7 +56,8 @@ class Processor:
         return language
 
     def process(self):
-        with open(self.document_file_name, 'r') as f:
-            data = f.read()
+        #with open(self.document_file_name, 'r') as f:
+        #    data = f.read()
+        ...
 
 
