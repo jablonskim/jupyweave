@@ -47,7 +47,7 @@ class Processor:
                 dtype = int(dtype)
                 if 1 <= dtype <= len(languages):
                     language = languages[dtype - 1]
-            except TypeError:
+            except ValueError:
                 pass
 
             if not language:
