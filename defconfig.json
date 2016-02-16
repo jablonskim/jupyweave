@@ -14,5 +14,54 @@
       "input_extension": "{I_EXT}",
       "output_extension": "{O_EXT}"
     }
+  },
+
+  "code_snippets": {
+    "default": {
+      "begin": "<#{S}>",
+      "end": "<@>",
+      "output": "<${S}>",
+      "separators": [",", " "],
+
+      "settings": {
+        "language": "[{L}]",
+        "echo": "echo={E}",
+        "output": "output={O}",
+        "context": "context={C}",
+        "snippet_id": "id={I}"
+      },
+
+      "patterns": {
+        "settings": "{S}",
+        "language": "{L}",
+        "echo": "{E}",
+        "output": "{O}",
+        "context": "{C}",
+        "snippet_id": "{I}"
+      }
+    },
+
+    "html": {
+      "begin": "<snippet{S}>",
+      "end": "</snippet>",
+      "output": "<output{S} />",
+
+      "settings": {
+        "language": "lang=\"{L}\"",
+        "echo": "echo=\"{E}\"",
+        "output": "output=\"{O}\"",
+        "context": "context=\"{C}\"",
+        "snippet_id": "id=\"{I}\""
+      },
+
+      "patterns": {
+        "settings": "{S}",
+        "language": "{L}",
+        "echo": "{E}",
+        "output": "{O}",
+        "context": "{C}",
+        "snippet_id": "{I}"
+      }
+    }
   }
 }
