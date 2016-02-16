@@ -1,0 +1,9 @@
+{
+  "markup_languages": ["html", "markdown", "latex"],
+
+  "extensions": {
+    "html": ["html", "htm"],
+    "markdown": ["md", "markdown", "mdown", "mkdn", "mkd"],
+    "latex": ["tex"]
+  }
+}
