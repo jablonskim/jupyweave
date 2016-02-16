@@ -2,6 +2,7 @@
 
 from sys import argv, exit
 from settings import Settings
+from processor import Processor
 
 
 DEFAULT_CONFIG_FILE_NAME = 'defconfig.json'
@@ -12,6 +13,7 @@ class JuPyWeave:
     def __init__(self, args):
         self.arguments = args
         self.config_file, self.filenames = self.parse_args()
+        self.processors = []
 
         if len(self.filenames) == 0:
             self.usage()
@@ -46,8 +48,9 @@ class JuPyWeave:
         return config, filenames
 
     def process(self):
-        for doc in self.filenames:
-            pass
+        self.processors = Processor.create_processors(self.filenames, self.settings)
+
+        # TODO: process
 
 
 def main():

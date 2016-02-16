@@ -5,10 +5,10 @@ import json
 class Settings:
 
     def __init__(self, config_file):
-        data = {}
+        self.data = {}
 
         with open(config_file, 'r') as f:
-            data = json.load(f)
+            self.data = json.load(f)
 
         # TODO: validate
 
@@ -18,7 +18,7 @@ class Settings:
     def languages_by_extension(self, extension):
         languages = []
 
-        for lang, exts in self.data['extensions'].iteritems():
+        for lang, exts in self.data['extensions'].items():
             if extension in exts:
                 languages.append(lang)
 
