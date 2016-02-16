@@ -1,5 +1,7 @@
 
 import json
+import re
+from os.path import splitext
 
 
 class Settings:
@@ -26,3 +28,10 @@ class Settings:
             languages = self.languages()
 
         return languages
+
+    def get_output_filename(self, input_file):
+        i_base, i_ext = splitext(input_file)
+
+        # TODO: re.sub()
+
+        return ''

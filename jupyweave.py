@@ -50,7 +50,8 @@ class JuPyWeave:
     def process(self):
         self.processors = Processor.create_processors(self.filenames, self.settings)
 
-        # TODO: process
+        for processor in self.processors:
+            processor.process()
 
 
 def main():

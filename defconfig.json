@@ -5,5 +5,14 @@
     "html": ["html", "htm"],
     "markdown": ["md", "markdown", "mdown", "mkdn", "mkd"],
     "latex": ["tex"]
+  },
+
+  "output": {
+    "filename": "{I_NAME}{I_EXT}_out{O_EXT}",
+    "patterns": {
+      "input_name": "{I_NAME}",
+      "input_extension": "{I_EXT}",
+      "output_extension": "{O_EXT}"
+    }
   }
 }
