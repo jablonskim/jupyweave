@@ -2,6 +2,7 @@
 import json
 import re
 from os.path import splitext
+from snippets import Snippets
 
 
 class Settings:
@@ -12,7 +13,7 @@ class Settings:
         with open(config_file, 'r') as f:
             self.data = json.load(f)
 
-        self.snippets = self.data['code_snippets']
+        self.snippets = Snippets(self.data['code_snippets'])
 
         # TODO: validate
 
@@ -37,3 +38,7 @@ class Settings:
         # TODO: re.sub()
 
         return ''
+
+    def pattern(self, language):
+        # TODO: lang exist?
+        return self.snippets.pattern(language)

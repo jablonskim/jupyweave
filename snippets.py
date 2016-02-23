@@ -11,3 +11,9 @@ class Snippets:
         for lang, snippet in snippets.items():
             if lang != 'default':
                 self.languages[lang] = Snippet(snippet)
+
+    def pattern(self, language):
+        try:
+            return self.languages[language].pattern()
+        except KeyError:
+            return self.default_snippet.pattern()
