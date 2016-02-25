@@ -26,3 +26,13 @@ class BeginSnippetSyntaxError(SnippetSyntaxError):
     def __str__(self):
         return str.format("Missing '{0}' (snippet settings definition) in 'begin' definition for '{1}'",
                           self.pattern, self.language)
+
+
+class OutputSnippetSyntaxError(SnippetSyntaxError):
+
+    def __init__(self, missing_pattern):
+        self.pattern = missing_pattern
+
+    def __str__(self):
+        return str.format("Missing '{0}' (snippet settings definition) in 'output' definition for '{1}'",
+                          self.pattern, self.language)

@@ -1,6 +1,6 @@
 
 import re
-from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxError
+from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxError, OutputSnippetSyntaxError
 
 GROUP_NAME__CODE = R'code'
 
@@ -36,8 +36,14 @@ class Snippet:
 
     @staticmethod
     def create_output_pattern(data):
+        patterns = data['patterns']
+
+        if not patterns['settings'] in data['output']:
+            raise OutputSnippetSyntaxError(patterns['settings'])
+
         # TODO
-        pass
+        
+        return ''
 
     def pattern(self):
         return self.regex_pattern
