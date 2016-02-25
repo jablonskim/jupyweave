@@ -4,7 +4,8 @@ from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxE
     SettingSnippetSyntaxError
 from pattern import Pattern
 
-from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
+from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS, \
+    GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT
 
 PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE)
 PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE_SETTINGS)
@@ -19,7 +20,10 @@ class Snippet:
         output_pattern = Snippet.create_output_pattern(data)
 
         code_snippet = str.format(R'{0}{1}{2}', begin_pattern, PATTERN_CODE_SNIPPET, end_pattern)
-        entry_regex = str.format(R'(?:{0})|(?:{1})', code_snippet, output_pattern)
+        code_snippet = str.format(R'(?P<{0}>{1})', GROUP_NAME__SNIPPET_CODE, code_snippet)
+        output_snippet = str.format(R'(?P<{0}>{1})', GROUP_NAME__SNIPPET_OUTPUT, output_pattern)
+
+        entry_regex = str.format(R'(?:{0})|(?:{1})', code_snippet, output_snippet)
 
         self.regex_patterns = Pattern(entry_regex)
 

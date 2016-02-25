@@ -2,6 +2,9 @@
 from os.path import splitext
 import re
 import io
+from pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
+    GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
+from exceptions.processor_errors import InvalidSnippetError
 
 
 class Processor:
@@ -58,22 +61,25 @@ class Processor:
 
         return language
 
-    def process_code_sippet(self):
-        pass
+    def process_code_sippet(self, code, settings):
+        return ''
 
-    def process_output(self):
-        pass
+    def process_output(self, settings):
+        return ''
 
     def process_entry(self, entry):
-        print('a')
-        return ''
+        if entry.group(GROUP_NAME__SNIPPET_CODE) is not None:
+            return self.process_code_sippet(entry.group(GROUP_NAME__CODE), entry.group(GROUP_NAME__CODE_SETTINGS))
+
+        if entry.group(GROUP_NAME__SNIPPET_OUTPUT) is not None:
+            return self.process_output(entry.group(GROUP_NAME__OUTPUT_SETTINGS))
+
+        raise InvalidSnippetError()
 
     def process(self):
         # TODO: file not found?
         with io.open(self.document_file_name, 'r', encoding='utf8') as f:
             data = f.read()
-
-        #print(data)
 
         data = re.sub(self.pattern.entry(), self.process_entry, data)
 
