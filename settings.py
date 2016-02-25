@@ -1,6 +1,5 @@
 
 import json
-import re
 from os.path import splitext
 from snippets import Snippets
 

@@ -1,3 +1,4 @@
 <output
             id="test_id1" />
-test_id1
+
+            id="test_id1"

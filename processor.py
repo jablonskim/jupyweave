@@ -1,5 +1,7 @@
 
 from os.path import splitext
+import re
+import io
 
 
 class Processor:
@@ -9,6 +11,7 @@ class Processor:
         self.document_file_name = filename
 
         self.language = self.get_language_by_extension(self.document_file_name)
+        self.pattern = self.settings.pattern(self.language)
         # TODO
 
     @staticmethod
@@ -55,9 +58,26 @@ class Processor:
 
         return language
 
+    def process_code_sippet(self):
+        pass
+
+    def process_output(self):
+        pass
+
+    def process_entry(self, entry):
+        print('a')
+        return ''
+
     def process(self):
-        #with open(self.document_file_name, 'r') as f:
-        #    data = f.read()
-        ...
+        # TODO: file not found?
+        with io.open(self.document_file_name, 'r', encoding='utf8') as f:
+            data = f.read()
+
+        #print(data)
+
+        data = re.sub(self.pattern.entry(), self.process_entry, data)
+
+        with open(self.document_file_name + '_new.html', 'w', encoding='utf8') as f:
+            f.write(data)
 
 

@@ -1,7 +1,6 @@
 from unittest import TestCase
 from snippet import Snippet, PATTERN_CODE_SNIPPET
-from snippet import GROUP_NAME__CODE, GROUP_NAME__LANGUAGE, GROUP_NAME__OUTPUT, \
-    GROUP_NAME__ECHO, GROUP_NAME__CONTEXT, GROUP_NAME__ID
+from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
 
 from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxError, OutputSnippetSyntaxError
 
@@ -34,10 +33,10 @@ class TestSnippet(TestCase):
             self.end_pattern_search_result = f.read()
 
         with open(TEST_DATA_DIR + 'begin_pattern_search_results.txt') as f:
-            self.begin_pattern_search_results = f.read()
+            self.begin_pattern_search_results = f.read().splitlines()
 
         with open(TEST_DATA_DIR + 'output_pattern_search_results.txt') as f:
-            self.output_pattern_search_results = f.read()
+            self.output_pattern_search_results = f.read().splitlines()
 
         with open(TEST_DATA_DIR + 'code_example.txt') as f:
             self.code_example = f.read()
@@ -69,16 +68,12 @@ class TestSnippet(TestCase):
 
         self.assertIsNotNone(m[0])
         self.assertEqual(m[0].group(), self.begin_pattern_search_results[0])
-        self.assertEqual(m[0].group(GROUP_NAME__LANGUAGE), self.begin_pattern_search_results[1])
-        self.assertEqual(m[0].group(GROUP_NAME__OUTPUT), self.begin_pattern_search_results[2])
-        self.assertEqual(m[0].group(GROUP_NAME__ECHO), self.begin_pattern_search_results[3])
+        self.assertEqual(m[0].group(GROUP_NAME__CODE_SETTINGS), self.begin_pattern_search_results[1])
 
         self.assertIsNotNone(m[1])
-        self.assertEqual(m[1].group(), self.begin_pattern_search_results[4] + '\n' + self.begin_pattern_search_results[5])
-        self.assertEqual(m[1].group(), self.begin_pattern_search_results[6])
-        self.assertEqual(m[1].group(), self.begin_pattern_search_results[7])
-        self.assertEqual(m[1].group(), self.begin_pattern_search_results[8])
-        self.assertEqual(m[1].group(), self.begin_pattern_search_results[9])
+        self.assertEqual(m[1].group(), self.begin_pattern_search_results[2] + '\n' + self.begin_pattern_search_results[3])
+        self.assertEqual(m[1].group(GROUP_NAME__CODE_SETTINGS), self.begin_pattern_search_results[4] + '\n' +
+                         self.begin_pattern_search_results[5])
 
     def test_create_begin_pattern_no_code(self):
         """Tests creation of Snippet Begin pattern on document without match"""
@@ -100,7 +95,8 @@ class TestSnippet(TestCase):
 
         self.assertIsNotNone(m[0])
         self.assertEqual(m[0].group(), self.output_pattern_search_results[0] + '\n' + self.output_pattern_search_results[1])
-        self.assertEqual(m[0].group(GROUP_NAME__ID), self.begin_pattern_search_results[2])
+        self.assertEqual(m[0].group(GROUP_NAME__OUTPUT_SETTINGS), self.output_pattern_search_results[2] + '\n' +
+                         self.output_pattern_search_results[3])
 
     def test_create_output_pattern_no_code(self):
         """Tests creation of Snippet Output pattern on document without match"""
@@ -112,6 +108,16 @@ class TestSnippet(TestCase):
         """Tests creation od Snippet Output pattern on invalid configuration"""
         with self.assertRaises(OutputSnippetSyntaxError):
             Snippet.create_output_pattern(self.snippet_data_with_syntax)
+
+    def test_create_settings_regex(self):
+        """Tests creation of Snippet Settings patterns matching it with valid document"""
+        # TODO
+        self.fail()
+
+    def test_create_settings_regex_invalid_config(self):
+        """Tests creation od Snippet Settings patterns on invalid configuration"""
+        # TODO
+        self.fail()
 
     def test_code_pattern(self):
         """Tests source code pattern"""

@@ -1,10 +1,6 @@
 <snippet lang="python3" output="T" echo="False">
-python3
-T
-False
+ lang="python3" output="T" echo="False"
 <snippet lang="python2"    output="F" context="TestCtx2"
              id="test_id1">
-python2
-F
-TestCtx2
-test_id1
+ lang="python2"    output="F" context="TestCtx2"
+             id="test_id1"

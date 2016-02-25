@@ -36,3 +36,14 @@ class OutputSnippetSyntaxError(SnippetSyntaxError):
     def __str__(self):
         return str.format("Missing '{0}' (snippet settings definition) in 'output' definition for '{1}'",
                           self.pattern, self.language)
+
+
+class SettingSnippetSyntaxError(SnippetSyntaxError):
+
+    def __init__(self, name, missing_pattern):
+        self.setting_name = name
+        self.pattern = missing_pattern
+
+    def __str__(self):
+        return str.format("Missing '{0}' (snippet settings definition) in '{2}' definition for '{1}'",
+                          self.pattern, self.language, self.setting_name)
