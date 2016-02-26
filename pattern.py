@@ -15,11 +15,28 @@ GROUP_NAME__SNIPPET_CODE = R'snippet_code'
 
 class Pattern:
 
-    def __init__(self, entry):
+    def __init__(self, entry, language, echo, output, context, snippet_id):
         self._entry = re.compile(entry)
+        self._language = re.compile(language)
+        self._echo = re.compile(echo)
+        self._output = re.compile(output)
+        self._context = re.compile(context)
+        self._id = re.compile(snippet_id)
 
     def entry(self):
         return self._entry
 
     def language(self):
-        pass
+        return self._language
+
+    def echo(self):
+        return self._echo
+
+    def output(self):
+        return self._output
+
+    def context(self):
+        return self._context
+
+    def id(self):
+        return self._id

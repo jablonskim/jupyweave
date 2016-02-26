@@ -5,11 +5,14 @@ from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxE
 from pattern import Pattern
 
 from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS, \
-    GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT
+    GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
+    GROUP_NAME__LANGUAGE, GROUP_NAME__ECHO, GROUP_NAME__OUTPUT, GROUP_NAME__CONTEXT, GROUP_NAME__ID
 
 PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE)
 PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE_SETTINGS)
 PATTERN_OUTPUT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__OUTPUT_SETTINGS)
+
+PATTERN_SETTING = R'(?P<{0}>(?:.|\s)*?)'
 
 
 class Snippet:
@@ -24,8 +27,13 @@ class Snippet:
         output_snippet = str.format(R'(?P<{0}>{1})', GROUP_NAME__SNIPPET_OUTPUT, output_pattern)
 
         entry_regex = str.format(R'(?:{0})|(?:{1})', code_snippet, output_snippet)
+        language_regex = self.create_setting_regex(data, 'language', GROUP_NAME__LANGUAGE)
+        echo_regex = self.create_setting_regex(data, 'echo', GROUP_NAME__ECHO)
+        output_regex = self.create_setting_regex(data, 'output', GROUP_NAME__OUTPUT)
+        context_regex = self.create_setting_regex(data, 'context', GROUP_NAME__CONTEXT)
+        id_regex = self.create_setting_regex(data, 'snippet_id', GROUP_NAME__ID)
 
-        self.regex_patterns = Pattern(entry_regex)
+        self.regex_patterns = Pattern(entry_regex, language_regex, echo_regex, output_regex, context_regex, id_regex)
 
     @staticmethod
     def create_setting_regex(data, name, group_name):
@@ -35,8 +43,11 @@ class Snippet:
         if setting_pattern not in setting_regex:
             raise SettingSnippetSyntaxError(name, setting_pattern)
 
-        print(setting_pattern)
-        # TODO
+        setting_pattern = re.escape(re.escape(setting_pattern))
+        setting_regex = re.escape(setting_regex)
+
+        setting_group = str.format(PATTERN_SETTING, group_name)
+        setting_regex = re.sub(setting_pattern, setting_group, setting_regex, 1)
 
         return setting_regex
 
