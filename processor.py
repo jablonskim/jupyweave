@@ -4,7 +4,7 @@ import re
 import io
 from pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
     GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
-from exceptions.processor_errors import InvalidSnippetError
+from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
 
 
 class Processor:
@@ -62,9 +62,33 @@ class Processor:
         return language
 
     def process_code_sippet(self, code, settings):
+        language = self.pattern.language(settings)
+        if language is None:
+            raise RequiredSettingNotFoundError()
+
+        is_echo = self.pattern.echo(settings)
+        if is_echo is None:
+            is_echo = True
+
+        is_output = self.pattern.output(settings)
+        context = self.pattern.context(settings)
+        snippet_id = self.pattern.id(settings)
+
+        if is_output is None:
+            is_output = False if snippet_id is not None else True
+
+        # TODO
+
         return ''
 
     def process_output(self, settings):
+        snippet_id = self.pattern.id(settings)
+
+        if snippet_id is None:
+            raise RequiredSettingNotFoundError()
+
+        # TODO
+
         return ''
 
     def process_entry(self, entry):

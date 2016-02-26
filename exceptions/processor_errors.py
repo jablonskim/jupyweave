@@ -7,3 +7,13 @@ class InvalidSnippetError(Exception):
 class RequiredSettingNotFoundError(Exception):
     # TODO
     pass
+
+
+class ToManySettingOccurencesError(Exception):
+    # TODO
+    pass
+
+
+class InvalidBoolValueError(Exception):
+    # TODO
+    pass

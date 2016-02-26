@@ -1,4 +1,5 @@
 import re
+from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError
 
 GROUP_NAME__CODE = R'code'
 GROUP_NAME__CODE_SETTINGS = R'code_settings'
@@ -26,17 +27,43 @@ class Pattern:
     def entry(self):
         return self._entry
 
-    def language(self):
-        return self._language
+    @staticmethod
+    def extract_setting(string, regex, group_name):
+        items = re.finditer(regex, string)
+        items = [item for item in items]
 
-    def echo(self):
-        return self._echo
+        if len(items) == 0:
+            return None
 
-    def output(self):
-        return self._output
+        if len(items) != 1:
+            raise ToManySettingOccurencesError()
 
-    def context(self):
-        return self._context
+        return items[0].group(group_name)
 
-    def id(self):
-        return self._id
+    @staticmethod
+    def convert_to_bool(value):
+        if value is None:
+            return None
+
+        if value.lower() in ['t', 'true', '1', 'y', 'yes']:
+            return True
+
+        if value.lower() in ['f', 'false', '0', 'n', 'no']:
+            return False
+
+        raise InvalidBoolValueError
+
+    def language(self, string):
+        return Pattern.extract_setting(string, self._language, GROUP_NAME__LANGUAGE)
+
+    def echo(self, string):
+        return Pattern.convert_to_bool(Pattern.extract_setting(string, self._echo, GROUP_NAME__ECHO))
+
+    def output(self, string):
+        return Pattern.convert_to_bool(Pattern.extract_setting(string, self._output, GROUP_NAME__OUTPUT))
+
+    def context(self, string):
+        return Pattern.extract_setting(string, self._context, GROUP_NAME__CONTEXT)
+
+    def id(self, string):
+        return Pattern.extract_setting(string, self._id, GROUP_NAME__ID)
