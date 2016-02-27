@@ -17,3 +17,8 @@ class ToManySettingOccurencesError(Exception):
 class InvalidBoolValueError(Exception):
     # TODO
     pass
+
+
+class ResultNotFoundError(Exception):
+    # TODO
+    pass
