@@ -5,6 +5,8 @@ import io
 from pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
     GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
 from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
+from kernel_engine import KernelEngine
+from result_manager import ResultManager
 
 
 class Processor:
@@ -15,7 +17,8 @@ class Processor:
 
         self.language = self.get_language_by_extension(self.document_file_name)
         self.pattern = self.settings.pattern(self.language)
-        # TODO
+        self.engine = KernelEngine()
+        self.results = ResultManager()
 
     @staticmethod
     def create_processors(filenames, settings):
@@ -77,9 +80,22 @@ class Processor:
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        # TODO
+        result = self.engine.execute(language, code, context)
 
-        return ''
+        output = ''
+
+        if snippet_id is not None:
+            self.results.store(snippet_id, result)
+
+        if is_echo is not None:
+            output = code
+
+        if is_output is not None:
+            if len(output) > 0:
+                output += '\n'
+            output += result
+
+        return output
 
     def process_output(self, settings):
         snippet_id = self.pattern.id(settings)
@@ -87,9 +103,7 @@ class Processor:
         if snippet_id is None:
             raise RequiredSettingNotFoundError()
 
-        # TODO
-
-        return ''
+        return self.results.get(snippet_id)
 
     def process_entry(self, entry):
         if entry.group(GROUP_NAME__SNIPPET_CODE) is not None:
