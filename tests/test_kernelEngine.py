@@ -25,5 +25,10 @@ class TestKernelEngine(TestCase):
     def test_get_client(self):
         """Tests getting clients for different languages and contexts"""
         engine = KernelEngine()
-        # TODO
-        #engine.get_client()
+        client1 = engine.get_client('Python 3')
+        client2 = engine.get_client('Python 3')
+        client3 = engine.get_client('Python 3', 'test')
+
+        self.assertEqual(client1, client2)
+        self.assertNotEqual(client1, client3)
+
