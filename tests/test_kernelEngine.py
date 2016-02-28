@@ -22,27 +22,8 @@ class TestKernelEngine(TestCase):
         name = engine.kernel_name_by_language('Python 3')
         self.assertEqual(name, 'python3')
 
-    def test_get_kernel(self):
-        """Tests creation of kernel for new language and getting existing kernel"""
+    def test_get_client(self):
+        """Tests getting clients for different languages and contexts"""
         engine = KernelEngine()
-
-        self.assertEqual(len(engine.kernels_uuids.keys()), 0)
-        self.assertEqual(len(engine.manager.list_kernel_ids()), 0)
-
-        uuid1 = engine.get_kernel('Python 3')
-
-        self.assertEqual(len(engine.kernels_uuids.keys()), 1)
-        self.assertEqual(len(engine.manager.list_kernel_ids()), 1)
-
-        with self.assertRaises(InvalidLanguageNameError):
-            engine.get_kernel('Invalid language')
-
-        self.assertEqual(len(engine.kernels_uuids.keys()), 1)
-        self.assertEqual(len(engine.manager.list_kernel_ids()), 1)
-
-        uuid2 = engine.get_kernel('Python 3')
-
-        self.assertEqual(len(engine.kernels_uuids.keys()), 1)
-        self.assertEqual(len(engine.manager.list_kernel_ids()), 1)
-
-        self.assertEqual(uuid1, uuid2)
+        # TODO
+        #engine.get_client()

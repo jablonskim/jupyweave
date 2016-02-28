@@ -1,6 +1,7 @@
 from jupyter_client import MultiKernelManager
 from jupyter_client.kernelspec import KernelSpecManager
 
+from kernel_client_manager import KernelClientManager
 from exceptions.engine_errors import InvalidLanguageNameError
 
 
@@ -18,7 +19,7 @@ class KernelEngine:
 
         self.manager = MultiKernelManager()
 
-        self.kernels_uuids = {}
+        self.client_managers = {}
 
     def __del__(self):
         self.manager.shutdown_all()
@@ -29,21 +30,18 @@ class KernelEngine:
         except KeyError:
             raise InvalidLanguageNameError(language, self.available_kernel_names_mappings.keys())
 
-    def get_kernel(self, language):
+    def get_client(self, language, context=None):
         kernel_name = self.kernel_name_by_language(language)
 
         try:
-            uuid = self.kernels_uuids[kernel_name]
+            manager = self.client_managers[kernel_name]
         except KeyError:
-            uuid = self.manager.start_kernel(kernel_name)
-            self.kernels_uuids[kernel_name] = uuid
+            manager = KernelClientManager(kernel_name, self.manager)
+            self.client_managers[kernel_name] = manager
 
-        # TODO: if not in manager (dead etc)?
-
-        return self.manager.get_kernel(uuid)
-
-    def get_client(self, language, context=None):
-        pass
+        return manager.client(context)
 
     def execute(self, language, code, context=None):
-        return ''
+        client = self.get_client(language, context)
+        return client.execute(code)
+
