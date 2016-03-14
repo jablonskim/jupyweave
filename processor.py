@@ -125,4 +125,5 @@ class Processor:
         with open(self.document_file_name + '_new.html', 'w', encoding='utf8') as f:
             f.write(data)
 
-
+    def get_filename(self):
+        return self.document_file_name
