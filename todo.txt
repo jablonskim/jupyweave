@@ -1,0 +1,22 @@
+ClientWrapper:
+    - Konfiguracja kanałów (wait_for_ready itp)
+    - Co jeśli konfiguracja kanałów się nie powiedzie?
+    - Co z stderr? Do dokumentu? Konfiguracja w opcjach snippetu (stdout/stderr/both)?
+    - Co w przypadku wyjątku/błędu? Ma być w dokumencie? Czy na konsolę i niepowodzenie? Może konfiguracja?
+    - Co w przypadku innych języków? Też wyjątek? Czy inaczej? Przetestować
+    - Co w przypadku złego id, typu wiadomości?
+    - Co w przypadku tmeoutu? Wyjątek?
+    - Konfiguracja timeoutu
+
+Ogólne:
+    - Wyświetlanie postępu (wstępny regex liczący wystąpienia?)
+    - Testy
+    - Co w przypadku obrazka? (może inny typ wiadomości, przetestować)
+    - Walidacja settings, co jeśli złe lub nie istnieje?
+    - Błąd regex? Timeout wykonania? Co zrobić? Info że się nie da i kolejny?
+    - Co jeśli plik nie znaleziony?
+    - Zapisywanie pliku jako utf8
+    - Obsługa ctrl+c
+    - Przejrzeć inne todos, i możliwe wyjątki
+    - Jak wyświetlać obrazki?
+    - Jak wyświetlać kod/wyniki? Definicja dodatkowych tagów? Osobno dla 'output'?

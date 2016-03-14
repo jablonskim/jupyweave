@@ -121,6 +121,7 @@ class Processor:
 
         data = re.sub(self.pattern.entry(), self.process_entry, data)
 
+        # TODO: error?
         with open(self.document_file_name + '_new.html', 'w', encoding='utf8') as f:
             f.write(data)
 
