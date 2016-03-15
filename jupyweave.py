@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 from sys import argv, exit
-from settings import Settings
+from settings.settings import Settings
 from processor import Processor
-
+from exceptions.snippet_errors import SnippetSyntaxError
+from exceptions.settings_errors import InvalidConfigurationError
 
 DEFAULT_CONFIG_FILE_NAME = 'defconfig.json'
 
@@ -20,9 +21,10 @@ class JuPyWeave:
 
         try:
             self.settings = Settings(self.config_file)
-        except FileNotFoundError:
-            # TODO: validation errors?
-            self.exit_error('Configuration file %s not found.' % self.config_file)
+        except (InvalidConfigurationError, SnippetSyntaxError) as e:
+            JuPyWeave.exit_error(e)
+        except Exception as e:
+            JuPyWeave.exit_error(e)
 
     def usage(self):
         print('Usage: %s [--config=filename] file1 [file2 ...]' % self.arguments[0])

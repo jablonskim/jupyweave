@@ -1,12 +1,11 @@
-
 import re
+
 from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxError, OutputSnippetSyntaxError, \
     SettingSnippetSyntaxError
-from pattern import Pattern
-
-from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS, \
+from settings.pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS, \
     GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
     GROUP_NAME__LANGUAGE, GROUP_NAME__ECHO, GROUP_NAME__OUTPUT, GROUP_NAME__CONTEXT, GROUP_NAME__ID
+from settings.pattern import Pattern
 
 PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE)
 PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GROUP_NAME__CODE_SETTINGS)

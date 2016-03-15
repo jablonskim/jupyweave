@@ -1,12 +1,11 @@
+import json
+import re
 from unittest import TestCase
-from snippet import Snippet, PATTERN_CODE_SNIPPET
+
 from pattern import GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
 
 from exceptions.snippet_errors import BeginSnippetSyntaxError, EndSnippetSyntaxError, OutputSnippetSyntaxError
-
-import json
-import re
-
+from settings.snippet import Snippet, PATTERN_CODE_SNIPPET
 
 TEST_DATA_DIR = './test_data/snippets/'
 

@@ -1,6 +1,5 @@
-
-from snippet import Snippet
 from exceptions.snippet_errors import SnippetSyntaxError
+from settings.snippet import Snippet
 
 
 class Snippets:

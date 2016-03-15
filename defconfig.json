@@ -1,10 +1,10 @@
 {
-  "markup_languages": ["html", "markdown", "latex"],
+  "markup_languages": ["HTML", "Markdown", "LaTeX"],
 
   "extensions": {
-    "html": ["html", "htm"],
-    "markdown": ["md", "markdown", "mdown", "mkdn", "mkd"],
-    "latex": ["tex"]
+    "HTML": ["html", "htm"],
+    "Markdown": ["md", "markdown", "mdown", "mkdn", "mkd"],
+    "LaTeX": ["tex"]
   },
 
   "output": {
@@ -13,6 +13,13 @@
       "input_name": "{I_NAME}",
       "input_extension": "{I_EXT}",
       "output_extension": "{O_EXT}"
+    }
+  },
+
+  "execution_timeouts": {
+    "default": 1000,
+    "languages": {
+      "Python 3": 200
     }
   },
 
@@ -41,7 +48,7 @@
       }
     },
 
-    "html": {
+    "HTML": {
       "begin": "<snippet{S}>",
       "end": "</snippet>",
       "output": "<output{S} />",

@@ -1,12 +1,12 @@
-
-from os.path import splitext
-import re
 import io
-from pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
-    GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
+import re
+from os.path import splitext
+
 from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
 from kernel_engine import KernelEngine
 from result_manager import ResultManager
+from settings.pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
+    GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
 
 
 class Processor:
