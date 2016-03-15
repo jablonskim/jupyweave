@@ -19,3 +19,9 @@ Ogólne:
     - Jak wyświetlać obrazki?
     - Jak wyświetlać kod/wyniki? Definicja dodatkowych tagów? Osobno dla 'output'?
     - Zamiana nowych linii w wyniku? Czy <pre> ?
+    - Komentarze
+
+Refaktoryzacja:
+    - Snippet
+    - Pattern
+    - reszta

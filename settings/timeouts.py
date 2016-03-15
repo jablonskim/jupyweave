@@ -2,8 +2,10 @@ from exceptions.settings_errors import InvalidConfigurationError
 
 
 class Timeouts:
+    """Timeouts for each language"""
 
     def __init__(self, timeouts):
+        """Parses timeouts"""
         try:
             self.__default_timeout = timeouts['default']
             if type(self.__default_timeout) != int:
@@ -20,6 +22,7 @@ class Timeouts:
             self.__timeouts = {}
 
     def timeout(self, language):
+        """Returns timeout (in miliseconds) for specific language (or default if not defined)"""
         try:
             return self.__timeouts[language]
         except KeyError:

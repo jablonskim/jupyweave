@@ -6,8 +6,10 @@ from settings.timeouts import Timeouts
 
 
 class Settings:
+    """Application settings"""
 
     def __init__(self, config_file):
+        """Parses settings from config_file"""
         try:
             with open(config_file, 'r') as f:
                 data = json.load(f)
@@ -25,9 +27,11 @@ class Settings:
             raise InvalidConfigurationError('Required configuration key %s was not found' % e)
 
     def languages(self):
+        """Returns all defined markup languages"""
         return self.__markup_languages
 
     def languages_by_extension(self, extension):
+        """Returns languages list which match speciffied extension (or all if no match)"""
         languages = []
 
         for lang, exts in self.__extensions.items():
@@ -40,10 +44,12 @@ class Settings:
         return languages
 
     def pattern(self, language):
+        """Returns pattern for specified language (or default)"""
         return self.__snippets.pattern(language)
 
     def timeout(self, language):
-        return self.__timeouts.timeout(language)
+        """Returns timeout for speciffic language (in seconds)"""
+        return self.__timeouts.timeout(language) / 1000.0
 
     def __parse_markup_languages(self, markup_languages):
         if type(markup_languages) != list:
