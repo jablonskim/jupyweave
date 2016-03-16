@@ -31,14 +31,17 @@ class TimeoutValueError(ProcessingError):
         super(TimeoutValueError, self).__init__('Invalid value of \'timeout\' snippet setting: %s' % value)
 
 
-class InvalidSnippetError(Exception):
-    # TODO: info?
-    pass
+class InvalidSnippetError(ProcessingError):
+    """Invalid snippet error"""
+    def __init__(self):
+        super(InvalidSnippetError, self).__init__('Invalid snippet')
 
 
-class RequiredSettingNotFoundError(Exception):
-    # TODO
-    pass
+class RequiredSettingNotFoundError(ProcessingError):
+    """Snippet's required setting is missing"""
+
+    def __init__(self, name):
+        super(RequiredSettingNotFoundError, self).__init__('Required snippet setting for \'%s\' configuration not found' % name)
 
 
 class ToManySettingOccurencesError(Exception):

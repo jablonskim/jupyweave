@@ -92,7 +92,7 @@ class Processor:
     def __process_code_sippet(self, code, settings):
         language = self.__pattern.language(settings)
         if language is None:
-            raise RequiredSettingNotFoundError()
+            raise RequiredSettingNotFoundError('language')
 
         is_echo = self.__pattern.echo(settings)
         if is_echo is None:
@@ -127,6 +127,6 @@ class Processor:
         snippet_id = self.__pattern.id(settings)
 
         if snippet_id is None:
-            raise RequiredSettingNotFoundError()
+            raise RequiredSettingNotFoundError('snippet id')
 
         return self.__results.get(snippet_id)

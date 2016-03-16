@@ -1,6 +1,4 @@
 ClientWrapper:
-    - Konfiguracja kanałów (wait_for_ready itp)
-    - Co jeśli konfiguracja kanałów się nie powiedzie?
     - Co z stderr? Do dokumentu? Konfiguracja w opcjach snippetu (stdout/stderr/both)?
     - Co w przypadku wyjątku/błędu? Ma być w dokumencie? Czy na konsolę i niepowodzenie? Może konfiguracja?
     - Co w przypadku innych języków? Też wyjątek? Czy inaczej? Przetestować
