@@ -1,34 +1,46 @@
 import re
 from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError
-
-GROUP_NAME__CODE = R'code'
-GROUP_NAME__CODE_SETTINGS = R'code_settings'
-GROUP_NAME__OUTPUT_SETTINGS = R'output_settings'
-GROUP_NAME__LANGUAGE = R'lang'
-GROUP_NAME__ECHO = R'echo'
-GROUP_NAME__OUTPUT = R'out'
-GROUP_NAME__CONTEXT = R'ctx'
-GROUP_NAME__ID = R'id'
-
-GROUP_NAME__SNIPPET_OUTPUT = R'snippet_output'
-GROUP_NAME__SNIPPET_CODE = R'snippet_code'
+from settings.group_names import GroupName
 
 
 class Pattern:
+    """Regular expressions container. Extracts selected data from strings"""
 
     def __init__(self, entry, language, echo, output, context, snippet_id):
-        self._entry = re.compile(entry)
-        self._language = re.compile(language)
-        self._echo = re.compile(echo)
-        self._output = re.compile(output)
-        self._context = re.compile(context)
-        self._id = re.compile(snippet_id)
+        """Compiles & initializes regexes"""
+        self.__entry = re.compile(entry)
+        self.__language = re.compile(language)
+        self.__echo = re.compile(echo)
+        self.__output = re.compile(output)
+        self.__context = re.compile(context)
+        self.__id = re.compile(snippet_id)
 
     def entry(self):
-        return self._entry
+        """Returns regex for full entry (code snippet or output snippet)"""
+        return self.__entry
+
+    def language(self, string):
+        """Extracts language from setting string"""
+        return Pattern.__extract_setting(string, self.__language, GroupName.LANGUAGE)
+
+    def echo(self, string):
+        """Extracts echo output information from setting string"""
+        return Pattern.__convert_to_bool(Pattern.__extract_setting(string, self.__echo, GroupName.ECHO))
+
+    def output(self, string):
+        """Extracts result output information from setting string"""
+        return Pattern.__convert_to_bool(Pattern.__extract_setting(string, self.__output, GroupName.OUTPUT))
+
+    def context(self, string):
+        """Extracts sontext from setting string"""
+        return Pattern.__extract_setting(string, self.__context, GroupName.CONTEXT)
+
+    def id(self, string):
+        """Extracts snippet id from setting string"""
+        return Pattern.__extract_setting(string, self.__id, GroupName.ID)
 
     @staticmethod
-    def extract_setting(string, regex, group_name):
+    def __extract_setting(string, regex, group_name):
         items = re.finditer(regex, string)
         items = [item for item in items]
 
@@ -41,7 +53,7 @@ class Pattern:
         return items[0].group(group_name)
 
     @staticmethod
-    def convert_to_bool(value):
+    def __convert_to_bool(value):
         if value is None:
             return None
 
@@ -52,18 +64,3 @@ class Pattern:
             return False
 
         raise InvalidBoolValueError
-
-    def language(self, string):
-        return Pattern.extract_setting(string, self._language, GROUP_NAME__LANGUAGE)
-
-    def echo(self, string):
-        return Pattern.convert_to_bool(Pattern.extract_setting(string, self._echo, GROUP_NAME__ECHO))
-
-    def output(self, string):
-        return Pattern.convert_to_bool(Pattern.extract_setting(string, self._output, GROUP_NAME__OUTPUT))
-
-    def context(self, string):
-        return Pattern.extract_setting(string, self._context, GROUP_NAME__CONTEXT)
-
-    def id(self, string):
-        return Pattern.extract_setting(string, self._id, GROUP_NAME__ID)
