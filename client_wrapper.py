@@ -3,8 +3,10 @@ from queue import Empty
 
 class ClientWrapper:
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, client, execution_timeout):
+        self.__client = client
+        self.__execution_timeout = execution_timeout
+        print(execution_timeout)
 
         client.start_channels()
 
@@ -18,14 +20,14 @@ class ClientWrapper:
             raise
 
     def execute(self, code):
-        request_id = self.client.execute(code, allow_stdin=False)
+        request_id = self.__client.execute(code, allow_stdin=False)
 
         print(request_id)
         print()
 
         try:
             while True:
-                msg = self.client.get_shell_msg(timeout=30.1)
+                msg = self.__client.get_shell_msg(timeout=self.__execution_timeout)
                 if msg['msg_type'] != 'execute_reply':
                     # TODO: ?
                     print('SHELL - Type %s' % msg['msg_type'])
@@ -59,7 +61,7 @@ class ClientWrapper:
 
         try:
             while True:
-                msg = self.client.get_iopub_msg(timeout=30.1)
+                msg = self.__client.get_iopub_msg(timeout=self.__execution_timeout)
                 msg_type = msg['msg_type']
                 parent_id = msg['parent_header']['msg_id']
 

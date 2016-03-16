@@ -6,7 +6,6 @@ ClientWrapper:
     - Co w przypadku innych języków? Też wyjątek? Czy inaczej? Przetestować
     - Co w przypadku złego id, typu wiadomości?
     - Co w przypadku tmeoutu? Wyjątek?
-    - Konfiguracja timeoutu
     - Timeout per snippet
 
 Ogólne:
