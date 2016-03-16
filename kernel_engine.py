@@ -46,7 +46,7 @@ class KernelEngine:
         try:
             manager = self.__client_managers[kernel_name]
         except KeyError:
-            manager = KernelClientManager(kernel_name, self.__manager, self.__settings.timeout(language))
+            manager = KernelClientManager(kernel_name, language, self.__manager, self.__settings.timeout(language))
             self.__client_managers[kernel_name] = manager
 
         return manager.client(context)

@@ -4,11 +4,12 @@ from client_wrapper import ClientWrapper
 class KernelClientManager:
     """Manages clients for specified kernel and contexts"""
 
-    def __init__(self, kernel_name, manager, execution_timeout):
+    def __init__(self, kernel_name, language, manager, execution_timeout):
         """Initializes kernel for default context"""
         self.__execution_timeout = execution_timeout
         self.__manager = manager
         self.__kernel_name = kernel_name
+        self.__language = language
         self.__default_uuid = manager.start_kernel(kernel_name)
         self.__uuids = {}
 
@@ -34,4 +35,4 @@ class KernelClientManager:
         return self.__manager.get_kernel(self.__default_uuid if context is None else self.__uuids[context])
 
     def __create_client(self, context=None):
-        return ClientWrapper(self.__kernel(context).client(), self.__execution_timeout)
+        return ClientWrapper(self.__kernel(context).client(), self.__language, self.__execution_timeout)

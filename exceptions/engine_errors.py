@@ -9,6 +9,6 @@ class InvalidLanguageNameError(Exception):
         string = str.format("Kernel for language '{0}' not found. Available languages: \n", self.name)
 
         for name in self.available:
-            string += str.format("\t'{0}'\n", name)
+            string += str.format("\t\t'{0}'\n", name)
 
         return string

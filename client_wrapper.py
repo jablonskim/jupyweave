@@ -1,29 +1,23 @@
 from queue import Empty
+from exceptions.processor_errors import KernelClientStartingError, ExecutionTimeoutError
 
 
 class ClientWrapper:
 
-    def __init__(self, client, execution_timeout):
+    def __init__(self, client, language, execution_timeout):
         self.__client = client
         self.__execution_timeout = execution_timeout
-        print(execution_timeout)
 
-        client.start_channels()
+        self.__client.start_channels()
 
         try:
-            pass
-            # TODO: configure
-            client.wait_for_ready()
+            self.__client.wait_for_ready()
         except RuntimeError:
-            client.stop_channels()
-            # TODO: ?
-            raise
+            self.__client.stop_channels()
+            raise KernelClientStartingError(language)
 
     def execute(self, code):
         request_id = self.__client.execute(code, allow_stdin=False)
-
-        print(request_id)
-        print()
 
         try:
             while True:
@@ -54,8 +48,7 @@ class ClientWrapper:
                     print('SHELL - ABORT!')
                     break
         except Empty:
-            # TODO: ?
-            pass
+            raise ExecutionTimeoutError(code)
 
         outputs = []
 
@@ -83,8 +76,7 @@ class ClientWrapper:
 
                 outputs.append(msg['content'])
         except Empty:
-            # TODO: ?
-            pass
+            raise ExecutionTimeoutError(code)
 
         # TODO: stderr/stdout
         output = ''.join([x['text'] for x in outputs])

@@ -23,7 +23,7 @@ class Processor:
 
     @staticmethod
     def create_processors(filenames, settings):
-        """Creates processors for docuents"""
+        """Creates processors for documents"""
         processors = []
 
         for doc in filenames:

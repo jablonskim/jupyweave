@@ -1,4 +1,29 @@
 
+class ProcessingError(Exception):
+    """Base exception for processing errors"""
+
+    def __init__(self, msg):
+        self.__msg = msg
+
+    def __str__(self):
+        return self.__msg
+
+
+class KernelClientStartingError(ProcessingError):
+    """Class represents error while starting kernel"""
+
+    def __init__(self, language):
+        super(KernelClientStartingError, self).__init__('Initialization of %s Kernel client failed' % language)
+
+
+class ExecutionTimeoutError(ProcessingError):
+    """Class represents timeout during executing code"""
+
+    def __init__(self, code):
+        code = code.replace('\n', '\n\t\t')
+        super(ExecutionTimeoutError, self).__init__('Timeout while executing code snippet: \n\t\t%s' % code)
+
+
 class InvalidSnippetError(Exception):
     # TODO: info?
     pass
