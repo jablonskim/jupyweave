@@ -2,32 +2,35 @@ from client_wrapper import ClientWrapper
 
 
 class KernelClientManager:
+    """Manages clients for specified kernel and contexts"""
 
     def __init__(self, kernel_name, manager):
-        self.manager = manager
-        self.kernel_name = kernel_name
-        self.default_uuid = manager.start_kernel(kernel_name)
-        self.uuids = {}
+        """Initializes kernel for default context"""
+        self.__manager = manager
+        self.__kernel_name = kernel_name
+        self.__default_uuid = manager.start_kernel(kernel_name)
+        self.__uuids = {}
 
-        self.default_client = None
-        self.clients = {}
-
-    def kernel(self, context=None):
-        return self.manager.get_kernel(self.default_uuid if context is None else self.uuids[context])
-
-    def create_client(self, context=None):
-        return ClientWrapper(self.kernel(context).client())
+        self.__default_client = None
+        self.__clients = {}
 
     def client(self, context=None):
+        """Returns client for specific context"""
         if context is None:
-            if self.default_client is None:
-                self.default_client = self.create_client()
+            if self.__default_client is None:
+                self.__default_client = self.__create_client()
 
-            return self.default_client
+            return self.__default_client
 
         try:
-            return self.clients[context]
+            return self.__clients[context]
         except KeyError:
-            self.uuids[context] = self.manager.start_kernel(self.kernel_name)
-            self.clients[context] = self.create_client(context)
-            return self.clients[context]
+            self.__uuids[context] = self.__manager.start_kernel(self.__kernel_name)
+            self.__clients[context] = self.__create_client(context)
+            return self.__clients[context]
+
+    def __kernel(self, context=None):
+        return self.__manager.get_kernel(self.__default_uuid if context is None else self.__uuids[context])
+
+    def __create_client(self, context=None):
+        return ClientWrapper(self.__kernel(context).client())

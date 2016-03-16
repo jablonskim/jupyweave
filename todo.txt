@@ -7,6 +7,7 @@ ClientWrapper:
     - Co w przypadku złego id, typu wiadomości?
     - Co w przypadku tmeoutu? Wyjątek?
     - Konfiguracja timeoutu
+    - Timeout per snippet
 
 Ogólne:
     - Wyświetlanie postępu (wstępny regex liczący wystąpienia?)
@@ -22,6 +23,4 @@ Ogólne:
     - Komentarze
 
 Refaktoryzacja:
-    - Snippet
-    - Pattern
-    - reszta
+    - ClientWrapper

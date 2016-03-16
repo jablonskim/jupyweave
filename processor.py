@@ -9,18 +9,21 @@ from settings.group_names import GroupName
 
 
 class Processor:
+    """Document processor"""
 
     def __init__(self, filename, settings):
-        self.settings = settings
-        self.document_file_name = filename
+        """Initializes processor for document file"""
+        self.__settings = settings
+        self.__document_file_name = filename
 
-        self.language = self.get_language_by_extension(self.document_file_name)
-        self.pattern = self.settings.pattern(self.language)
-        self.engine = KernelEngine()
-        self.results = ResultManager()
+        self.__language = self.__get_language_by_extension(self.__document_file_name)
+        self.__pattern = self.__settings.pattern(self.__language)
+        self.__engine = KernelEngine()
+        self.__results = ResultManager()
 
     @staticmethod
     def create_processors(filenames, settings):
+        """Creates processors for docuents"""
         processors = []
 
         for doc in filenames:
@@ -28,20 +31,34 @@ class Processor:
 
         return processors
 
-    def get_language_by_extension(self, name):
+    def process(self):
+        """Processes single document"""
+        with io.open(self.__document_file_name, 'r', encoding='utf8') as f:
+            data = f.read()
+
+        data = re.sub(self.__pattern.entry(), self.__process_entry, data)
+
+        with open(self.__document_file_name + '_new.html', 'w', encoding='utf8') as f:
+            f.write(data)
+
+    def get_filename(self):
+        """Returns processed file name"""
+        return self.__document_file_name
+
+    def __get_language_by_extension(self, name):
         extension = splitext(name)[1].strip('.')
-        languages = self.settings.languages_by_extension(extension)
+        languages = self.__settings.languages_by_extension(extension)
 
         if len(languages) == 1:
             return languages[0]
 
         if len(languages) == 0:
-            return self.ask_for_language(name, self.settings.languages())
+            return self.__ask_for_language(name, self.__settings.languages())
 
-        return self.ask_for_language(name, languages)
+        return self.__ask_for_language(name, languages)
 
     @staticmethod
-    def ask_for_language(filename, languages):
+    def __ask_for_language(filename, languages):
         print('Cannot determine document \'%s\' type by extension. Select correct type:' % filename)
 
         for i, lang in enumerate(languages):
@@ -63,28 +80,37 @@ class Processor:
 
         return language
 
-    def process_code_sippet(self, code, settings):
-        language = self.pattern.language(settings)
+    def __process_entry(self, entry):
+        if entry.group(GroupName.CODE_SNIPPET) is not None:
+            return self.__process_code_sippet(entry.group(GroupName.CODE), entry.group(GroupName.CODE_SETTINGS))
+
+        if entry.group(GroupName.OUTPUT_SNIPPET) is not None:
+            return self.__process_output(entry.group(GroupName.OUTPUT_SETTINGS))
+
+        raise InvalidSnippetError()
+
+    def __process_code_sippet(self, code, settings):
+        language = self.__pattern.language(settings)
         if language is None:
             raise RequiredSettingNotFoundError()
 
-        is_echo = self.pattern.echo(settings)
+        is_echo = self.__pattern.echo(settings)
         if is_echo is None:
             is_echo = True
 
-        is_output = self.pattern.output(settings)
-        context = self.pattern.context(settings)
-        snippet_id = self.pattern.id(settings)
+        is_output = self.__pattern.output(settings)
+        context = self.__pattern.context(settings)
+        snippet_id = self.__pattern.id(settings)
 
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        result = self.engine.execute(language, code, context)
+        result = self.__engine.execute(language, code, context)
 
         output = ''
 
         if snippet_id is not None:
-            self.results.store(snippet_id, result)
+            self.__results.store(snippet_id, result)
 
         if is_echo is not None:
             output = code
@@ -96,33 +122,10 @@ class Processor:
 
         return output
 
-    def process_output(self, settings):
-        snippet_id = self.pattern.id(settings)
+    def __process_output(self, settings):
+        snippet_id = self.__pattern.id(settings)
 
         if snippet_id is None:
             raise RequiredSettingNotFoundError()
 
-        return self.results.get(snippet_id)
-
-    def process_entry(self, entry):
-        if entry.group(GroupName.CODE_SNIPPET) is not None:
-            return self.process_code_sippet(entry.group(GroupName.CODE), entry.group(GroupName.CODE_SETTINGS))
-
-        if entry.group(GroupName.OUTPUT_SNIPPET) is not None:
-            return self.process_output(entry.group(GroupName.OUTPUT_SETTINGS))
-
-        raise InvalidSnippetError()
-
-    def process(self):
-        # TODO: file not found?
-        with io.open(self.document_file_name, 'r', encoding='utf8') as f:
-            data = f.read()
-
-        data = re.sub(self.pattern.entry(), self.process_entry, data)
-
-        # TODO: error?
-        with open(self.document_file_name + '_new.html', 'w', encoding='utf8') as f:
-            f.write(data)
-
-    def get_filename(self):
-        return self.document_file_name
+        return self.__results.get(snippet_id)

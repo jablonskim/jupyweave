@@ -9,8 +9,8 @@ class TestKernelEngine(TestCase):
     def test_init(self):
         """Tests initializing with default available kernel"""
         engine = KernelEngine()
-        self.assertIn('Python 3', engine.available_kernel_names_mappings)
-        self.assertEqual(engine.available_kernel_names_mappings['Python 3'], 'python3')
+        self.assertIn('Python 3', engine.__available_kernel_names_mappings)
+        self.assertEqual(engine.__available_kernel_names_mappings['Python 3'], 'python3')
 
     def test_kernel_name_by_language(self):
         """Tests mapping language to kernel name"""

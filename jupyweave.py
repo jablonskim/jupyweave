@@ -6,54 +6,34 @@ from processor import Processor
 from exceptions.snippet_errors import SnippetSyntaxError
 from exceptions.settings_errors import InvalidConfigurationError
 
-DEFAULT_CONFIG_FILE_NAME = 'defconfig.json'
-
 
 class JuPyWeave:
+    """Applications main class"""
+
+    DEFAULT_CONFIG_FILE_NAME = 'defconfig.json'
 
     def __init__(self, args):
-        self.arguments = args
-        self.config_file, self.filenames = self.parse_args()
-        self.processors = []
+        """Loads settings and filenames"""
+        self.__arguments = args
+        self.__config_file, self.__filenames = self.__parse_args()
+        self.__processors = []
 
-        if len(self.filenames) == 0:
-            self.usage()
+        if len(self.__filenames) == 0:
+            self.__usage()
 
         try:
-            self.settings = Settings(self.config_file)
+            self.__settings = Settings(self.__config_file)
         except (InvalidConfigurationError, SnippetSyntaxError) as e:
             JuPyWeave.exit_error(e)
         except Exception as e:
             JuPyWeave.exit_error(e)
 
-    def usage(self):
-        print('Usage: %s [--config=filename] file1 [file2 ...]' % self.arguments[0])
-        exit()
-
-    @staticmethod
-    def exit_error(error_msg):
-        print(error_msg)
-        exit()
-
-    def parse_args(self):
-        args = self.arguments[1:]
-        cfg_prefix = '--config='
-        filenames = []
-        config = DEFAULT_CONFIG_FILE_NAME
-
-        for arg in args:
-            if arg.startswith(cfg_prefix):
-                config = arg[len(cfg_prefix):]
-            else:
-                filenames.append(arg)
-
-        return config, filenames
-
     def process(self):
-        self.processors = Processor.create_processors(self.filenames, self.settings)
+        """Processing documents"""
+        self.__processors = Processor.create_processors(self.__filenames, self.__settings)
 
-        for i, processor in enumerate(self.processors):
-            proc_str = str.format('Processing file {0}/{1} [{2}]:', i + 1, len(self.processors), processor.get_filename())
+        for i, processor in enumerate(self.__processors):
+            proc_str = str.format('Processing file {0}/{1} [{2}]:', i + 1, len(self.__processors), processor.get_filename())
             print(proc_str)
 
             try:
@@ -64,6 +44,29 @@ class JuPyWeave:
                 print('\t%s' % e)
 
         print()
+
+    @staticmethod
+    def exit_error(error_msg):
+        print(error_msg)
+        exit()
+
+    def __usage(self):
+        print('Usage: %s [--config=filename] file1 [file2 ...]' % self.__arguments[0])
+        exit()
+
+    def __parse_args(self):
+        args = self.__arguments[1:]
+        cfg_prefix = '--config='
+        filenames = []
+        config = JuPyWeave.DEFAULT_CONFIG_FILE_NAME
+
+        for arg in args:
+            if arg.startswith(cfg_prefix):
+                config = arg[len(cfg_prefix):]
+            else:
+                filenames.append(arg)
+
+        return config, filenames
 
 
 def main():
