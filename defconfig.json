@@ -35,7 +35,8 @@
         "echo": "echo={E}",
         "output": "output={O}",
         "context": "context={C}",
-        "snippet_id": "id={I}"
+        "snippet_id": "id={I}",
+        "timeout": "timeout={T}"
       },
 
       "patterns": {
@@ -44,7 +45,8 @@
         "echo": "{E}",
         "output": "{O}",
         "context": "{C}",
-        "snippet_id": "{I}"
+        "snippet_id": "{I}",
+        "timeout": "{T}"
       }
     },
 
@@ -58,7 +60,8 @@
         "echo": "echo=\"{E}\"",
         "output": "output=\"{O}\"",
         "context": "context=\"{C}\"",
-        "snippet_id": "id=\"{I}\""
+        "snippet_id": "id=\"{I}\"",
+        "timeout": "timeout=\"{T}\""
       },
 
       "patterns": {
@@ -67,7 +70,8 @@
         "echo": "{E}",
         "output": "{O}",
         "context": "{C}",
-        "snippet_id": "{I}"
+        "snippet_id": "{I}",
+        "timeout": "{T}"
       }
     }
   }

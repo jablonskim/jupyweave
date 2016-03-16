@@ -5,6 +5,8 @@ from settings.settings import Settings
 from processor import Processor
 from exceptions.snippet_errors import SnippetSyntaxError
 from exceptions.settings_errors import InvalidConfigurationError
+from exceptions.processor_errors import ProcessingError
+from exceptions.engine_errors import InvalidLanguageNameError
 
 
 class JuPyWeave:
@@ -40,8 +42,10 @@ class JuPyWeave:
                 processor.process()
             except FileNotFoundError as e:
                 print('\tError: File %s not found' % e.filename)
+            except (ProcessingError, InvalidLanguageNameError) as e:
+                print('\tError: %s' % e)
             except Exception as e:
-                print('\t%s' % e)
+                print('\tError: %s' % e)
 
         print()
 

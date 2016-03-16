@@ -3,8 +3,10 @@ from exceptions.processor_errors import KernelClientStartingError, ExecutionTime
 
 
 class ClientWrapper:
+    """Wrapper for Jupyter Client"""
 
     def __init__(self, client, language, execution_timeout):
+        """Initializes and starts client"""
         self.__client = client
         self.__execution_timeout = execution_timeout
 
@@ -16,12 +18,14 @@ class ClientWrapper:
             self.__client.stop_channels()
             raise KernelClientStartingError(language)
 
-    def execute(self, code):
+    def execute(self, code, execution_timeout=None):
+        """Executes code, returns results"""
+        timeout = execution_timeout if execution_timeout is not None else self.__execution_timeout
         request_id = self.__client.execute(code, allow_stdin=False)
 
         try:
             while True:
-                msg = self.__client.get_shell_msg(timeout=self.__execution_timeout)
+                msg = self.__client.get_shell_msg(timeout=timeout)
                 if msg['msg_type'] != 'execute_reply':
                     # TODO: ?
                     print('SHELL - Type %s' % msg['msg_type'])
@@ -54,7 +58,7 @@ class ClientWrapper:
 
         try:
             while True:
-                msg = self.__client.get_iopub_msg(timeout=self.__execution_timeout)
+                msg = self.__client.get_iopub_msg(timeout=timeout)
                 msg_type = msg['msg_type']
                 parent_id = msg['parent_header']['msg_id']
 

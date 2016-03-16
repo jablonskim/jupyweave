@@ -1,12 +1,12 @@
 import re
-from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError
+from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError, TimeoutValueError
 from settings.group_names import GroupName
 
 
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
-    def __init__(self, entry, language, echo, output, context, snippet_id):
+    def __init__(self, entry, language, echo, output, context, snippet_id, timeout):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
         self.__language = re.compile(language)
@@ -14,6 +14,7 @@ class Pattern:
         self.__output = re.compile(output)
         self.__context = re.compile(context)
         self.__id = re.compile(snippet_id)
+        self.__timeout = re.compile(timeout)
 
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
@@ -32,12 +33,23 @@ class Pattern:
         return Pattern.__convert_to_bool(Pattern.__extract_setting(string, self.__output, GroupName.OUTPUT))
 
     def context(self, string):
-        """Extracts sontext from setting string"""
+        """Extracts context from setting string"""
         return Pattern.__extract_setting(string, self.__context, GroupName.CONTEXT)
 
     def id(self, string):
         """Extracts snippet id from setting string"""
         return Pattern.__extract_setting(string, self.__id, GroupName.ID)
+
+    def timeout(self, string):
+        """Extracts execution timeout from settings string"""
+        timeout = Pattern.__extract_setting(string, self.__timeout, GroupName.TIMEOUT)
+        if timeout is None:
+            return None
+
+        try:
+            return int(timeout) / 1000.0
+        except ValueError:
+            raise TimeoutValueError(timeout)
 
     @staticmethod
     def __extract_setting(string, regex, group_name):

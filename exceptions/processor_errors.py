@@ -24,6 +24,13 @@ class ExecutionTimeoutError(ProcessingError):
         super(ExecutionTimeoutError, self).__init__('Timeout while executing code snippet: \n\t\t%s' % code)
 
 
+class TimeoutValueError(ProcessingError):
+    """Class representing timeout value error"""
+
+    def __init__(self, value):
+        super(TimeoutValueError, self).__init__('Invalid value of \'timeout\' snippet setting: %s' % value)
+
+
 class InvalidSnippetError(Exception):
     # TODO: info?
     pass

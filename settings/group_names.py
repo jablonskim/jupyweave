@@ -15,3 +15,4 @@ class GroupName:
     OUTPUT = R'out'
     CONTEXT = R'ctx'
     ID = R'id'
+    TIMEOUT = R'tout'

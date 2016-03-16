@@ -101,11 +101,12 @@ class Processor:
         is_output = self.__pattern.output(settings)
         context = self.__pattern.context(settings)
         snippet_id = self.__pattern.id(settings)
+        timeout = self.__pattern.timeout(settings)
 
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        result = self.__engine.execute(language, code, context)
+        result = self.__engine.execute(language, code, context, timeout)
 
         output = ''
 
