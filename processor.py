@@ -5,8 +5,7 @@ from os.path import splitext
 from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
 from kernel_engine import KernelEngine
 from result_manager import ResultManager
-from settings.pattern import GROUP_NAME__SNIPPET_CODE, GROUP_NAME__SNIPPET_OUTPUT, \
-    GROUP_NAME__CODE, GROUP_NAME__CODE_SETTINGS, GROUP_NAME__OUTPUT_SETTINGS
+from settings.group_names import GroupName
 
 
 class Processor:
@@ -106,11 +105,11 @@ class Processor:
         return self.results.get(snippet_id)
 
     def process_entry(self, entry):
-        if entry.group(GROUP_NAME__SNIPPET_CODE) is not None:
-            return self.process_code_sippet(entry.group(GROUP_NAME__CODE), entry.group(GROUP_NAME__CODE_SETTINGS))
+        if entry.group(GroupName.CODE_SNIPPET) is not None:
+            return self.process_code_sippet(entry.group(GroupName.CODE), entry.group(GroupName.CODE_SETTINGS))
 
-        if entry.group(GROUP_NAME__SNIPPET_OUTPUT) is not None:
-            return self.process_output(entry.group(GROUP_NAME__OUTPUT_SETTINGS))
+        if entry.group(GroupName.OUTPUT_SNIPPET) is not None:
+            return self.process_output(entry.group(GroupName.OUTPUT_SETTINGS))
 
         raise InvalidSnippetError()
 
