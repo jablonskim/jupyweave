@@ -5,7 +5,6 @@ ClientWrapper:
     - Co w przypadku złego id, typu wiadomości?
 
 Ogólne:
-    - Wyświetlanie postępu (wstępny regex liczący wystąpienia?)
     - Testy
     - Co w przypadku obrazka? (może inny typ wiadomości, przetestować)
     - Obsługa ctrl+c

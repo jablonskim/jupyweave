@@ -28,28 +28,28 @@ class ClientWrapper:
                 msg = self.__client.get_shell_msg(timeout=timeout)
                 if msg['msg_type'] != 'execute_reply':
                     # TODO: ?
-                    print('SHELL - Type %s' % msg['msg_type'])
+                    #print('SHELL - Type %s' % msg['msg_type'])
                     continue
 
                 if msg['parent_header']['msg_id'] != request_id:
                     # TODO: ?
-                    print('SHELL - Invalid parent ID')
+                    #print('SHELL - Invalid parent ID')
                     continue
 
                 status = msg['content']['status']
 
                 if status == 'ok':
-                    print('SHELL - OK!')
+                    #print('SHELL - OK!')
                     # TODO: ?
                     break
                 elif status == 'error':
                     # TODO: ?
-                    print('SHELL - ERROR!')
+                    #print('SHELL - ERROR!')
                     print(msg)
                     break
                 else:
                     # TODO: ?
-                    print('SHELL - ABORT!')
+                    #print('SHELL - ABORT!')
                     break
         except Empty:
             raise ExecutionTimeoutError(code)
@@ -64,7 +64,7 @@ class ClientWrapper:
 
                 if parent_id != request_id:
                     # TODO: ?
-                    print('IOPUB - Unknown parent ID')
+                    #print('IOPUB - Unknown parent ID')
                     continue
 
                 # End of calculations
@@ -75,7 +75,7 @@ class ClientWrapper:
                     print(msg)
 
                 if msg_type != 'stream':
-                    print('IOPUB - Type: %s' % msg_type)
+                    #print('IOPUB - Type: %s' % msg_type)
                     continue
 
                 outputs.append(msg['content'])

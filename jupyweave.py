@@ -35,17 +35,17 @@ class JuPyWeave:
         self.__processors = Processor.create_processors(self.__filenames, self.__settings)
 
         for i, processor in enumerate(self.__processors):
-            proc_str = str.format('Processing file {0}/{1} [{2}]:', i + 1, len(self.__processors), processor.get_filename())
+            proc_str = str.format('\nProcessing file {0}/{1} [{2}]:', i + 1, len(self.__processors), processor.get_filename())
             print(proc_str)
 
             try:
                 processor.process()
             except FileNotFoundError as e:
-                print('\tError: File %s not found' % e.filename)
+                print('\n\n\tError: File %s not found' % e.filename)
             except (ProcessingError, InvalidLanguageNameError) as e:
-                print('\tError: %s' % e)
+                print('\n\n\tError: %s' % e)
             except Exception as e:
-                print('\tError: %s' % e)
+                print('\n\n\tError: %s' % e)
 
         print()
 

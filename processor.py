@@ -21,6 +21,9 @@ class Processor:
         self.__engine = KernelEngine(self.__settings)
         self.__results = ResultManager()
 
+        self.__current_snippet_number = 0
+        self.__number_of_snippets = 0
+
     @staticmethod
     def create_processors(filenames, settings):
         """Creates processors for documents"""
@@ -35,6 +38,9 @@ class Processor:
         """Processes single document"""
         with io.open(self.__document_file_name, 'r', encoding='utf8') as f:
             data = f.read()
+
+        self.__current_snippet_number = 0
+        self.__number_of_snippets = len(re.findall(self.__pattern.entry(), data))
 
         data = re.sub(self.__pattern.entry(), self.__process_entry, data)
 
@@ -81,13 +87,22 @@ class Processor:
         return language
 
     def __process_entry(self, entry):
+        self.__current_snippet_number += 1
+        print(str.format('\tProcessing snippet {0}/{1}...', self.__current_snippet_number, self.__number_of_snippets), end=' ', flush=True)
+
+        result = None
+
         if entry.group(GroupName.CODE_SNIPPET) is not None:
-            return self.__process_code_sippet(entry.group(GroupName.CODE), entry.group(GroupName.CODE_SETTINGS))
+            result = self.__process_code_sippet(entry.group(GroupName.CODE), entry.group(GroupName.CODE_SETTINGS))
 
         if entry.group(GroupName.OUTPUT_SNIPPET) is not None:
-            return self.__process_output(entry.group(GroupName.OUTPUT_SETTINGS))
+            result = self.__process_output(entry.group(GroupName.OUTPUT_SETTINGS))
 
-        raise InvalidSnippetError()
+        if result is None:
+            raise InvalidSnippetError()
+
+        print('[OK]')
+        return result
 
     def __process_code_sippet(self, code, settings):
         language = self.__pattern.language(settings)
