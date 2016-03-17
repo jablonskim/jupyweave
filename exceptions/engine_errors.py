@@ -1,5 +1,6 @@
 
 class InvalidLanguageNameError(Exception):
+    """Invalid language used in snippet"""
 
     def __init__(self, name, available):
         self.name = name

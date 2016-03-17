@@ -44,16 +44,22 @@ class RequiredSettingNotFoundError(ProcessingError):
         super(RequiredSettingNotFoundError, self).__init__('Required snippet setting for \'%s\' configuration not found' % name)
 
 
-class ToManySettingOccurencesError(Exception):
-    # TODO
-    pass
+class ToManySettingOccurencesError(ProcessingError):
+    """To many same setting occurences in snippet"""
+
+    def __init__(self, name):
+        super(ToManySettingOccurencesError, self).__init__('To many occurences of \'%s\' setting in snippet' % name)
 
 
-class InvalidBoolValueError(Exception):
-    # TODO
-    pass
+class InvalidBoolValueError(ProcessingError):
+    """Invalid boolean variable value"""
+
+    def __init__(self, value):
+        super(InvalidBoolValueError, self).__init__('Invalid value of boolean variable in snippet settings: %s' % value)
 
 
-class ResultNotFoundError(Exception):
-    # TODO
-    pass
+class ResultNotFoundError(ProcessingError):
+    """Invalid result id"""
+
+    def __init__(self, rid):
+        super(ResultNotFoundError, self).__init__('No result with ID \'%s\'' % rid)

@@ -17,4 +17,4 @@ class ResultManager:
         try:
             return self.__results[result_id]
         except KeyError:
-            raise ResultNotFoundError()
+            raise ResultNotFoundError(result_id)
