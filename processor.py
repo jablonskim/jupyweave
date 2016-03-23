@@ -128,10 +128,10 @@ class Processor:
         if snippet_id is not None:
             self.__results.store(snippet_id, result)
 
-        if is_echo is not None:
+        if is_echo:
             output = code
 
-        if is_output is not None:
+        if is_output:
             if len(output) > 0:
                 output += '\n'
             output += result
