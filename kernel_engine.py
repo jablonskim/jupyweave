@@ -29,10 +29,10 @@ class KernelEngine:
         """Safe kernels shutdown"""
         self.__manager.shutdown_all()
 
-    def execute(self, language, code, context=None, timeout=None):
+    def execute(self, language, code, context=None, timeout=None, allow_errors=False):
         """Executes code in specified language within specified context"""
         client = self.__get_client(language, context)
-        return client.execute(code, timeout)
+        return client.execute(code, timeout, allow_errors)
 
     def __kernel_name_by_language(self, language):
         try:

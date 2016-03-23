@@ -16,3 +16,4 @@ class GroupName:
     CONTEXT = R'ctx'
     ID = R'id'
     TIMEOUT = R'tout'
+    ALLOW_ERROR = R'err'

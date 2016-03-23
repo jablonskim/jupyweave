@@ -19,7 +19,7 @@ class ClientWrapper:
             self.__client.stop_channels()
             raise KernelClientStartingError(language)
 
-    def execute(self, code, execution_timeout=None):
+    def execute(self, code, execution_timeout=None, allow_errors=False):
         """Executes code, returns results"""
         timeout = execution_timeout if execution_timeout is not None else self.__execution_timeout
         request_id = self.__client.execute(code, allow_stdin=False)
@@ -40,22 +40,16 @@ class ClientWrapper:
                 status = msg['content']['status']
 
                 # Go to next step if status OK
-                if status == 'ok':
+                if status in ['ok', 'error']:
                     break
 
-                if status == 'error':
-                    # TODO: ?
-                    print('SHELL - ERROR!')
-                    print(msg)
-                    break
-                else:
-                    # TODO: ?
-                    print('SHELL - ABORT!')
-                    break
+                # TODO: ?
+                print('SHELL - ABORT!')
+
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        output = ResultsProcessor()
+        output = ResultsProcessor(allow_errors)
 
         # Processing IOPUB messages
         try:
@@ -73,8 +67,9 @@ class ClientWrapper:
                     break
 
                 if msg_type == 'error':
-                    # TODO: ?
-                    print(msg)
+                    content = msg['content']
+                    output.process_error(content['ename'], content['evalue'], content['traceback'])
+                    continue
 
                 if msg_type == 'stream':
                     output.process_stream(msg['content']['text'], msg['content']['name'])
@@ -87,7 +82,7 @@ class ClientWrapper:
                     continue
 
                 # TODO: remove
-                print('IOPUB - Type: %s' % msg_type)
+                #print('IOPUB - Type: %s' % msg_type)
 
         except Empty:
             raise ExecutionTimeoutError(code)
