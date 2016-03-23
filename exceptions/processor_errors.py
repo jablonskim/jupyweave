@@ -20,8 +20,8 @@ class ExecutionTimeoutError(ProcessingError):
     """Class represents timeout during executing code"""
 
     def __init__(self, code):
-        code = code.replace('\n', '\n\t\t')
-        super(ExecutionTimeoutError, self).__init__('Timeout while executing code snippet: \n\t\t%s' % code)
+        code = code.replace('\n', '\n\t')
+        super(ExecutionTimeoutError, self).__init__('Timeout while executing code snippet: \n\t%s' % code)
 
 
 class TimeoutValueError(ProcessingError):
@@ -63,3 +63,10 @@ class ResultNotFoundError(ProcessingError):
 
     def __init__(self, rid):
         super(ResultNotFoundError, self).__init__('No result with ID \'%s\'' % rid)
+
+
+class SnippetRuntimeError(ProcessingError):
+    """Exception raised from snippet code"""
+
+    def __init__(self, error):
+        super(SnippetRuntimeError, self).__init__('Exception during execution of code snippet\n%s' % error)

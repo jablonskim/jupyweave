@@ -41,11 +41,11 @@ class JuPyWeave:
             try:
                 processor.process()
             except FileNotFoundError as e:
-                print('\n\n\tError: File %s not found' % e.filename)
+                print(JuPyWeave.__add_indentation('\n\nError: File %s not found' % e.filename))
             except (ProcessingError, InvalidLanguageNameError) as e:
-                print('\n\n\tError: %s' % e)
+                print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
             except Exception as e:
-                print('\n\n\tError: %s' % e)
+                print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
 
         print()
 
@@ -57,6 +57,10 @@ class JuPyWeave:
     def __usage(self):
         print('Usage: %s [--config=filename] file1 [file2 ...]' % self.__arguments[0])
         exit()
+
+    @staticmethod
+    def __add_indentation(string):
+        return ''.join([str.format('\t{0}\n', line) for line in string.splitlines()])
 
     def __parse_args(self):
         args = self.__arguments[1:]
