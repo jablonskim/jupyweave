@@ -1,5 +1,6 @@
 from queue import Empty
 from exceptions.processor_errors import KernelClientStartingError, ExecutionTimeoutError
+from results_processor import ResultsProcessor
 
 
 class ClientWrapper:
@@ -23,48 +24,48 @@ class ClientWrapper:
         timeout = execution_timeout if execution_timeout is not None else self.__execution_timeout
         request_id = self.__client.execute(code, allow_stdin=False)
 
+        # Processing SHELL messages
         try:
             while True:
                 msg = self.__client.get_shell_msg(timeout=timeout)
+
+                # Ignore 'Execute requests'
                 if msg['msg_type'] != 'execute_reply':
-                    # TODO: ?
-                    #print('SHELL - Type %s' % msg['msg_type'])
                     continue
 
+                # Ignore answers to other messages
                 if msg['parent_header']['msg_id'] != request_id:
-                    # TODO: ?
-                    #print('SHELL - Invalid parent ID')
                     continue
 
                 status = msg['content']['status']
 
+                # Go to next step if status OK
                 if status == 'ok':
-                    #print('SHELL - OK!')
-                    # TODO: ?
                     break
-                elif status == 'error':
+
+                if status == 'error':
                     # TODO: ?
-                    #print('SHELL - ERROR!')
+                    print('SHELL - ERROR!')
                     print(msg)
                     break
                 else:
                     # TODO: ?
-                    #print('SHELL - ABORT!')
+                    print('SHELL - ABORT!')
                     break
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        outputs = []
+        output = ResultsProcessor()
 
+        # Processing IOPUB messages
         try:
             while True:
                 msg = self.__client.get_iopub_msg(timeout=timeout)
                 msg_type = msg['msg_type']
                 parent_id = msg['parent_header']['msg_id']
 
+                # Ignore answers to other requests
                 if parent_id != request_id:
-                    # TODO: ?
-                    #print('IOPUB - Unknown parent ID')
                     continue
 
                 # End of calculations
@@ -72,17 +73,23 @@ class ClientWrapper:
                     break
 
                 if msg_type == 'error':
+                    # TODO: ?
                     print(msg)
 
-                if msg_type != 'stream':
-                    #print('IOPUB - Type: %s' % msg_type)
+                if msg_type == 'stream':
+                    output.process_stream(msg['content']['text'], msg['content']['name'])
                     continue
 
-                outputs.append(msg['content'])
+                if msg_type in ['display_data', 'execute_result']:
+                    data = msg['content']['data']
+                    for key, value in data.items():
+                        output.process_data(key, value)
+                    continue
+
+                # TODO: remove
+                print('IOPUB - Type: %s' % msg_type)
+
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        # TODO: stderr/stdout
-        output = ''.join([x['text'] for x in outputs])
-
-        return output
+        return output.get_result()
