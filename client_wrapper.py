@@ -19,7 +19,7 @@ class ClientWrapper:
             self.__client.stop_channels()
             raise KernelClientStartingError(language)
 
-    def execute(self, code, execution_timeout=None, allow_errors=False):
+    def execute(self, code, output_types, execution_timeout=None, allow_errors=False):
         """Executes code, returns results"""
         timeout = execution_timeout if execution_timeout is not None else self.__execution_timeout
         request_id = self.__client.execute(code, allow_stdin=False)
@@ -49,7 +49,7 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        output = ResultsProcessor(allow_errors)
+        output = ResultsProcessor(allow_errors, output_types)
 
         # Processing IOPUB messages
         try:

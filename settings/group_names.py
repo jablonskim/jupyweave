@@ -17,3 +17,4 @@ class GroupName:
     ID = R'id'
     TIMEOUT = R'tout'
     ALLOW_ERROR = R'err'
+    OUTPUT_TYPE = R'out_type'

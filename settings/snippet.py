@@ -45,9 +45,10 @@ class Snippet:
         id_regex = self.create_setting_regex(data, 'snippet_id', GroupName.ID)
         timeout_regex = self.create_setting_regex(data, 'timeout', GroupName.TIMEOUT)
         error_regex = self.create_setting_regex(data, 'error', GroupName.ALLOW_ERROR)
+        output_type_regex = self.create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
 
         self.__regex_patterns = Pattern(entry_regex, language_regex, echo_regex, output_regex, context_regex, id_regex,
-                                        timeout_regex, error_regex)
+                                        timeout_regex, error_regex, output_type_regex)
 
     def pattern(self):
         """Returns patterns"""

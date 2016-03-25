@@ -7,18 +7,20 @@ class ResultsProcessor:
     ANSI_ESCAPE_SEQ_RE = r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]'
     ESCAPE_RE = re.compile(ANSI_ESCAPE_SEQ_RE)
 
-    def __init__(self, allow_errors):
+    def __init__(self, allow_errors, output_types):
         self.__allow_errors = allow_errors
+        self.__output_types = output_types
 
         self.__result = ''
 
     def process_stream(self, text, stream_type):
+        print(stream_type)
         # TODO: stderr/stdout
         self.__result += text
 
     def process_data(self, mime_type, data):
         # TODO
-        #print(mime_type)
+        print(mime_type)
         pass
 
     def process_error(self, name, value, traceback):

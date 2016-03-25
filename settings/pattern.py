@@ -1,12 +1,13 @@
 import re
 from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError, TimeoutValueError
 from settings.group_names import GroupName
+from settings.output_types import OutputTypes
 
 
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
-    def __init__(self, entry, language, echo, output, context, snippet_id, timeout, error):
+    def __init__(self, entry, language, echo, output, context, snippet_id, timeout, error, output_type):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
         self.__language = re.compile(language)
@@ -16,6 +17,7 @@ class Pattern:
         self.__id = re.compile(snippet_id)
         self.__timeout = re.compile(timeout)
         self.__error = re.compile(error)
+        self.__output_type = re.compile(output_type)
 
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
@@ -55,6 +57,10 @@ class Pattern:
     def error(self, string):
         """Extracts error information from string"""
         return Pattern.__convert_to_bool(Pattern.__extract_setting(string, self.__error, GroupName.ALLOW_ERROR))
+
+    def output_type(self, string):
+        """Extracts output types"""
+        return OutputTypes(Pattern.__extract_setting(string, self.__output_type, GroupName.OUTPUT_TYPE))
 
     @staticmethod
     def __extract_setting(string, regex, group_name):

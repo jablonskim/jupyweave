@@ -1,18 +1,13 @@
 ClientWrapper:
     - Co z stderr? Do dokumentu? Konfiguracja w opcjach snippetu?
-    - Co w przypadku wyjątku/błędu? Ma być w dokumencie? Czy na konsolę i niepowodzenie? Może konfiguracja?
     - Co w przypadku innych języków? Też wyjątek? Czy inaczej? Przetestować
-    - Co w przypadku złego id, typu wiadomości?
 
 Ogólne:
     - Testy
-    - Co w przypadku obrazka? (może inny typ wiadomości, przetestować)
     - Obsługa ctrl+c
     - Przejrzeć inne todos, i możliwe wyjątki
-    - Jak wyświetlać obrazki?
     - Czy display_data może mieć coś innego niż obrazki?
     - Dodać output_type do ustawień snippeta (stderr, stdout, image, result, all)
-    - Allow error do snippetu
     - Jak wyświetlać kod/wyniki? Definicja dodatkowych tagów? Osobno dla 'output'?
     - Zamiana nowych linii w wyniku? Czy <pre> ?
     - Komentarze
