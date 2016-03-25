@@ -24,6 +24,20 @@
     }
   },
 
+  "execution_results": {
+    "HTML": {
+      "image": "<img src=\"{SRC}\">",
+      "source": "<pre>{CODE}</pre>",
+      "result": "<p>{RES}</p>",
+
+      "patterns": {
+        "image": "{SRC}",
+        "source": "{CODE}",
+        "result": "{RES}"
+      }
+    }
+  },
+
   "code_snippets": {
     "default": {
       "begin": "<#{S}>",
