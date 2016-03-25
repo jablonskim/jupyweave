@@ -14,11 +14,13 @@ class ResultsProcessor:
         self.__result = ''
 
     def process_stream(self, text, stream_type):
-        print(stream_type)
-        # TODO: stderr/stdout
-        self.__result += text
+        if self.__output_types.is_enabled(stream_type):
+            self.__result += text
 
     def process_data(self, mime_type, data):
+        if not self.__output_types.is_enabled(mime_type):
+            return
+
         # TODO
         print(mime_type)
         pass
