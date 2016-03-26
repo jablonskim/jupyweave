@@ -20,8 +20,8 @@ class Settings:
             raise InvalidConfigurationError('Configuration file %s not found.' % config_file)
 
         try:
-            self.__markup_languages = self.__parse_markup_languages(data['markup_languages'])
-            self.__extensions = self.__parse_extensions(data['extensions'])
+            self.__markup_languages = Settings.__parse_markup_languages(data['markup_languages'])
+            self.__extensions = Settings.__parse_extensions(data['extensions'])
             self.__snippets = Snippets(data['code_snippets'])
             self.__timeouts = Timeouts(data['execution_timeouts'])
             self.__results_patterns = ResultsPatterns(data['execution_results'])
@@ -57,7 +57,8 @@ class Settings:
         """Returns results patterns"""
         return self.__results_patterns.patterns(language)
 
-    def __parse_markup_languages(self, markup_languages):
+    @staticmethod
+    def __parse_markup_languages(markup_languages):
         if type(markup_languages) != list:
             raise InvalidConfigurationError('Key \'markup_languages\' must be a list of strings')
 
@@ -67,7 +68,8 @@ class Settings:
 
         return markup_languages
 
-    def __parse_extensions(self, extensions):
+    @staticmethod
+    def __parse_extensions(extensions):
         if type(extensions) != dict:
             raise InvalidConfigurationError("Key 'extensions' must be a dictionary")
 
