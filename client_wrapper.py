@@ -6,10 +6,11 @@ from results_processor import ResultsProcessor
 class ClientWrapper:
     """Wrapper for Jupyter Client"""
 
-    def __init__(self, client, language, execution_timeout):
+    def __init__(self, client, language, execution_timeout, results_patterns):
         """Initializes and starts client"""
         self.__client = client
         self.__execution_timeout = execution_timeout
+        self.__results_patterns = results_patterns
 
         self.__client.start_channels()
 
@@ -49,7 +50,7 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        output = ResultsProcessor(allow_errors, output_types)
+        output = ResultsProcessor(allow_errors, output_types, self.__results_patterns)
 
         # Processing IOPUB messages
         try:

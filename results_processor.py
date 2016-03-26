@@ -7,9 +7,10 @@ class ResultsProcessor:
     ANSI_ESCAPE_SEQ_RE = r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]'
     ESCAPE_RE = re.compile(ANSI_ESCAPE_SEQ_RE)
 
-    def __init__(self, allow_errors, output_types):
+    def __init__(self, allow_errors, output_types, result_patterns):
         self.__allow_errors = allow_errors
         self.__output_types = output_types
+        self.__result_patterns = result_patterns
 
         self.__result = ''
 
@@ -21,9 +22,11 @@ class ResultsProcessor:
         if not self.__output_types.is_enabled(mime_type):
             return
 
-        # TODO
-        print(mime_type)
-        pass
+        if 'image' in mime_type:
+            self.__result += self.__result_patterns.image('test.png')
+
+        if 'text' in mime_type:
+            self.__result += data
 
     def process_error(self, name, value, traceback):
         result = ''
