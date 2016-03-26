@@ -8,11 +8,13 @@
   },
 
   "output": {
-    "filename": "{I_NAME}{I_EXT}_out{O_EXT}",
+    "results_base": "examples",
+    "filename": "{NAME}_out{EXT}",
+    "images_dir": "{NAME}_images",
+
     "patterns": {
-      "input_name": "{I_NAME}",
-      "input_extension": "{I_EXT}",
-      "output_extension": "{O_EXT}"
+      "name": "{NAME}",
+      "extension": "{EXT}"
     }
   },
 

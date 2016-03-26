@@ -1,4 +1,5 @@
 import re
+from base64 import b64decode
 from exceptions.processor_errors import SnippetRuntimeError
 
 
@@ -7,10 +8,11 @@ class ResultsProcessor:
     ANSI_ESCAPE_SEQ_RE = r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]'
     ESCAPE_RE = re.compile(ANSI_ESCAPE_SEQ_RE)
 
-    def __init__(self, allow_errors, output_types, result_patterns):
+    def __init__(self, allow_errors, output_types, result_patterns, output_manager):
         self.__allow_errors = allow_errors
         self.__output_types = output_types
         self.__result_patterns = result_patterns
+        self.__output_manager = output_manager
 
         self.__result = ''
 
@@ -23,7 +25,8 @@ class ResultsProcessor:
             return
 
         if 'image' in mime_type:
-            self.__result += self.__result_patterns.image('test.png')
+            filename = self.__process_image(data, mime_type)
+            self.__result += self.__result_patterns.image(filename)
 
         if 'text' in mime_type:
             self.__result += data
@@ -41,3 +44,9 @@ class ResultsProcessor:
 
     def get_result(self):
         return self.__result
+
+    def __process_image(self, image_data, mime_type):
+        extension = str.format('.{0}', mime_type.split('/')[1])
+        image_data = b64decode(image_data)
+
+        return self.__output_manager.save_image(image_data, extension)

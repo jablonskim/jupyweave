@@ -8,9 +8,10 @@ from exceptions.engine_errors import InvalidLanguageNameError
 class KernelEngine:
     """Manages kernels for one document"""
 
-    def __init__(self, settings, document_language):
+    def __init__(self, settings, document_language, output_manager):
         """Initializes available kernel names"""
         self.__settings = settings
+        self.__output_manager = output_manager
         self.__results_patterns = settings.result_pattern(document_language)
 
         spec_manager = KernelSpecManager()
@@ -48,7 +49,7 @@ class KernelEngine:
             manager = self.__client_managers[kernel_name]
         except KeyError:
             manager = KernelClientManager(kernel_name, language, self.__manager, self.__settings.timeout(language),
-                                          self.__results_patterns)
+                                          self.__results_patterns, self.__output_manager)
             self.__client_managers[kernel_name] = manager
 
         return manager.client(context)

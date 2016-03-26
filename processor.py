@@ -5,6 +5,7 @@ from os.path import splitext
 from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
 from kernel_engine import KernelEngine
 from result_manager import ResultManager
+from output_manager import OutputManager
 from settings.group_names import GroupName
 
 
@@ -18,7 +19,8 @@ class Processor:
 
         self.__language = self.__get_language_by_extension(self.__document_file_name)
         self.__pattern = self.__settings.pattern(self.__language)
-        self.__engine = KernelEngine(self.__settings, self.__language)
+        self.__output_manager = OutputManager(settings.output_settings(), self.__document_file_name)
+        self.__engine = KernelEngine(self.__settings, self.__language, self.__output_manager)
         self.__results = ResultManager()
 
         self.__current_snippet_number = 0
@@ -44,8 +46,7 @@ class Processor:
 
         data = re.sub(self.__pattern.entry(), self.__process_entry, data)
 
-        with open(self.__document_file_name + '_new.html', 'w', encoding='utf8') as f:
-            f.write(data)
+        self.__output_manager.save_document(data)
 
     def get_filename(self):
         """Returns processed file name"""

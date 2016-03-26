@@ -4,6 +4,7 @@ from exceptions.settings_errors import InvalidConfigurationError
 from settings.snippets import Snippets
 from settings.timeouts import Timeouts
 from settings.results_patterns import ResultsPatterns
+from settings.output_settings import OutputSettings
 
 
 class Settings:
@@ -25,6 +26,7 @@ class Settings:
             self.__snippets = Snippets(data['code_snippets'])
             self.__timeouts = Timeouts(data['execution_timeouts'])
             self.__results_patterns = ResultsPatterns(data['execution_results'])
+            self.__output_settings = OutputSettings(data['output'])
         except KeyError as e:
             raise InvalidConfigurationError('Required configuration key %s was not found' % e)
 
@@ -56,6 +58,10 @@ class Settings:
     def result_pattern(self, language):
         """Returns results patterns"""
         return self.__results_patterns.patterns(language)
+
+    def output_settings(self):
+        """Returns output settings"""
+        return self.__output_settings
 
     @staticmethod
     def __parse_markup_languages(markup_languages):
