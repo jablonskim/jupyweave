@@ -132,7 +132,8 @@ class Processor:
             self.__results.store(snippet_id, result)
 
         if is_echo:
-            output = code
+            wrapped_code = self.__settings.result_pattern(self.__language).source(code)
+            output = wrapped_code
 
         if is_output:
             if len(output) > 0:
