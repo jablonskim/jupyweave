@@ -3,6 +3,7 @@ import json
 from exceptions.settings_errors import InvalidConfigurationError
 from settings.snippets import Snippets
 from settings.timeouts import Timeouts
+from settings.results_patterns import ResultsPatterns
 
 
 class Settings:
@@ -23,6 +24,7 @@ class Settings:
             self.__extensions = self.__parse_extensions(data['extensions'])
             self.__snippets = Snippets(data['code_snippets'])
             self.__timeouts = Timeouts(data['execution_timeouts'])
+            self.__results_patterns = ResultsPatterns(data['execution_results'])
         except KeyError as e:
             raise InvalidConfigurationError('Required configuration key %s was not found' % e)
 
@@ -50,6 +52,10 @@ class Settings:
     def timeout(self, language):
         """Returns timeout for speciffic language (in seconds)"""
         return self.__timeouts.timeout(language) / 1000.0
+
+    def result_pattern(self, language):
+        """Returns results patterns"""
+        return self.__results_patterns.patterns(language)
 
     def __parse_markup_languages(self, markup_languages):
         if type(markup_languages) != list:

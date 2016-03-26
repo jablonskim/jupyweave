@@ -8,6 +8,7 @@ Ogólne:
     - Czy display_data może mieć coś innego niż obrazki?
     - Jak wyświetlać kod/wyniki? Definicja dodatkowych tagów? Osobno dla 'output'?
     - Zamiana nowych linii w wyniku? Czy <pre> ?
+    - Postprocesor?
     - Komentarze
 
 Refaktoryzacja:
