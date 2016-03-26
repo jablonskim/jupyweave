@@ -18,7 +18,7 @@ class Processor:
 
         self.__language = self.__get_language_by_extension(self.__document_file_name)
         self.__pattern = self.__settings.pattern(self.__language)
-        self.__engine = KernelEngine(self.__settings)
+        self.__engine = KernelEngine(self.__settings, self.__language)
         self.__results = ResultManager()
 
         self.__current_snippet_number = 0
