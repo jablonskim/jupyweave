@@ -1,17 +1,19 @@
 from queue import Empty
 from exceptions.processor_errors import KernelClientStartingError, ExecutionTimeoutError
 from results_processor import ResultsProcessor
+from postprocessing_manager import PostprocessingManager
 
 
 class ClientWrapper:
     """Wrapper for Jupyter Client"""
 
-    def __init__(self, client, language, execution_timeout, results_patterns, output_manager):
+    def __init__(self, client, language, document_language, execution_timeout, results_patterns, output_manager):
         """Initializes and starts client"""
         self.__client = client
         self.__execution_timeout = execution_timeout
         self.__results_patterns = results_patterns
         self.__output_manager = output_manager
+        self.__doc_lang = document_language
 
         self.__client.start_channels()
 
@@ -51,7 +53,8 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        output = ResultsProcessor(allow_errors, output_types, self.__results_patterns, self.__output_manager)
+        postprocessing_manager = PostprocessingManager(self.__doc_lang)
+        output = ResultsProcessor(allow_errors, output_types, self.__results_patterns, self.__output_manager, postprocessing_manager)
 
         # Processing IOPUB messages
         try:
@@ -89,4 +92,6 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        return output.get_result()
+        code = postprocessing_manager.source(code)
+
+        return code, output.get_result()

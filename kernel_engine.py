@@ -13,6 +13,7 @@ class KernelEngine:
         self.__settings = settings
         self.__output_manager = output_manager
         self.__results_patterns = settings.result_pattern(document_language)
+        self.__doc_lang = document_language
 
         spec_manager = KernelSpecManager()
         kernel_names = spec_manager.find_kernel_specs()
@@ -48,7 +49,8 @@ class KernelEngine:
         try:
             manager = self.__client_managers[kernel_name]
         except KeyError:
-            manager = KernelClientManager(kernel_name, language, self.__manager, self.__settings.timeout(language),
+            manager = KernelClientManager(kernel_name, language, self.__doc_lang, self.__manager,
+                                          self.__settings.timeout(language),
                                           self.__results_patterns, self.__output_manager)
             self.__client_managers[kernel_name] = manager
 

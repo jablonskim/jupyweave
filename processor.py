@@ -124,7 +124,7 @@ class Processor:
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        result = self.__engine.execute(language, code, context, output_type, timeout, allow_errors)
+        code, result = self.__engine.execute(language, code, context, output_type, timeout, allow_errors)
         result = self.__settings.result_pattern(self.__language).result(result)
 
         output = ''

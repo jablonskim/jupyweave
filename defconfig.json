@@ -28,7 +28,7 @@
 
   "execution_results": {
     "HTML": {
-      "image": "<img src=\"{SRC}\">",
+      "image": "<br /><img src=\"{SRC}\"><br />",
       "source": "<pre>{CODE}</pre>",
       "result": "<p>{RES}</p>",
 
