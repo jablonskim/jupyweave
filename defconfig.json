@@ -10,7 +10,7 @@
   "output": {
     "results_base": "examples",
     "filename": "{NAME}_out{EXT}",
-    "images_dir": "{NAME}_images",
+    "data_dir": "{NAME}_data",
 
     "patterns": {
       "name": "{NAME}",

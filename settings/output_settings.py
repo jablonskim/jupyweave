@@ -6,22 +6,22 @@ class OutputSettings:
     def __init__(self, settings_data):
         self.__results_base = settings_data['results_base']
         self.__filename = settings_data['filename']
-        self.__images_dir = settings_data['images_dir']
+        self.__data_dir = settings_data['data_dir']
 
         self.__name_pattern = settings_data['patterns']['name']
         self.__extension_pattern = settings_data['patterns']['extension']
 
-    def image_directory(self, input_path):
+    def data_directory(self, input_path):
         name, ext = OutputSettings.__extract_name_ext(input_path)
 
         base_dir = self.__replace_patterns(self.__results_base, name, ext)
-        img_dir = self.__replace_patterns(self.__images_dir, name, ext)
+        img_dir = self.__replace_patterns(self.__data_dir, name, ext)
 
         return join(base_dir, img_dir)
 
-    def image_dir_url(self, input_path):
+    def data_dir_url(self, input_path):
         name, ext = OutputSettings.__extract_name_ext(input_path)
-        return self.__replace_patterns(self.__images_dir, name, ext)
+        return self.__replace_patterns(self.__data_dir, name, ext)
 
     def output_filename(self, input_path):
         name, ext = OutputSettings.__extract_name_ext(input_path)
