@@ -26,20 +26,6 @@
     }
   },
 
-  "execution_results": {
-    "HTML": {
-      "image": "<br /><img src=\"{SRC}\"><br />",
-      "source": "<pre>{CODE}</pre>",
-      "result": "<p>{RES}</p>",
-
-      "patterns": {
-        "image": "{SRC}",
-        "source": "{CODE}",
-        "result": "{RES}"
-      }
-    }
-  },
-
   "code_snippets": {
     "default": {
       "begin": "<#{S}>",
