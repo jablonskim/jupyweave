@@ -1,8 +1,8 @@
 from jupyter_client import MultiKernelManager
 from jupyter_client.kernelspec import KernelSpecManager
 
-from kernel_client_manager import KernelClientManager
 from exceptions.engine_errors import InvalidLanguageNameError
+from core.kernel_client_manager import KernelClientManager
 
 
 class KernelEngine:

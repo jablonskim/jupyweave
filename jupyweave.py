@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 from sys import argv, exit
-from settings.settings import Settings
-from processor import Processor
-from exceptions.snippet_errors import SnippetSyntaxError
-from exceptions.settings_errors import InvalidConfigurationError
-from exceptions.processor_errors import ProcessingError
+
 from exceptions.engine_errors import InvalidLanguageNameError
+from exceptions.processor_errors import ProcessingError
+from exceptions.settings_errors import InvalidConfigurationError
+from exceptions.snippet_errors import SnippetSyntaxError
+from core.processor import Processor
+from settings.settings import Settings
 
 
 class JuPyWeave:

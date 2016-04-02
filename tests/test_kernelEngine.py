@@ -1,6 +1,7 @@
 from unittest import TestCase
-from kernel_engine import KernelEngine
+
 from exceptions.engine_errors import InvalidLanguageNameError
+from core.kernel_engine import KernelEngine
 
 
 class TestKernelEngine(TestCase):

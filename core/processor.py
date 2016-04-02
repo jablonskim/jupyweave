@@ -3,9 +3,9 @@ import re
 from os.path import splitext
 
 from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
-from kernel_engine import KernelEngine
-from result_manager import ResultManager
-from output_manager import OutputManager
+from core.kernel_engine import KernelEngine
+from core.output_manager import OutputManager
+from core.result_manager import ResultManager
 from settings.group_names import GroupName
 
 

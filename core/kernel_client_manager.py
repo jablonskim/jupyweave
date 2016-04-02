@@ -1,4 +1,4 @@
-from client_wrapper import ClientWrapper
+from core.client_wrapper import ClientWrapper
 
 
 class KernelClientManager:
