@@ -64,4 +64,7 @@ target/
 # PyCharm
 .idea/
 
+# Jupyter kernels connection files
+kernel-*.json
+
 examples/
