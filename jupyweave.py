@@ -6,7 +6,7 @@ from exceptions.engine_errors import InvalidLanguageNameError
 from exceptions.processor_errors import ProcessingError
 from exceptions.settings_errors import InvalidConfigurationError
 from exceptions.snippet_errors import SnippetSyntaxError
-from core.processor import Processor
+from core.document_processor import DocumentProcessor
 from settings.settings import Settings
 
 
@@ -19,7 +19,7 @@ class JuPyWeave:
         """Loads settings and filenames"""
         self.__arguments = args
         self.__config_file, self.__filenames = self.__parse_args()
-        self.__processors = []
+        self.__document_processors = []
 
         if len(self.__filenames) == 0:
             self.__usage()
@@ -33,10 +33,11 @@ class JuPyWeave:
 
     def process(self):
         """Processing documents"""
-        self.__processors = Processor.create_processors(self.__filenames, self.__settings)
+        self.__document_processors = DocumentProcessor.create_processors(self.__filenames, self.__settings)
 
-        for i, processor in enumerate(self.__processors):
-            proc_str = str.format('\nProcessing file {0}/{1} [{2}]:', i + 1, len(self.__processors), processor.get_filename())
+        for i, processor in enumerate(self.__document_processors):
+            proc_str = str.format('\nProcessing file {0}/{1} [{2}]:', i + 1, len(self.__document_processors),
+                                  processor.get_filename())
             print(proc_str)
 
             try:

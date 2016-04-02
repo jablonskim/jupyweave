@@ -9,7 +9,7 @@ from core.result_manager import ResultManager
 from settings.group_names import GroupName
 
 
-class Processor:
+class DocumentProcessor:
     """Document processor"""
 
     def __init__(self, filename, settings):
@@ -17,10 +17,10 @@ class Processor:
         self.__settings = settings
         self.__document_file_name = filename
 
-        self.__language = self.__get_language_by_extension(self.__document_file_name)
-        self.__pattern = self.__settings.pattern(self.__language)
+        self.__document_language = self.__get_language_by_extension(self.__document_file_name)
+        self.__pattern = self.__settings.pattern(self.__document_language)
         self.__output_manager = OutputManager(settings.output_settings(), self.__document_file_name)
-        self.__engine = KernelEngine(self.__settings, self.__language, self.__output_manager)
+        self.__engine = KernelEngine(self.__settings, self.__document_language, self.__output_manager)
         self.__results = ResultManager()
 
         self.__current_snippet_number = 0
@@ -32,7 +32,7 @@ class Processor:
         processors = []
 
         for doc in filenames:
-            processors.append(Processor(doc, settings))
+            processors.append(DocumentProcessor(doc, settings))
 
         return processors
 
@@ -125,7 +125,7 @@ class Processor:
             is_output = False if snippet_id is not None else True
 
         code, result = self.__engine.execute(language, code, context, output_type, timeout, allow_errors)
-        result = self.__settings.result_pattern(self.__language).result(result)
+        result = self.__settings.result_pattern(self.__document_language).result(result)
 
         output = ''
 
@@ -133,7 +133,7 @@ class Processor:
             self.__results.store(snippet_id, result)
 
         if is_echo:
-            wrapped_code = self.__settings.result_pattern(self.__language).source(code)
+            wrapped_code = self.__settings.result_pattern(self.__document_language).source(code)
             output = wrapped_code
 
         if is_output:
