@@ -1,7 +1,6 @@
 from queue import Empty
 
 from exceptions.processor_errors import KernelClientStartingError, ExecutionTimeoutError
-from core.postprocessing_manager import PostprocessingManager
 from core.results_processor import ResultsProcessor
 
 
