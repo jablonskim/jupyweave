@@ -1,9 +1,13 @@
 
 class Processor:
 
-    def __init__(self, output_manager, snippet_language):
+    def __init__(self, output_manager, executor, snippet_language):
         self.__output_manager = output_manager
+        self.__executor = executor
         self.language = snippet_language
+
+    def execute(self, code):
+        return self.__executor(code, self)
 
     def save_to_file(self, data, extension):
         return self.__output_manager.save_data(data, extension)
