@@ -24,7 +24,7 @@ class ResultsProcessor:
             return
 
         if 'image' in mime_type:
-            self.__result += self.__processing_manager.image(b64decode(data), mime_type.split('/')[1])
+            self.__result += self.__processing_manager.image(b64decode(data), mime_type)
 
         if 'text' in mime_type:
             self.__result += self.__processing_manager.text(data + '\n')

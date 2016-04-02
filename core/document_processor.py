@@ -126,7 +126,7 @@ class DocumentProcessor:
             is_output = False if snippet_id is not None else True
 
         # TODO: user processor name
-        processing_manager = ProcessingManager(self.__document_language, None)
+        processing_manager = ProcessingManager(self.__document_language, None, self.__output_manager)
 
         before_result = processing_manager.execute_before()
         result = self.__engine.execute(language, code, context, processing_manager, output_type, timeout, allow_errors)

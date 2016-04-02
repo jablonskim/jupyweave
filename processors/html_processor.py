@@ -15,3 +15,7 @@ class Processor(BaseProcessor):
 
     def result(self, result):
         return '<p>' + result + '</p>'
+
+    def image(self, data, mime_type):
+        url = super(Processor, self).image(data, mime_type)
+        return '<br /><img src="%s"><br />\n' % url
