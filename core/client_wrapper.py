@@ -8,12 +8,10 @@ from core.results_processor import ResultsProcessor
 class ClientWrapper:
     """Wrapper for Jupyter Client"""
 
-    def __init__(self, client, language, document_language, execution_timeout, results_patterns, output_manager):
+    def __init__(self, client, language, document_language, execution_timeout):
         """Initializes and starts client"""
         self.__client = client
         self.__execution_timeout = execution_timeout
-        self.__results_patterns = results_patterns
-        self.__output_manager = output_manager
         self.__doc_lang = document_language
 
         self.__client.start_channels()
@@ -24,7 +22,7 @@ class ClientWrapper:
             self.__client.stop_channels()
             raise KernelClientStartingError(language)
 
-    def execute(self, code, output_types, execution_timeout=None, allow_errors=False):
+    def execute(self, code, processing_manager, output_types, execution_timeout=None, allow_errors=False):
         """Executes code, returns results"""
         timeout = execution_timeout if execution_timeout is not None else self.__execution_timeout
         request_id = self.__client.execute(code, allow_stdin=False)
@@ -54,8 +52,7 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        postprocessing_manager = PostprocessingManager(self.__doc_lang)
-        output = ResultsProcessor(allow_errors, output_types, self.__results_patterns, self.__output_manager, postprocessing_manager)
+        output = ResultsProcessor(allow_errors, output_types, processing_manager)
 
         # Processing IOPUB messages
         try:
@@ -93,6 +90,4 @@ class ClientWrapper:
         except Empty:
             raise ExecutionTimeoutError(code)
 
-        code = postprocessing_manager.source(code)
-
-        return code, output.get_result()
+        return output.get_result()

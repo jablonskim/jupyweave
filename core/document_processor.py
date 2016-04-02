@@ -6,6 +6,7 @@ from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotF
 from core.kernel_engine import KernelEngine
 from core.output_manager import OutputManager
 from core.result_manager import ResultManager
+from core.processing_manager import ProcessingManager
 from settings.group_names import GroupName
 
 
@@ -20,7 +21,7 @@ class DocumentProcessor:
         self.__document_language = self.__get_language_by_extension(self.__document_file_name)
         self.__pattern = self.__settings.pattern(self.__document_language)
         self.__output_manager = OutputManager(settings.output_settings(), self.__document_file_name)
-        self.__engine = KernelEngine(self.__settings, self.__document_language, self.__output_manager)
+        self.__engine = KernelEngine(self.__settings, self.__document_language)
         self.__results = ResultManager()
 
         self.__current_snippet_number = 0
@@ -105,27 +106,35 @@ class DocumentProcessor:
         print('[OK]')
         return result
 
-    def __process_code_sippet(self, code, settings):
-        language = self.__pattern.language(settings)
+    def __process_code_sippet(self, code, snippet_settings):
+        language = self.__pattern.language(snippet_settings)
         if language is None:
             raise RequiredSettingNotFoundError('language')
 
-        is_echo = self.__pattern.echo(settings)
+        is_echo = self.__pattern.echo(snippet_settings)
         if is_echo is None:
             is_echo = True
 
-        is_output = self.__pattern.output(settings)
-        context = self.__pattern.context(settings)
-        snippet_id = self.__pattern.id(settings)
-        timeout = self.__pattern.timeout(settings)
-        allow_errors = self.__pattern.error(settings)
-        output_type = self.__pattern.output_type(settings)
+        is_output = self.__pattern.output(snippet_settings)
+        context = self.__pattern.context(snippet_settings)
+        snippet_id = self.__pattern.id(snippet_settings)
+        timeout = self.__pattern.timeout(snippet_settings)
+        allow_errors = self.__pattern.error(snippet_settings)
+        output_type = self.__pattern.output_type(snippet_settings)
 
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        code, result = self.__engine.execute(language, code, context, output_type, timeout, allow_errors)
-        result = self.__settings.result_pattern(self.__document_language).result(result)
+        processing_manager = ProcessingManager()
+
+        before_result = processing_manager.execute_before()
+        result = self.__engine.execute(language, code, context, processing_manager, output_type, timeout, allow_errors)
+        after_result = processing_manager.execute_after()
+
+        #result = self.__settings.result_pattern(self.__document_language).result(result)
+
+        if snippet_id is not None or is_output:
+            result = processing_manager.result(before_result + result + after_result)
 
         output = ''
 
@@ -133,8 +142,10 @@ class DocumentProcessor:
             self.__results.store(snippet_id, result)
 
         if is_echo:
-            wrapped_code = self.__settings.result_pattern(self.__document_language).source(code)
-            output = wrapped_code
+            # TODO: remove?
+            #wrapped_code = self.__settings.result_pattern(self.__document_language).source(code)
+            #output = wrapped_code
+            output = processing_manager.code(code)
 
         if is_output:
             if len(output) > 0:
