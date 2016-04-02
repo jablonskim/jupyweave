@@ -2,10 +2,10 @@
 class Processor:
 
     def begin(self):
-        pass
+        return ''
 
     def end(self):
-        pass
+        return ''
 
     def source(self, code):
         return code
@@ -15,3 +15,6 @@ class Processor:
 
     def image(self, data):
         return ''
+
+    def result(self, result):
+        return result

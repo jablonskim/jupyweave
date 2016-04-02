@@ -19,19 +19,20 @@ class ProcessingManager:
                 self.__processor = getattr(module, 'Processor')()
 
     def code(self, code):
-        return code
+        return self.__processor.source(code)
 
     def text(self, text):
-        return text
+        return self.__processor.text(text)
 
     def image(self, data, type):
+        # TODO
         return ''
 
     def result(self, text):
-        return text
+        return self.__processor.result(text)
 
     def execute_before(self):
-        return ''
+        return self.__processor.begin()
 
     def execute_after(self):
-        return ''
+        return self.__processor.end()
