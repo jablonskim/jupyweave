@@ -41,7 +41,8 @@
         "snippet_id": "id={I}",
         "timeout": "timeout={T}",
         "error": "allow_error={R}",
-        "output_type": "output_type={OT}"
+        "output_type": "output_type={OT}",
+        "processor": "processor={P}"
       },
 
       "patterns": {
@@ -53,7 +54,8 @@
         "snippet_id": "{I}",
         "timeout": "{T}",
         "error": "{R}",
-        "output_type": "{OT}"
+        "output_type": "{OT}",
+        "processor": "{P}"
       }
     },
 
@@ -70,7 +72,8 @@
         "snippet_id": "id=\"{I}\"",
         "timeout": "timeout=\"{T}\"",
         "error": "allow_error=\"{R}\"",
-        "output_type": "output_type=\"{OT}\""
+        "output_type": "output_type=\"{OT}\"",
+        "processor": "processor=\"{P}\""
       },
 
       "patterns": {
@@ -82,7 +85,8 @@
         "snippet_id": "{I}",
         "timeout": "{T}",
         "error": "{R}",
-        "output_type": "{OT}"
+        "output_type": "{OT}",
+        "processor": "{P}"
       }
     }
   }

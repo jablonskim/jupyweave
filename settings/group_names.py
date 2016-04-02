@@ -18,3 +18,4 @@ class GroupName:
     TIMEOUT = R'tout'
     ALLOW_ERROR = R'err'
     OUTPUT_TYPE = R'out_type'
+    PROCESSOR = R'proc'

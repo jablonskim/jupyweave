@@ -7,7 +7,7 @@ from settings.output_types import OutputTypes
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
-    def __init__(self, entry, language, echo, output, context, snippet_id, timeout, error, output_type):
+    def __init__(self, entry, language, echo, output, context, snippet_id, timeout, error, output_type, processor):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
         self.__language = re.compile(language)
@@ -18,6 +18,7 @@ class Pattern:
         self.__timeout = re.compile(timeout)
         self.__error = re.compile(error)
         self.__output_type = re.compile(output_type)
+        self.__processor = re.compile(processor)
 
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
@@ -61,6 +62,10 @@ class Pattern:
     def output_type(self, string):
         """Extracts output types"""
         return OutputTypes(Pattern.__extract_setting(string, self.__output_type, GroupName.OUTPUT_TYPE))
+
+    def processor(self, string):
+        """Extracts user defined processor name"""
+        return Pattern.__extract_setting(string, self.__processor, GroupName.PROCESSOR)
 
     @staticmethod
     def __extract_setting(string, regex, group_name):

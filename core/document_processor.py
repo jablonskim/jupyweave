@@ -121,18 +121,16 @@ class DocumentProcessor:
         timeout = self.__pattern.timeout(snippet_settings)
         allow_errors = self.__pattern.error(snippet_settings)
         output_type = self.__pattern.output_type(snippet_settings)
+        processor = self.__pattern.processor(snippet_settings)
 
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
-        # TODO: user processor name
-        processing_manager = ProcessingManager(self.__document_language, None, self.__output_manager)
+        processing_manager = ProcessingManager(self.__document_language, language, processor, self.__output_manager)
 
         before_result = processing_manager.execute_before()
         result = self.__engine.execute(language, code, context, processing_manager, output_type, timeout, allow_errors)
         after_result = processing_manager.execute_after()
-
-        #result = self.__settings.result_pattern(self.__document_language).result(result)
 
         if snippet_id is not None or is_output:
             result = processing_manager.result(before_result + result + after_result)
@@ -143,9 +141,6 @@ class DocumentProcessor:
             self.__results.store(snippet_id, result)
 
         if is_echo:
-            # TODO: remove?
-            #wrapped_code = self.__settings.result_pattern(self.__document_language).source(code)
-            #output = wrapped_code
             output = processing_manager.code(code)
 
         if is_output:
