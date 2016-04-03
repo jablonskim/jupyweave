@@ -1,9 +1,10 @@
 
 class Processor:
 
-    def __init__(self, output_manager, executor, snippet_language):
+    def __init__(self, output_manager, executor, snippet_language, snippet_settings):
         self.__output_manager = output_manager
         self.__executor = executor
+        self.settings = snippet_settings
         self.language = snippet_language
 
     def execute(self, code):

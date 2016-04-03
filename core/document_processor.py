@@ -127,7 +127,8 @@ class DocumentProcessor:
             is_output = False if snippet_id is not None else True
 
         executor = lambda code, manager: self.__engine.execute(language, code, context, manager, output_type, None, False)
-        processing_manager = ProcessingManager(self.__document_language, language, processor, self.__output_manager, executor)
+        processing_manager = ProcessingManager(self.__document_language, language, snippet_settings,
+                                               processor, self.__output_manager, executor)
 
         before_result = processing_manager.execute_before()
         result = self.__engine.execute(language, code, context, processing_manager, output_type, timeout, allow_errors)
