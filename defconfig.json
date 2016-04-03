@@ -43,7 +43,8 @@
         "timeout": "timeout={T}",
         "error": "allow_error={R}",
         "output_type": "output_type={OT}",
-        "processor": "processor={P}"
+        "processor": "processor={P}",
+        "echo_lines": "lines={EL}"
       },
 
       "patterns": {
@@ -56,7 +57,8 @@
         "timeout": "{T}",
         "error": "{R}",
         "output_type": "{OT}",
-        "processor": "{P}"
+        "processor": "{P}",
+        "echo_lines": "{EL}"
       }
     },
 
@@ -75,7 +77,8 @@
         "timeout": "timeout=\"{T}\"",
         "error": "allow_error=\"{R}\"",
         "output_type": "output_type=\"{OT}\"",
-        "processor": "processor=\"{P}\""
+        "processor": "processor=\"{P}\"",
+        "echo_lines": "lines=\"{EL}\""
       },
 
       "patterns": {
@@ -88,7 +91,8 @@
         "timeout": "{T}",
         "error": "{R}",
         "output_type": "{OT}",
-        "processor": "{P}"
+        "processor": "{P}",
+        "echo_lines": "{EL}"
       }
     }
   }

@@ -52,10 +52,11 @@ class Snippet:
         error_regex = self.create_setting_regex(data, 'error', GroupName.ALLOW_ERROR)
         output_type_regex = self.create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
         processor_regex = self.create_setting_regex(data, 'processor', GroupName.PROCESSOR)
+        echo_lines_regex = self.create_setting_regex(data, 'echo_lines', GroupName.ECHO_LINES)
 
         self.__regex_patterns = Pattern(entry_regex, default_settings_regex, language_regex, echo_regex, output_regex,
                                         context_regex, id_regex, timeout_regex, error_regex,
-                                        output_type_regex, processor_regex)
+                                        output_type_regex, processor_regex, echo_lines_regex)
 
     def pattern(self):
         """Returns patterns"""

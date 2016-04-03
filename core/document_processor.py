@@ -37,6 +37,7 @@ class DocumentProcessor:
         self.__default_error = False
         self.__default_output_type = None
         self.__default_processor = None
+        self.__default_echo_lines = None
 
     @staticmethod
     def create_processors(filenames, settings):
@@ -144,6 +145,10 @@ class DocumentProcessor:
         if processor is not None:
             self.__default_processor = processor
 
+        echo_lines = self.__pattern.echo_lines(settings_string)
+        if echo_lines is not None:
+            self.__default_echo_lines = echo_lines
+
         return ''
 
     def __process_entry(self, entry):
@@ -203,6 +208,10 @@ class DocumentProcessor:
         if processor is None:
             processor = self.__default_processor
 
+        echo_lines = self.__pattern.echo_lines(snippet_settings)
+        if echo_lines is None:
+            echo_lines = self.__default_echo_lines
+
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
@@ -223,7 +232,8 @@ class DocumentProcessor:
             self.__results.store(snippet_id, result)
 
         if is_echo:
-            output = processing_manager.code(code)
+            code = code.strip('\n')
+            output = processing_manager.code(self.apply_echo_lines(echo_lines, code))
 
         if is_output:
             if len(output) > 0:
@@ -231,6 +241,19 @@ class DocumentProcessor:
             output += result
 
         return output
+
+    def apply_echo_lines(self, echo_lines, code):
+        if echo_lines is None:
+            return code
+
+        code_lines = code.split('\n')
+        final_lines = []
+
+        for lineno in echo_lines:
+            if 0 < lineno <= len(code_lines):
+                final_lines.append(code_lines[lineno - 1])
+
+        return '\n'.join(final_lines)
 
     def __process_output(self, settings):
         snippet_id = self.__pattern.id(settings)

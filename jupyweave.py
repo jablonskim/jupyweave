@@ -48,6 +48,7 @@ class JuPyWeave:
                 print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
             except Exception as e:
                 print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
+                raise
 
         print()
 

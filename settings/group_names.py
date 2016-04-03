@@ -21,3 +21,4 @@ class GroupName:
     ALLOW_ERROR = R'err'
     OUTPUT_TYPE = R'out_type'
     PROCESSOR = R'proc'
+    ECHO_LINES = R'elns'

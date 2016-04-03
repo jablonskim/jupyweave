@@ -7,7 +7,8 @@ from settings.output_types import OutputTypes
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
-    def __init__(self, entry, default_settings, language, echo, output, context, snippet_id, timeout, error, output_type, processor):
+    def __init__(self, entry, default_settings, language, echo, output, context, snippet_id, timeout, error,
+                 output_type, processor, echo_lines):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
         self.__default_settings = re.compile(default_settings)
@@ -20,6 +21,7 @@ class Pattern:
         self.__error = re.compile(error)
         self.__output_type = re.compile(output_type)
         self.__processor = re.compile(processor)
+        self.__echo_lines = re.compile(echo_lines)
 
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
@@ -71,6 +73,24 @@ class Pattern:
     def processor(self, string):
         """Extracts user defined processor name"""
         return Pattern.__extract_setting(string, self.__processor, GroupName.PROCESSOR)
+
+    def echo_lines(self, string):
+        """Extracts numbers of lines of source code to display. Returns list of lines"""
+        lines = []
+        lines_str = Pattern.__extract_setting(string, self.__echo_lines, GroupName.ECHO_LINES)
+        if lines_str is None:
+            return None
+
+        lines_ranges = lines_str.split(',')
+        for r in lines_ranges:
+            r = r.strip()
+            if '-' in r:
+                rx = r.split('-')
+                lines.extend(range(int(rx[0].strip()), int(rx[1].strip()) + 1))
+            else:
+                lines.append(int(r))
+
+        return lines
 
     @staticmethod
     def __extract_setting(string, regex, group_name):
