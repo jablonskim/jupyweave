@@ -16,14 +16,16 @@ class Snippet:
     PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE)
     PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE_SETTINGS)
     PATTERN_OUTPUT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.OUTPUT_SETTINGS)
+    PATTERN_DEFAULT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.DEFAULT_SETTINGS)
 
     PATTERN_SETTING = R'(?P<{0}>(?:.|\s)*?)'
 
     def __init__(self, data):
         """Creates snippet pattern"""
-        begin_pattern = Snippet.__create_begin_pattern(data)        # Pattern for snippet beginning tag
-        end_pattern = Snippet.__create_end_pattern(data)            # Pattern for snippet ending tag
-        output_pattern = Snippet.__create_output_pattern(data)      # Pattern for output snippet
+        begin_pattern = Snippet.__create_begin_pattern(data)                        # Pattern for snippet beginning tag
+        end_pattern = Snippet.__create_end_pattern(data)                            # Pattern for snippet ending tag
+        output_pattern = Snippet.__create_output_pattern(data)                      # Pattern for output snippet
+        default_settings_pattern = Snippet.__create_default_settings_pattern(data)  # Pattern for default snippets settings
 
         # Pattern for full code snippet
         code_snippet = str.format(R'{0}{1}{2}', begin_pattern, Snippet.PATTERN_CODE_SNIPPET, end_pattern)
@@ -37,6 +39,9 @@ class Snippet:
         # Pattern for full entry (code or output snippet)
         entry_regex = str.format(R'(?:{0})|(?:{1})', code_snippet, output_snippet)
 
+        # Pattern for default snippets settings entry
+        default_settings_regex = str.format(R'(?P<{0}>{1})', GroupName.DEFAULT_SETTINGS_SNIPPET, default_settings_pattern)
+
         # Patterns for snippets settings
         language_regex = self.create_setting_regex(data, 'language', GroupName.LANGUAGE)
         echo_regex = self.create_setting_regex(data, 'echo', GroupName.ECHO)
@@ -48,8 +53,9 @@ class Snippet:
         output_type_regex = self.create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
         processor_regex = self.create_setting_regex(data, 'processor', GroupName.PROCESSOR)
 
-        self.__regex_patterns = Pattern(entry_regex, language_regex, echo_regex, output_regex, context_regex, id_regex,
-                                        timeout_regex, error_regex, output_type_regex, processor_regex)
+        self.__regex_patterns = Pattern(entry_regex, default_settings_regex, language_regex, echo_regex, output_regex,
+                                        context_regex, id_regex, timeout_regex, error_regex,
+                                        output_type_regex, processor_regex)
 
     def pattern(self):
         """Returns patterns"""
@@ -111,5 +117,21 @@ class Snippet:
 
         snippet_pattern = re.escape(data['output'])
         snippet_pattern = re.sub(settings_pattern, Snippet.PATTERN_OUTPUT_SETTINGS, snippet_pattern, 1)
+
+        return snippet_pattern
+
+    @staticmethod
+    def __create_default_settings_pattern(data):
+        """Creates pattern for default snippets settings"""
+        patterns = data['patterns']
+        settings_pattern = patterns['settings']
+
+        if settings_pattern not in data['default_settings']:
+            raise SettingSnippetSyntaxError('default_settings', settings_pattern)
+
+        settings_pattern = re.escape(re.escape(settings_pattern))
+
+        snippet_pattern = re.escape(data['default_settings'])
+        snippet_pattern = re.sub(settings_pattern, Snippet.PATTERN_DEFAULT_SETTINGS, snippet_pattern, 1)
 
         return snippet_pattern

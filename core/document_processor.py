@@ -2,7 +2,8 @@ import io
 import re
 from os.path import splitext
 
-from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError
+from exceptions.processor_errors import InvalidSnippetError, RequiredSettingNotFoundError, \
+    ToManyDefaultSettingsOccurencesError, IllagalSettingOccurenceError
 from core.kernel_engine import KernelEngine
 from core.output_manager import OutputManager
 from core.result_manager import ResultManager
@@ -26,6 +27,16 @@ class DocumentProcessor:
 
         self.__current_snippet_number = 0
         self.__number_of_snippets = 0
+        self.__has_default_snippets_settings = False
+
+        self.__default_language = None
+        self.__default_echo = True
+        self.__default_output = None
+        self.__default_context = None
+        self.__default_timeout = None
+        self.__default_error = False
+        self.__default_output_type = None
+        self.__default_processor = None
 
     @staticmethod
     def create_processors(filenames, settings):
@@ -45,6 +56,7 @@ class DocumentProcessor:
         self.__current_snippet_number = 0
         self.__number_of_snippets = len(re.findall(self.__pattern.entry(), data))
 
+        data = re.sub(self.__pattern.default_settings(), self.__process_default_snippet_settings, data)
         data = re.sub(self.__pattern.entry(), self.__process_entry, data)
 
         self.__output_manager.save_document(data)
@@ -88,6 +100,52 @@ class DocumentProcessor:
 
         return language
 
+    def __process_default_snippet_settings(self, entry):
+        if self.__has_default_snippets_settings:
+            raise ToManyDefaultSettingsOccurencesError()
+
+        self.__has_default_snippets_settings = True
+
+        settings_string = entry.group(GroupName.DEFAULT_SETTINGS)
+
+        snippet_id = self.__pattern.id(settings_string)
+        if snippet_id is not None:
+            raise IllagalSettingOccurenceError('snippet_id')
+
+        language = self.__pattern.language(settings_string)
+        if language is not None:
+            self.__default_language = language
+
+        is_echo = self.__pattern.echo(settings_string)
+        if is_echo is not None:
+            self.__default_echo = is_echo
+
+        is_output = self.__pattern.output(settings_string)
+        if is_output is not None:
+            self.__default_output = is_output
+
+        context = self.__pattern.context(settings_string)
+        if context is not None:
+            self.__default_context = context
+
+        timeout = self.__pattern.timeout(settings_string)
+        if timeout is not None:
+            self.__default_timeout = timeout
+
+        allow_errors = self.__pattern.error(settings_string)
+        if allow_errors is not None:
+            self.__default_error = allow_errors
+
+        output_type = self.__pattern.output_type(settings_string)
+        if output_type is not None:
+            self.__default_output_type = output_type
+
+        processor = self.__pattern.processor(settings_string)
+        if processor is not None:
+            self.__default_processor = processor
+
+        return ''
+
     def __process_entry(self, entry):
         self.__current_snippet_number += 1
         print(str.format('\tProcessing snippet {0}/{1}...', self.__current_snippet_number, self.__number_of_snippets), end=' ', flush=True)
@@ -108,20 +166,42 @@ class DocumentProcessor:
 
     def __process_code_sippet(self, code, snippet_settings):
         language = self.__pattern.language(snippet_settings)
+
+        if language is None:
+            language = self.__default_language
+
         if language is None:
             raise RequiredSettingNotFoundError('language')
 
         is_echo = self.__pattern.echo(snippet_settings)
         if is_echo is None:
-            is_echo = True
+            is_echo = self.__default_echo
 
         is_output = self.__pattern.output(snippet_settings)
+        if is_output is None:
+            is_output = self.__default_output
+
         context = self.__pattern.context(snippet_settings)
+        if context is None:
+            context = self.__default_context
+
         snippet_id = self.__pattern.id(snippet_settings)
+
         timeout = self.__pattern.timeout(snippet_settings)
+        if timeout is None:
+            timeout = self.__default_timeout
+
         allow_errors = self.__pattern.error(snippet_settings)
+        if allow_errors is None:
+            allow_errors = self.__default_error
+
         output_type = self.__pattern.output_type(snippet_settings)
+        if output_type is None:
+            output_type = self.__default_output_type
+
         processor = self.__pattern.processor(snippet_settings)
+        if processor is None:
+            processor = self.__default_processor
 
         if is_output is None:
             is_output = False if snippet_id is not None else True

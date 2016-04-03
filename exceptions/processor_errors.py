@@ -51,6 +51,20 @@ class ToManySettingOccurencesError(ProcessingError):
         super(ToManySettingOccurencesError, self).__init__('To many occurences of \'%s\' setting in snippet' % name)
 
 
+class IllagalSettingOccurenceError(ProcessingError):
+    """Illegal setting in snippet"""
+
+    def __init__(self, name):
+        super(IllagalSettingOccurenceError, self).__init__('Illegal setting \'%s\' in default settings definition' % name)
+
+
+class ToManyDefaultSettingsOccurencesError(ProcessingError):
+    """To many default snippet settings entries"""
+
+    def __init__(self):
+        super(ToManyDefaultSettingsOccurencesError, self).__init__('To many occurences of default snippets settings definitions')
+
+
 class InvalidBoolValueError(ProcessingError):
     """Invalid boolean variable value"""
 

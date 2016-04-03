@@ -4,11 +4,13 @@ class GroupName:
 
     OUTPUT_SNIPPET = R'snippet_output'
     CODE_SNIPPET = R'snippet_code'
+    DEFAULT_SETTINGS_SNIPPET = R'snippet_def_set'
 
     CODE = R'code'
 
     CODE_SETTINGS = R'code_settings'
     OUTPUT_SETTINGS = R'output_settings'
+    DEFAULT_SETTINGS = R'default_settings'
 
     LANGUAGE = R'lang'
     ECHO = R'echo'

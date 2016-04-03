@@ -7,9 +7,10 @@ from settings.output_types import OutputTypes
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
-    def __init__(self, entry, language, echo, output, context, snippet_id, timeout, error, output_type, processor):
+    def __init__(self, entry, default_settings, language, echo, output, context, snippet_id, timeout, error, output_type, processor):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
+        self.__default_settings = re.compile(default_settings)
         self.__language = re.compile(language)
         self.__echo = re.compile(echo)
         self.__output = re.compile(output)
@@ -23,6 +24,10 @@ class Pattern:
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
         return self.__entry
+
+    def default_settings(self):
+        """Returns regex for default snippets settings entry"""
+        return self.__default_settings
 
     def language(self, string):
         """Extracts language from setting string"""
