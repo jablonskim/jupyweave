@@ -75,11 +75,18 @@ class Pattern:
         return Pattern.__extract_setting(string, self.__processor, GroupName.PROCESSOR)
 
     def echo_lines(self, string):
-        """Extracts numbers of lines of source code to display. Returns list of lines"""
+        """Extracts numbers of lines of source code to display. Returns tuple of inversion flag and list of lines"""
         lines = []
+        invert = False
+
         lines_str = Pattern.__extract_setting(string, self.__echo_lines, GroupName.ECHO_LINES)
         if lines_str is None:
             return None
+
+        lines_str = lines_str.strip()
+        if lines_str.startswith('!'):
+            lines_str = lines_str.lstrip('!')
+            invert = True
 
         lines_ranges = lines_str.split(',')
         for r in lines_ranges:
@@ -90,7 +97,7 @@ class Pattern:
             else:
                 lines.append(int(r))
 
-        return lines
+        return invert, lines
 
     @staticmethod
     def __extract_setting(string, regex, group_name):

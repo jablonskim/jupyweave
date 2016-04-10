@@ -249,9 +249,13 @@ class DocumentProcessor:
         code_lines = code.split('\n')
         final_lines = []
 
-        for lineno in echo_lines:
-            if 0 < lineno <= len(code_lines):
-                final_lines.append(code_lines[lineno - 1])
+        for i, code_line in enumerate(code_lines):
+            visible = i + 1 in echo_lines[1]
+            if echo_lines[0]:
+                visible = not visible
+
+            if visible:
+                final_lines.append(code_line)
 
         return '\n'.join(final_lines)
 
