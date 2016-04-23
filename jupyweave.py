@@ -54,18 +54,22 @@ class JuPyWeave:
 
     @staticmethod
     def exit_error(error_msg):
+        """Prints error message and exits"""
         print(error_msg)
         exit()
 
     def __usage(self):
+        """Prints usage"""
         print('Usage: %s [--config=filename] file1 [file2 ...]' % self.__arguments[0])
         exit()
 
     @staticmethod
     def __add_indentation(string):
+        """Adds indentation in multiline string"""
         return ''.join([str.format('\t{0}\n', line) for line in string.splitlines()])
 
     def __parse_args(self):
+        """Parses arguments"""
         args = self.__arguments[1:]
         cfg_prefix = '--config='
         filenames = []

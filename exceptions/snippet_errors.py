@@ -1,5 +1,6 @@
 
 class SnippetSyntaxError(Exception):
+    """Base class for snippets syntax errors"""
 
     def __init__(self):
         self.language = None
@@ -9,6 +10,7 @@ class SnippetSyntaxError(Exception):
 
 
 class EndSnippetSyntaxError(SnippetSyntaxError):
+    """Ending snippet syntax error"""
 
     def __init__(self, illegal_pattern):
         self.pattern = illegal_pattern
@@ -19,6 +21,7 @@ class EndSnippetSyntaxError(SnippetSyntaxError):
 
 
 class BeginSnippetSyntaxError(SnippetSyntaxError):
+    """Beginning snippet syntax error"""
 
     def __init__(self, missing_pattern):
         self.pattern = missing_pattern
@@ -29,6 +32,7 @@ class BeginSnippetSyntaxError(SnippetSyntaxError):
 
 
 class OutputSnippetSyntaxError(SnippetSyntaxError):
+    """Outptu snippet syntax error"""
 
     def __init__(self, missing_pattern):
         self.pattern = missing_pattern
@@ -39,6 +43,7 @@ class OutputSnippetSyntaxError(SnippetSyntaxError):
 
 
 class SettingSnippetSyntaxError(SnippetSyntaxError):
+    """Snippet settings syntax error"""
 
     def __init__(self, name, missing_pattern):
         self.setting_name = name
