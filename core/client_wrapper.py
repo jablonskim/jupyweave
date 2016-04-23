@@ -83,9 +83,6 @@ class ClientWrapper:
                         output.process_data(key, value)
                     continue
 
-                # TODO: remove
-                #print('IOPUB - Type: %s' % msg_type)
-
         except Empty:
             raise ExecutionTimeoutError(code)
 

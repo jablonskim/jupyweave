@@ -2,16 +2,20 @@
 class GroupName:
     """Regular expressions groups names"""
 
+    # Snippets
     OUTPUT_SNIPPET = R'snippet_output'
     CODE_SNIPPET = R'snippet_code'
     DEFAULT_SETTINGS_SNIPPET = R'snippet_def_set'
 
+    # Code
     CODE = R'code'
 
+    # Settings groups
     CODE_SETTINGS = R'code_settings'
     OUTPUT_SETTINGS = R'output_settings'
     DEFAULT_SETTINGS = R'default_settings'
 
+    # Settings
     LANGUAGE = R'lang'
     ECHO = R'echo'
     OUTPUT = R'out'

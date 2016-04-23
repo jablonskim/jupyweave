@@ -59,6 +59,7 @@ class Settings:
 
     @staticmethod
     def __parse_markup_languages(markup_languages):
+        """Parses markup languages types"""
         if type(markup_languages) != list:
             raise InvalidConfigurationError('Key \'markup_languages\' must be a list of strings')
 
@@ -70,6 +71,7 @@ class Settings:
 
     @staticmethod
     def __parse_extensions(extensions):
+        """Parses extensions"""
         if type(extensions) != dict:
             raise InvalidConfigurationError("Key 'extensions' must be a dictionary")
 

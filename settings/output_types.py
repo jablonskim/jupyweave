@@ -3,17 +3,21 @@ import re
 
 
 class OutputTypes:
+    """Class representing visible output types"""
 
     class Types(Enum):
+        """Types"""
         Stdout = 1
         Stderr = 2
         Result = 3
         Image = 4
 
     def __init__(self, types_str):
+        """Initialization from string"""
         self.__types = self.__parse_types(types_str)
 
     def is_enabled(self, type_str):
+        """Checks if given type is visible"""
         type_str = type_str.lower()
 
         if type_str == 'stdout':
@@ -30,6 +34,7 @@ class OutputTypes:
 
     @staticmethod
     def __parse_types(types_str):
+        """Parses types"""
         if types_str is None:
             types_str = 'All'
 

@@ -24,6 +24,7 @@ class Snippets:
 
     @staticmethod
     def __create_snippet_for_language(lang, snippet_data):
+        """Creates Snippet for language. Sets language and rethrows exception in case od errors"""
         try:
             return Snippet(snippet_data)
         except SnippetSyntaxError as e:

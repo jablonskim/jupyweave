@@ -101,6 +101,7 @@ class Pattern:
 
     @staticmethod
     def __extract_setting(string, regex, group_name):
+        """Extracts setting with given regex and group name from string"""
         items = re.finditer(regex, string)
         items = [item for item in items]
 
@@ -114,6 +115,7 @@ class Pattern:
 
     @staticmethod
     def __convert_to_bool(value):
+        """Converts value to bool, or raises exception"""
         if value is None:
             return None
 
