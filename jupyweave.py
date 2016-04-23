@@ -55,6 +55,7 @@ class JuPyWeave:
     @staticmethod
     def exit_error(error_msg):
         """Prints error message and exits"""
+        print()
         print(error_msg)
         exit()
 

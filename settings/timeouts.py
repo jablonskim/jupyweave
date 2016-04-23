@@ -1,4 +1,5 @@
 from exceptions.settings_errors import InvalidConfigurationError
+from settings.validator import Validator
 
 
 class Timeouts:
@@ -6,6 +7,8 @@ class Timeouts:
 
     def __init__(self, timeouts):
         """Parses timeouts"""
+        Validator.check_keys(timeouts, ['default', 'languages'], 'execution_timeouts')
+
         try:
             self.__default_timeout = timeouts['default']
             if type(self.__default_timeout) != int:
