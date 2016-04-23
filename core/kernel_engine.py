@@ -36,12 +36,14 @@ class KernelEngine:
         return client.execute(code, processing_manager, output_types, timeout, allow_errors)
 
     def __kernel_name_by_language(self, language):
+        """Gets kernel name by language"""
         try:
             return self.__available_kernel_names_mappings[language]
         except KeyError:
             raise InvalidLanguageNameError(language, self.__available_kernel_names_mappings.keys())
 
     def __get_client(self, language, context=None):
+        """Returns client dor speciffic language and context"""
         kernel_name = self.__kernel_name_by_language(language)
 
         try:

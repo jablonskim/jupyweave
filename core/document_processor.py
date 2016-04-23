@@ -67,6 +67,7 @@ class DocumentProcessor:
         return self.__document_file_name
 
     def __get_language_by_extension(self, name):
+        """Gets language by extension, based on configuration"""
         extension = splitext(name)[1].strip('.')
         languages = self.__settings.languages_by_extension(extension)
 
@@ -80,6 +81,7 @@ class DocumentProcessor:
 
     @staticmethod
     def __ask_for_language(filename, languages):
+        """Ask user for language for unknown extension"""
         print('Cannot determine document \'%s\' type by extension. Select correct type:' % filename)
 
         for i, lang in enumerate(languages):
@@ -102,6 +104,7 @@ class DocumentProcessor:
         return language
 
     def __process_default_snippet_settings(self, entry):
+        """Process default snippets settings"""
         if self.__has_default_snippets_settings:
             raise ToManyDefaultSettingsOccurencesError()
 
@@ -152,6 +155,7 @@ class DocumentProcessor:
         return ''
 
     def __process_entry(self, entry):
+        """Process code snippet or output snippet"""
         self.__current_snippet_number += 1
         print(str.format('\tProcessing snippet {0}/{1}...', self.__current_snippet_number, self.__number_of_snippets), end=' ', flush=True)
 
@@ -170,6 +174,7 @@ class DocumentProcessor:
         return result
 
     def __process_code_sippet(self, code, snippet_settings):
+        """Process code snippet"""
         language = self.__pattern.language(snippet_settings)
 
         if language is None:
@@ -243,6 +248,7 @@ class DocumentProcessor:
         return output
 
     def apply_echo_lines(self, echo_lines, code):
+        """Removes hidden lines from code"""
         if echo_lines is None:
             return code
 
@@ -260,6 +266,7 @@ class DocumentProcessor:
         return '\n'.join(final_lines)
 
     def __process_output(self, settings):
+        """Processes output snippet"""
         snippet_id = self.__pattern.id(settings)
 
         if snippet_id is None:

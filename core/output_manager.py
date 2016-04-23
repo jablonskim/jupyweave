@@ -4,6 +4,7 @@ import uuid
 
 
 class OutputManager:
+    """Responsible for managing """
 
     def __init__(self, output_settings, input_filename):
         self.__data_dir = output_settings.data_directory(input_filename)
@@ -11,6 +12,7 @@ class OutputManager:
         self.__output_filename = output_settings.output_filename(input_filename)
 
     def save_data(self, data, extension):
+        """Saves data to file, using output settings for path building"""
         makedirs(self.__data_dir, exist_ok=True)
 
         filename = str.format('img_{0}{1}', str(uuid.uuid4()), extension)
@@ -23,6 +25,7 @@ class OutputManager:
         return file_url
 
     def save_document(self, data):
+        """Saves document to file"""
         makedirs(dirname(self.__output_filename), exist_ok=True)
 
         with open(self.__output_filename, 'w', encoding='utf8') as f:

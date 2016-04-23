@@ -33,7 +33,9 @@ class KernelClientManager:
             return self.__clients[context]
 
     def __kernel(self, context=None):
+        """Returns kernel for speciffic context"""
         return self.__manager.get_kernel(self.__default_uuid if context is None else self.__uuids[context])
 
     def __create_client(self, context=None):
+        """Creates client for speciffic context"""
         return ClientWrapper(self.__kernel(context).client(), self.__language, self.__doc_lang, self.__execution_timeout)
