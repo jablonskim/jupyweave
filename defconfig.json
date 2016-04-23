@@ -9,7 +9,7 @@
 
   "output": {
     "results_base": "examples/outputs/",
-    "filename": "{NAME}{EXT}",
+    "filename": "{NAME}.{EXT}",
     "data_dir": "{NAME}_{EXT}_data",
 
     "patterns": {

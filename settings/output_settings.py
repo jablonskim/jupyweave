@@ -40,7 +40,8 @@ class OutputSettings:
     def __extract_name_ext(input_path):
         """Extracts name and extension from path"""
         filename = basename(input_path)
-        return splitext(filename)
+        name, ext = splitext(filename)
+        return name, ext.lstrip('.')
 
     def __replace_patterns(self, path, name, ext):
         """Replaces patterns with name and extension"""
