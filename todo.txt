@@ -1,12 +1,4 @@
-ClientWrapper:
-    - Co w przypadku innych języków? Też wyjątek? Czy inaczej? Przetestować
-
-Ogólne:
-    - Testy
-    - Obsługa ctrl+c
-    - Przejrzeć inne todos, i możliwe wyjątki
-    - Czy display_data może mieć coś innego niż obrazki?
-    - Komentarze
-
-Refaktoryzacja:
-    - ClientWrapper
+- Testy
+- LaTeX
+- Markdown: błędy
+- SQL: shutdown?

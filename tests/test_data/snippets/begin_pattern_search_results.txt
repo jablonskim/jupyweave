@@ -1,6 +1,0 @@
-<snippet lang="python3" output="T" echo="False">
- lang="python3" output="T" echo="False"
-<snippet lang="python2"    output="F" context="TestCtx2"
-             id="test_id1">
- lang="python2"    output="F" context="TestCtx2"
-             id="test_id1"
