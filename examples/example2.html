@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<snippets_settings lang="Python 3" />
+<html>
+<body>
+
+    <p>This is a paragraph.</p>
+    <snippet output="T" timeout="20000" echo="True" output_type="All" processor="highlight" lines="6-11,13">
+%matplotlib inline
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+x = np.linspace(0, 3*np.pi, 500)
+plt.plot(x, np.sin(f(x)))
+plt.title('A simple chirp')
+print('before')
+plt.show()
+print('after')
+    </snippet>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <div></div>
+    <snippet lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1">
+for i in range(5):
+    print(i)
+
+j = 100
+j
+    </snippet>
+    <p>This is a paragraph.</p>
+    <p><output
+            id="test_id1" /></p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <b>ąłńżźćęóążź</b>
+    <snippet lang="SQL" lines="!1">
+        !sqlite:///:memory:;
+        CREATE TABLE test (id, aa, bb);
+        INSERT INTO test VALUES (1, 'test1', 'test2');
+        INSERT INTO test VALUES (2, 'test2', 'test2');
+        SELECT * FROM test;
+        SELECT 5;
+        DELETE FROM test WHERE id = 2;
+        SELECT * FROM test;
+    </snippet>
+
+</body>
+</html>

@@ -67,4 +67,4 @@ target/
 # Jupyter kernels connection files
 kernel-*.json
 
-examples/
+examples/outputs/

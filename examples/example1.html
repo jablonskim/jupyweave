@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <p>This is a paragraph.</p>
+    <snippet lang="Python 3" output="T" timeout="20000" echo="False">
+from time import sleep
+for i in range(7):
+    print(i * 10)
+    print(i + 10)
+    sleep(2)
+    </snippet>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <div></div>
+    <snippet lang="Python 3"    output="F" context="TestCtx2"
+             id="test_id1">
+for i in range(5):
+    print(i)
+    </snippet>
+    <p>This is a paragraph.</p>
+    <p><output
+            id="test_id1" /></p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <b>ąłńżźćęóążź</b>
+
+</body>
+</html>
