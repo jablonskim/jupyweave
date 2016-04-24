@@ -1,4 +1,5 @@
 from os.path import basename, splitext, join
+from settings.validator import Validator
 
 
 class OutputSettings:
@@ -6,6 +7,9 @@ class OutputSettings:
 
     def __init__(self, settings_data):
         """Initialization"""
+        Validator.check_keys(settings_data, ['results_base', 'filename', 'data_dir', 'patterns'], 'output')
+        Validator.check_keys(settings_data['patterns'], ['name', 'extension'], 'output -> patterns')
+
         self.__results_base = settings_data['results_base']
         self.__filename = settings_data['filename']
         self.__data_dir = settings_data['data_dir']
