@@ -32,7 +32,6 @@
       "end": "<@>",
       "output": "<${S}>",
       "default_settings": "<!!!{S}>",
-      "separators": [",", " "],
 
       "settings": {
         "language": "[{L}]",
@@ -65,8 +64,8 @@
     "HTML": {
       "begin": "<snippet{S}>",
       "end": "</snippet>",
-      "output": "<output{S} />",
-      "default_settings": "<snippets_settings{S} />",
+      "output": "<output{S}/>",
+      "default_settings": "<snippets_settings{S}/>",
 
       "settings": {
         "language": "lang=\"{L}\"",

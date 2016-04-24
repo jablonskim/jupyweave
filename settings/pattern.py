@@ -119,10 +119,10 @@ class Pattern:
         if value is None:
             return None
 
-        if value.lower() in ['t', 'true', '1', 'y', 'yes']:
+        if value.lower().strip() in ['t', 'true', '1', 'y', 'yes']:
             return True
 
-        if value.lower() in ['f', 'false', '0', 'n', 'no']:
+        if value.lower().strip() in ['f', 'false', '0', 'n', 'no']:
             return False
 
         raise InvalidBoolValueError(value)

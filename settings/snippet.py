@@ -8,20 +8,31 @@ from exceptions.snippet_errors import \
 
 from settings.pattern import Pattern
 from settings.group_names import GroupName
+from settings.validator import Validator
 
 
 class Snippet:
     """Code snippet settings"""
 
     PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE)
-    PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE_SETTINGS)
-    PATTERN_OUTPUT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.OUTPUT_SETTINGS)
-    PATTERN_DEFAULT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.DEFAULT_SETTINGS)
+    PATTERN_CODE_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.CODE_SETTINGS)
+    PATTERN_OUTPUT_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.OUTPUT_SETTINGS)
+    PATTERN_DEFAULT_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.DEFAULT_SETTINGS)
 
     PATTERN_SETTING = R'(?P<{0}>(?:.|\s)*?)'
 
     def __init__(self, data):
         """Creates snippet pattern"""
+        Validator.check_keys(data, ['begin', 'end', 'output', 'default_settings', 'settings', 'patterns'],
+                             'code_snippets -> language')
+
+        valid_keys = ['language', 'echo', 'output', 'context', 'snippet_id', 'timeout', 'error', 'output_type',
+                      'processor', 'echo_lines']
+        Validator.check_keys(data['settings'], valid_keys, 'code_snippets -> language -> settings')
+
+        valid_keys.append('settings')
+        Validator.check_keys(data['patterns'], valid_keys, 'code_snippets -> language -> patterns')
+
         begin_pattern = Snippet.__create_begin_pattern(data)                        # Pattern for snippet beginning tag
         end_pattern = Snippet.__create_end_pattern(data)                            # Pattern for snippet ending tag
         output_pattern = Snippet.__create_output_pattern(data)                      # Pattern for output snippet
@@ -43,16 +54,16 @@ class Snippet:
         default_settings_regex = str.format(R'(?P<{0}>{1})', GroupName.DEFAULT_SETTINGS_SNIPPET, default_settings_pattern)
 
         # Patterns for snippets settings
-        language_regex = self.create_setting_regex(data, 'language', GroupName.LANGUAGE)
-        echo_regex = self.create_setting_regex(data, 'echo', GroupName.ECHO)
-        output_regex = self.create_setting_regex(data, 'output', GroupName.OUTPUT)
-        context_regex = self.create_setting_regex(data, 'context', GroupName.CONTEXT)
-        id_regex = self.create_setting_regex(data, 'snippet_id', GroupName.ID)
-        timeout_regex = self.create_setting_regex(data, 'timeout', GroupName.TIMEOUT)
-        error_regex = self.create_setting_regex(data, 'error', GroupName.ALLOW_ERROR)
-        output_type_regex = self.create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
-        processor_regex = self.create_setting_regex(data, 'processor', GroupName.PROCESSOR)
-        echo_lines_regex = self.create_setting_regex(data, 'echo_lines', GroupName.ECHO_LINES)
+        language_regex = self.__create_setting_regex(data, 'language', GroupName.LANGUAGE)
+        echo_regex = self.__create_setting_regex(data, 'echo', GroupName.ECHO)
+        output_regex = self.__create_setting_regex(data, 'output', GroupName.OUTPUT)
+        context_regex = self.__create_setting_regex(data, 'context', GroupName.CONTEXT)
+        id_regex = self.__create_setting_regex(data, 'snippet_id', GroupName.ID)
+        timeout_regex = self.__create_setting_regex(data, 'timeout', GroupName.TIMEOUT)
+        error_regex = self.__create_setting_regex(data, 'error', GroupName.ALLOW_ERROR)
+        output_type_regex = self.__create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
+        processor_regex = self.__create_setting_regex(data, 'processor', GroupName.PROCESSOR)
+        echo_lines_regex = self.__create_setting_regex(data, 'echo_lines', GroupName.ECHO_LINES)
 
         self.__regex_patterns = Pattern(entry_regex, default_settings_regex, language_regex, echo_regex, output_regex,
                                         context_regex, id_regex, timeout_regex, error_regex,
@@ -63,7 +74,7 @@ class Snippet:
         return self.__regex_patterns
 
     @staticmethod
-    def create_setting_regex(data, name, group_name):
+    def __create_setting_regex(data, name, group_name):
         """Creates regex pattern for snippet setting name"""
         setting_pattern = data['patterns'][name]
         setting_regex = data['settings'][name]
@@ -76,6 +87,7 @@ class Snippet:
 
         setting_group = str.format(Snippet.PATTERN_SETTING, group_name)
         setting_regex = re.sub(setting_pattern, setting_group, setting_regex, 1)
+        setting_regex = str.format('(?<![a-zA-Z]){0}', setting_regex)
 
         return setting_regex
 
