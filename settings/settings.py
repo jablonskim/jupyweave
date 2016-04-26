@@ -4,6 +4,7 @@ from exceptions.settings_errors import InvalidConfigurationError
 from settings.snippets import Snippets
 from settings.timeouts import Timeouts
 from settings.output_settings import OutputSettings
+from settings.validator import Validator
 
 
 class Settings:
@@ -18,6 +19,8 @@ class Settings:
             raise InvalidConfigurationError('Invalid configuration format: %s' % e)
         except FileNotFoundError:
             raise InvalidConfigurationError('Configuration file %s not found.' % config_file)
+
+        Validator.check_keys(data, ['markup_languages', 'extensions', 'output', 'execution_timeouts', 'code_snippets'], 'Settings')
 
         try:
             self.__markup_languages = Settings.__parse_markup_languages(data['markup_languages'])
