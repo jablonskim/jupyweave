@@ -3,7 +3,7 @@ from copy import deepcopy
 from settings.snippet import Snippet
 from settings.group_names import GroupName
 from exceptions.settings_errors import InvalidConfigurationError
-from exceptions.processor_errors import InvalidBoolValueError
+from exceptions.processor_errors import InvalidBoolValueError, TimeoutValueError
 
 
 class TestSnippetPattern(TestCase):
@@ -384,7 +384,18 @@ j
 
     def test_context2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        self.assertEqual('TestCtx2', snippet.pattern().context(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().context(''' lang="Python 3"    output="F" qqcontext="TestCtx2" allow_error="F" processor="highlight"
+            id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().context(''' lang="Python 3"    output="F" contextqq="TestCtx2" allow_error="F" processor="highlight"
+            id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().context('''  output="F"  allow_error="F" processor="highlight"
+            id="test_id1"'''))
 
     def test_id1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
@@ -392,7 +403,17 @@ j
 
     def test_id2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        self.assertEqual('test_id1', snippet.pattern().id(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().id(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+            aid="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().id(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+            idw="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().id('''  output="F" context="TestCtx2" allow_error="F" processor="highlight"  '''))
 
     def test_timeout1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
@@ -400,7 +421,21 @@ j
 
     def test_timeout2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        self.assertEqual(2.5, snippet.pattern().timeout(''' lang="Python 3"    output="F" context="TestCtx2" timeout="2500" allow_error="F" processor="highlight"
+             id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().timeout(''' lang="Python 3"  aatimeout="2500"   output="F" context="TestCtx2" allow_error="F" processor="highlight"
+            aid="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().timeout(''' lang="Python 3"  timeoutaa="2500"  output="F" context="TestCtx2" allow_error="F" processor="highlight"
+            idw="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().timeout('''  output="F" context="TestCtx2" allow_error="F" processor="highlight"  '''))
+
+        with self.assertRaises(TimeoutValueError):
+            snippet.pattern().timeout(''' lang="Python 3"  timeout="invalid"  output="F" context="TestCtx2" allow_error="F" processor="highlight"
+            idw="test_id1"''')
 
     def test_error1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
@@ -443,7 +478,24 @@ j
 
     def test_output_type2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        self.assertTrue(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" output_type="Stdout, Image" processor="highlight"
+             id="test_id1"''').is_enabled('Stdout'))
+
+        self.assertTrue(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" output_type="Stdout, Image" processor="highlight"
+             id="test_id1"''').is_enabled('Image'))
+
+        self.assertFalse(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" output_type="Stdout, Image" processor="highlight"
+             id="test_id1"''').is_enabled('Stderr'))
+
+        self.assertFalse(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" output_type="Stdout, Image" processor="highlight"
+             id="test_id1"''').is_enabled('Text'))
+
+        self.assertTrue(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1"''').is_enabled('Stdout'))
+
+        self.assertTrue(snippet.pattern().output_type(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1"''').is_enabled('Image'))
 
     def test_processor1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
@@ -451,7 +503,18 @@ j
 
     def test_processor2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        self.assertEqual('highlight', snippet.pattern().processor(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processor="highlight"
+             id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().processor(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" qddprocessor="highlight"
+            id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().processor(''' lang="Python 3"    output="F" context="TestCtx2" allow_error="F" processorqq="highlight"
+            id="test_id1"'''))
+
+        self.assertEqual(None, snippet.pattern().processor('''  output="F" context="TestCtx2" allow_error="F"
+            id="test_id1"'''))
 
     def test_echo_lines1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
@@ -459,4 +522,24 @@ j
 
     def test_echo_lines2(self):
         snippet = Snippet(TestSnippetPattern.DATA2)
-        self.fail()
+
+        lines = snippet.pattern().echo_lines('echo_lines="5,6, 10"')
+        self.assertEqual(2, len(lines))
+        self.assertFalse(lines[0])
+        self.assertEqual(3, len(lines[1]))
+        self.assertEqual(6, lines[1][1])
+
+        lines = snippet.pattern().echo_lines('echo_lines="1, 5-15, 23"')
+        self.assertEqual(2, len(lines))
+        self.assertFalse(lines[0])
+        self.assertEqual(13, len(lines[1]))
+        self.assertEqual(7, lines[1][3])
+
+        lines = snippet.pattern().echo_lines('echo_lines="! 1, 5 - 15, 23"')
+        self.assertEqual(2, len(lines))
+        self.assertTrue(lines[0])
+        self.assertEqual(13, len(lines[1]))
+        self.assertEqual(7, lines[1][3])
+
+        with self.assertRaises(ValueError):
+            lines = snippet.pattern().echo_lines('echo_lines="! 1, 5 - 15, 23 aqqw"')
