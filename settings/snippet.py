@@ -15,11 +15,11 @@ class Snippet:
     """Code snippet settings"""
 
     PATTERN_CODE_SNIPPET = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE)
-    PATTERN_CODE_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.CODE_SETTINGS)
-    PATTERN_OUTPUT_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.OUTPUT_SETTINGS)
-    PATTERN_DEFAULT_SETTINGS = str.format(R'(?=[^a-zA-Z])(?P<{0}>(?:.|\s)*?)', GroupName.DEFAULT_SETTINGS)
+    PATTERN_CODE_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.CODE_SETTINGS)
+    PATTERN_OUTPUT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.OUTPUT_SETTINGS)
+    PATTERN_DEFAULT_SETTINGS = str.format(R'(?P<{0}>(?:.|\s)*?)', GroupName.DEFAULT_SETTINGS)
 
-    PATTERN_SETTING = R'(?P<{0}>(?:.|\s)*?)'
+    PATTERN_SETTING = R'(?P<{0}>(?:.|\s)*?)(?![a-zA-Z0-9_,\-!])'
 
     def __init__(self, data):
         """Creates snippet pattern"""

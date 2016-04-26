@@ -65,7 +65,7 @@
       "begin": "<snippet{S}>",
       "end": "</snippet>",
       "output": "<output{S}/>",
-      "default_settings": "<snippets_settings{S}/>",
+      "default_settings": "<default_settings{S}/>",
 
       "settings": {
         "language": "lang=\"{L}\"",
