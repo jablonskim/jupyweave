@@ -1,0 +1,49 @@
+\documentclass{article}
+
+\title{Test}
+\date{07-05-2016}
+\author{MJ}
+
+\usepackage{listings}
+\usepackage{graphicx}
+
+\default_settings{lang[Python 3]}
+
+\begin{document}
+	\maketitle
+	\pagenumbering{gobble}
+	\newpage
+	\pagenumbering{arabic}
+	
+	\section{Test 1}
+	Test, test.
+	
+	\subsection{Test test}
+	Test doc\\
+	\begin_code{echo[T], output[T], id[Test]}
+for i in range(10):
+    print(i)
+
+print('Test')
+    \end_code
+	Test, test, test\\
+	\begin_code{}
+%matplotlib inline
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+x = np.linspace(0, 3*np.pi, 500)
+plt.plot(x, np.sin(f(x)))
+plt.title('A simple chirp')
+print('before')
+plt.show()
+print('after')
+    \end_code
+	End
+	\snippet_output{id[Test]}
+	
+\end{document}

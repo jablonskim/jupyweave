@@ -115,7 +115,7 @@ class Snippet:
         if patterns['settings'] in data['end']:
             raise EndSnippetSyntaxError(patterns['settings'])
 
-        return re.escape(data['end'])
+        return re.escape(data['end']) + R'([ \t]*\n)?'
 
     @staticmethod
     def __create_output_pattern(data):
@@ -131,7 +131,7 @@ class Snippet:
         snippet_pattern = re.escape(data['output'])
         snippet_pattern = re.sub(settings_pattern, Snippet.PATTERN_OUTPUT_SETTINGS, snippet_pattern, 1)
 
-        return snippet_pattern
+        return snippet_pattern + R'([ \t]*\n)?'
 
     @staticmethod
     def __create_default_settings_pattern(data):

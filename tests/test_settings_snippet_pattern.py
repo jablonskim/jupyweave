@@ -95,6 +95,40 @@ Test `Test` Test
 
 """
 
+    EXAMPLE3 = """\documentclass{article}
+
+\title{Test}
+\date{07-05-2016}
+\author{MJ}
+\default_settings{lang[Python 3]}
+
+\begin{document}
+	\maketitle
+	\pagenumbering{gobble}
+	\newpage
+	\pagenumbering{arabic}
+
+	\section{Test 1}
+	Test, test.
+
+	\subsection{Test test}
+	Test doc\\
+
+	\begin_code{echo[T], output[T], id[Test]}
+    for i in range(10):
+        print(i)
+
+        print('Test')
+    \end_code
+
+	Test, test, test\\
+
+    \snippet_output{id[Test]}
+
+	End
+
+\end{document}"""
+
     DATA1 = {
         "begin": "<#{S}>",
         "end": "<@>",
@@ -160,6 +194,40 @@ Test `Test` Test
             "output_type": "{OT}",
             "processor": "{P}",
             "echo_lines": "{EL}"
+        }
+    }
+
+    DATA3 = {
+        "begin": "\begin_code{@S}",
+        "end": "\end_code",
+        "output": "\snippet_output{@S}",
+        "default_settings": "\default_settings{@S}",
+
+        "settings": {
+            "language": "lang[@L]",
+            "echo": "echo[@E]",
+            "output": "output[@O]",
+            "context": "context[@C]",
+            "snippet_id": "id[@I]",
+            "timeout": "timeout[@T]",
+            "error": "allow_error[@R]",
+            "output_type": "output_type[@OT]",
+            "processor": "processor[@P]",
+            "echo_lines": "lines[@EL]"
+        },
+
+        "patterns": {
+            "settings": "@S",
+            "language": "@L",
+            "echo": "@E",
+            "output": "@O",
+            "context": "@C",
+            "snippet_id": "@I",
+            "timeout": "@T",
+            "error": "@R",
+            "output_type": "@OT",
+            "processor": "@P",
+            "echo_lines": "@EL"
         }
     }
 
@@ -303,6 +371,41 @@ j
         settings = ''' lang="SQL" lines="!1"'''
 
         self.assertEqual(settings, entry.group(GroupName.CODE_SETTINGS))
+
+    def test_entry3(self):
+        snippet = Snippet(TestSnippetPattern.DATA3)
+
+        entry = snippet.pattern().entry()
+        entries = [x for x in entry.finditer(TestSnippetPattern.EXAMPLE3)]
+
+        self.assertEqual(2, len(entries))
+
+        entry = entries[0]
+        self.assertNotEqual(None, entry.group(GroupName.CODE_SNIPPET))
+        self.assertEqual(None, entry.group(GroupName.OUTPUT_SNIPPET))
+        self.assertNotEqual(None, entry.group(GroupName.CODE))
+
+        code = '''
+    for i in range(10):
+        print(i)
+
+        print('Test')
+    '''
+
+        self.assertEqual(code, entry.group(GroupName.CODE))
+
+        settings = '''echo[T], output[T], id[Test]'''
+
+        self.assertEqual(settings, entry.group(GroupName.CODE_SETTINGS))
+
+        entry = entries[1]
+        self.assertEqual(None, entry.group(GroupName.CODE_SNIPPET))
+        self.assertNotEqual(None, entry.group(GroupName.OUTPUT_SNIPPET))
+        self.assertEqual(None, entry.group(GroupName.CODE))
+
+        settings = '''id[Test]'''
+
+        self.assertEqual(settings, entry.group(GroupName.OUTPUT_SETTINGS))
 
     def test_default_settings1(self):
         snippet = Snippet(TestSnippetPattern.DATA1)
