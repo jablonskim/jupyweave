@@ -8,7 +8,7 @@ Testtesttest
 
 Te*s*t
 
-<#[Python 3] echo=T output=T>
+<#[Python 3] echo=T output=T id=Testid>
 for i in range(10):
     print(i)
 
@@ -42,3 +42,4 @@ print('after')
 
 Test `Test` Test
 
+<$id=Testid>
