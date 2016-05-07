@@ -60,6 +60,9 @@ class DocumentProcessor:
         data = re.sub(self.__pattern.default_settings(), self.__process_default_snippet_settings, data)
         data = re.sub(self.__pattern.entry(), self.__process_entry, data)
 
+        if self.__number_of_snippets == 0:
+            print('\tNo snippets found.')
+
         self.__output_manager.save_document(data)
 
     def get_filename(self):
