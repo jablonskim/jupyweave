@@ -50,5 +50,13 @@ j
         SELECT * FROM test;
     </snippet>
 
+    <p>No escape</p>
+    <table border="1">
+    <snippet processor="no_escape">
+for i in range(10):
+    print('<tr><td>%d</td><td>%d</td></tr>' % (i, i * i))
+    </snippet>
+    </table>
+
 </body>
 </html>
