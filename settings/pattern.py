@@ -91,8 +91,8 @@ class Pattern:
         lines_ranges = lines_str.split(',')
         for r in lines_ranges:
             r = r.strip()
-            if '-' in r:
-                rx = r.split('-')
+            rx = re.split(':|-', r)
+            if len(rx) == 2:
                 lines.extend(range(int(rx[0].strip()), int(rx[1].strip()) + 1))
             else:
                 lines.append(int(r))

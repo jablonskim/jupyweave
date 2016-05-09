@@ -14,7 +14,7 @@ class TestSnippetPattern(TestCase):
 <body>
 
     <p>This is a paragraph.</p>
-    <snippet output="T" timeout="20000" echo="True" output_type="All" processor="highlight" lines="6-11,13">
+    <snippet output="T" timeout="20000" echo="True" output_type="All" processor="highlight" lines="6:11,13">
 %matplotlib inline
 import matplotlib
 import numpy as np
@@ -316,7 +316,7 @@ print('after')
 
         self.assertEqual(code, entry.group(GroupName.CODE))
 
-        settings = ''' output="T" timeout="20000" echo="True" output_type="All" processor="highlight" lines="6-11,13"'''
+        settings = ''' output="T" timeout="20000" echo="True" output_type="All" processor="highlight" lines="6:11,13"'''
 
         self.assertEqual(settings, entry.group(GroupName.CODE_SETTINGS))
 
