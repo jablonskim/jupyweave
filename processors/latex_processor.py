@@ -19,7 +19,7 @@ class Processor(BaseProcessor):
         url = super(Processor, self).image(data, mime_type)
         url = url.replace('\\', '/')
         # TODO: pdf? label? caption? -> settings?
-        return '\\begin{figure}\\includegraphics[width=\\linewidth]{%s}\\end{figure}' % url
+        return '\\begin{figure}\n\\includegraphics[width=\\linewidth]{%s}\n\\end{figure}\n' % url
 
     def result(self, result):
         """Processing whole result"""

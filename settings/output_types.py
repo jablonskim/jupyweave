@@ -11,6 +11,7 @@ class OutputTypes:
         Stderr = 2
         Result = 3
         Image = 4
+        Pdf = 5
 
     def __init__(self, types_str):
         """Initialization from string"""
@@ -31,6 +32,9 @@ class OutputTypes:
 
         if 'image' in type_str:
             return OutputTypes.Types.Image in self.__types
+
+        if 'application/pdf' in type_str:
+            return OutputTypes.Types.Pdf in self.__types
 
     @staticmethod
     def __parse_types(types_str):
@@ -54,10 +58,14 @@ class OutputTypes:
         if 'image' in types_tokens:
             types.add(OutputTypes.Types.Image)
 
+        if 'pdf' in types_tokens:
+            types.add(OutputTypes.Types.Pdf)
+
         if 'all' in types_tokens:
             types.add(OutputTypes.Types.Stdout)
             types.add(OutputTypes.Types.Stderr)
             types.add(OutputTypes.Types.Result)
             types.add(OutputTypes.Types.Image)
+            types.add(OutputTypes.Types.Pdf)
 
         return types

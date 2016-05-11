@@ -6,6 +6,16 @@
 
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\lstset{
+	frame=shadowbox,
+	breaklines=true,
+	numbers=left,
+	commentstyle=\textit,
+	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+\lstset{language=Python}
 
 \default_settings{lang[Python 3]}
 
@@ -27,8 +37,7 @@ for i in range(10):
 print('Test')
     \end_code
 	Test, test, test\\
-	\begin_code{}
-%matplotlib inline
+	\begin_code{processor[python]}
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -39,6 +48,7 @@ def f(x):
 x = np.linspace(0, 3*np.pi, 500)
 plt.plot(x, np.sin(f(x)))
 plt.title('A simple chirp')
+# long comment, long comment, long comment, long comment, long comment, long comment, long comment, long comment, long comment, long comment, long comment, long comment
 print('before')
 plt.show()
 print('after')
