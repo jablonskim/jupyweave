@@ -1,0 +1,132 @@
+{
+  "markup_languages": ["HTML", "Markdown", "LaTeX"],
+
+  "extensions": {
+    "HTML": ["html", "htm"],
+    "Markdown": ["md", "markdown", "mdown", "mkdn", "mkd"],
+    "LaTeX": ["tex"]
+  },
+
+  "output": {
+    "results_base": "examples/outputs/",
+    "filename": "{NAME}.{EXT}",
+    "data_dir": "{NAME}_{EXT}_data",
+
+    "patterns": {
+      "name": "{NAME}",
+      "extension": "{EXT}"
+    }
+  },
+
+  "execution_timeouts": {
+    "default": 1000,
+
+    "languages": {
+      "Python 3": 2000
+    }
+  },
+
+  "code_snippets": {
+    "Markdown": {
+      "begin": "```{{S}}",
+      "end": "```",
+      "output": "[Out]:#({S})",
+      "default_settings": "[Def]:#({S})",
+
+      "settings": {
+        "language": "[{L}]",
+        "echo": "echo={E}",
+        "output": "output={O}",
+        "context": "context={C}",
+        "snippet_id": "id={I}",
+        "timeout": "timeout={T}",
+        "error": "allow_error={R}",
+        "output_type": "output_type={OT}",
+        "processor": "processor={P}",
+        "echo_lines": "lines={EL}"
+      },
+
+      "patterns": {
+        "settings": "{S}",
+        "language": "{L}",
+        "echo": "{E}",
+        "output": "{O}",
+        "context": "{C}",
+        "snippet_id": "{I}",
+        "timeout": "{T}",
+        "error": "{R}",
+        "output_type": "{OT}",
+        "processor": "{P}",
+        "echo_lines": "{EL}"
+      }
+    },
+
+    "LaTeX": {
+      "begin": "<<@S>>=",
+      "end": "@\n",
+      "output": "\\output{@S}",
+      "default_settings": "\\defsettings{@S}",
+
+      "settings": {
+        "language": "[@L]",
+        "echo": "echo=@E",
+        "output": "output=@O",
+        "context": "context=@C",
+        "snippet_id": "id=@I",
+        "timeout": "timeout=@T",
+        "error": "allow_error=@R",
+        "output_type": "output_type=@OT",
+        "processor": "processor=@P",
+        "echo_lines": "lines=@EL"
+      },
+
+      "patterns": {
+        "settings": "@S",
+        "language": "@L",
+        "echo": "@E",
+        "output": "@O",
+        "context": "@C",
+        "snippet_id": "@I",
+        "timeout": "@T",
+        "error": "@R",
+        "output_type": "@OT",
+        "processor": "@P",
+        "echo_lines": "@EL"
+      }
+    },
+
+    "HTML": {
+      "begin": "<!--begin.code{S}\n",
+      "end": "end.code-->",
+      "output": "<!--output.result{S}-->",
+      "default_settings": "<!--default.settings{S}-->",
+
+      "settings": {
+        "language": "lang=\"{L}\"",
+        "echo": "echo={E}",
+        "output": "output={O}",
+        "context": "context={C}",
+        "snippet_id": "id={I}",
+        "timeout": "timeout={T}",
+        "error": "allow_error={R}",
+        "output_type": "output_type={OT}",
+        "processor": "processor={P}",
+        "echo_lines": "lines={EL}"
+      },
+
+      "patterns": {
+        "settings": "{S}",
+        "language": "{L}",
+        "echo": "{E}",
+        "output": "{O}",
+        "context": "{C}",
+        "snippet_id": "{I}",
+        "timeout": "{T}",
+        "error": "{R}",
+        "output_type": "{OT}",
+        "processor": "{P}",
+        "echo_lines": "{EL}"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--default.settings lang="Python 3"-->
+<html>
+<body>
+
+    <p>This is a paragraph.</p>
+    <!--begin.code output=T timeout=20000 echo=True output_type=All processor=highlight lines=6-11,13
+%matplotlib inline
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+x = np.linspace(0, 3*np.pi, 500)
+plt.plot(x, np.sin(f(x)))
+plt.title('A simple chirp')
+print('before')
+plt.show()
+print('after') end.code-->
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <div></div>
+    <!--begin.code lang="Python 3"    output=F context=TestCtx2 allow_error=F processor=highlight id=test_id1
+for i in range(5):
+    print(i)
+
+j = 100
+j
+end.code-->
+    <p>This is a paragraph.</p>
+    <p><!--output.result id=test_id1--></p>
+    <p>This is a paragraph.</p>
+    <p>This is a paragraph.</p>
+    <b>ąłńżźćęóążź</b>
+    <!--begin.code lang="SQL" lines=!1
+        !sqlite:///:memory:;
+        CREATE TABLE test (id, aa, bb);
+        INSERT INTO test VALUES (1, 'test1', 'test2');
+        INSERT INTO test VALUES (2, 'test2', 'test2');
+        SELECT * FROM test;
+        SELECT 5;
+        DELETE FROM test WHERE id = 2;
+        SELECT * FROM test;
+    end.code-->
+
+    <p>No escape</p>
+    <table border="1">
+    <!--begin.code processor=no_escape
+for i in range(10):
+    print('<tr><td>%d</td><td>%d</td></tr>' % (i, i * i))
+    end.code-->
+    </table>
+
+</body>
+</html>
