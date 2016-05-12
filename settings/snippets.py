@@ -1,4 +1,5 @@
 from exceptions.snippet_errors import SnippetSyntaxError
+from exceptions.settings_errors import InvalidConfigurationError
 from settings.snippet import Snippet
 
 
@@ -7,7 +8,10 @@ class Snippets:
 
     def __init__(self, snippets):
         """Parses snippets settings"""
-        self.__default_snippet = Snippets.__create_snippet_for_language('default', snippets['default'])
+        try:
+            self.__default_snippet = Snippets.__create_snippet_for_language('default', snippets['default'])
+        except KeyError:
+            self.__default_snippet = None
 
         self.__languages = {}
 
@@ -20,7 +24,10 @@ class Snippets:
         try:
             return self.__languages[language].pattern()
         except KeyError:
-            return self.__default_snippet.pattern()
+            if self.__default_snippet is not None:
+                return self.__default_snippet.pattern()
+            else:
+                raise InvalidConfigurationError("Snippets for '%s' not found and no defaults defined." % language)
 
     @staticmethod
     def __create_snippet_for_language(lang, snippet_data):
