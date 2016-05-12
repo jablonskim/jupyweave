@@ -42,4 +42,10 @@ print('after')
 
 Test `Test` Test
 
+```{[R]}
+x <- c(2,3,7,9,12,35,22,11,41,24,32,12,42,32)
+x
+plot(x)
+```
+
 [Out]:#(id=Testid)
