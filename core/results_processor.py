@@ -27,15 +27,15 @@ class ResultsProcessor:
         if not self.__output_types.is_enabled(mime_type):
             return
 
-        if 'image' in mime_type or 'application/pdf' in mime_type:
+        if mime_type in ['application/pdf', 'image/png', 'image/gif', 'image/jpeg', 'image/tiff']:
             self.__result += self.__processing_manager.image(b64decode(data), mime_type)
             return
 
-        if 'text' in mime_type:
+        if mime_type == 'text/plain':
             self.__result += self.__processing_manager.text(data + '\n')
             return
 
-        raise ProcessingError('Not implemented result\'s mime type: %s' % mime_type)
+        # raise ProcessingError('Not implemented result\'s mime type: %s' % mime_type)
 
     def process_error(self, name, value, traceback):
         """Processes errors. Raises if errors not allowed in output"""
