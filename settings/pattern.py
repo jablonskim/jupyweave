@@ -111,7 +111,7 @@ class Pattern:
         if len(items) != 1:
             raise ToManySettingOccurencesError(group_name)
 
-        return items[0].group(group_name)
+        return items[0].group(group_name).strip(',')
 
     @staticmethod
     def __convert_to_bool(value):
