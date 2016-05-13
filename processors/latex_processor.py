@@ -44,8 +44,17 @@ class Processor(BaseProcessor):
                 align_begin = "\\begin{center}\n"
                 align_end = "\\end{center}\n"
 
-        return '\\begin{figure}\n%s\\includegraphics[%s%s]{%s}\n%s\\end{figure}\n' % \
-               (align_begin, width, height, url, align_end)
+        caption = self.extract_settings(R'img_caption\[((?:.|\s)*?)\]')
+        label = self.extract_settings(R'img_label\[((?:.|\s)*?)\]')
+
+        if caption != '':
+            caption = "\\caption{%s}\n" % caption
+
+        if label != '':
+            label = "\\label{%s}\n" % label
+
+        return '\\begin{figure}\n%s\\includegraphics[%s%s]{%s}\n%s%s%s\\end{figure}\n' % \
+               (align_begin, width, height, url, caption, label, align_end)
 
     def result(self, result):
         """Processing whole result"""
@@ -74,3 +83,11 @@ class Processor(BaseProcessor):
         regex = re.compile(
             '|'.join(re.escape(key) for key in sorted(conv.keys(), key=lambda item: - len(item))))
         return regex.sub(lambda match: conv[match.group()], text)
+
+    def extract_settings(self, regex):
+        match = re.search(regex, self.settings)
+
+        if match is None:
+            return ''
+
+        return match.group(1)
