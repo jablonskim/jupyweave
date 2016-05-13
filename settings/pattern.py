@@ -1,14 +1,16 @@
 import re
-from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError, TimeoutValueError
+from exceptions.processor_errors import ToManySettingOccurencesError, InvalidBoolValueError, \
+    TimeoutValueError, ProcessingError
 from settings.group_names import GroupName
 from settings.output_types import OutputTypes
+from settings.align_types import ImageAlignType
 
 
 class Pattern:
     """Regular expressions container. Extracts selected data from strings"""
 
     def __init__(self, entry, default_settings, language, echo, output, context, snippet_id, timeout, error,
-                 output_type, processor, echo_lines):
+                 output_type, processor, echo_lines, image_name, font_size, image_width, image_height, image_align):
         """Compiles & initializes regexes"""
         self.__entry = re.compile(entry)
         self.__default_settings = re.compile(default_settings)
@@ -22,6 +24,11 @@ class Pattern:
         self.__output_type = re.compile(output_type)
         self.__processor = re.compile(processor)
         self.__echo_lines = re.compile(echo_lines)
+        self.__font_size = re.compile(font_size)
+        self.__image_name = re.compile(image_name)
+        self.__image_width = re.compile(image_width)
+        self.__image_height = re.compile(image_height)
+        self.__image_align = re.compile(image_align)
 
     def entry(self):
         """Returns regex for full entry (code snippet or output snippet)"""
@@ -98,6 +105,40 @@ class Pattern:
                 lines.append(int(r))
 
         return invert, lines
+
+    def image_name(self, string):
+        """Extracts image file name"""
+        return Pattern.__extract_setting(string, self.__image_name, GroupName.IMAGE_NAME)
+
+    def image_width(self, string):
+        """Extracts image width"""
+        value = Pattern.__extract_setting(string, self.__image_width, GroupName.IMAGE_WIDTH)
+        return None if value is None else int(value)
+
+    def image_height(self, string):
+        """Extracts image height"""
+        value = Pattern.__extract_setting(string, self.__image_height, GroupName.IMAGE_HEIGHT)
+        return None if value is None else int(value)
+
+    def image_align(self, string):
+        """Extracts align"""
+        align_str = Pattern.__extract_setting(string, self.__image_align, GroupName.IMAGE_ALIGN)
+
+        if align_str is None:
+            return ImageAlignType.Default
+
+        align_str = align_str.strip().lower()
+
+        if align_str == 'center':
+            return ImageAlignType.Center
+
+        if align_str == 'left':
+            return ImageAlignType.Left
+
+        if align_str == 'right':
+            return ImageAlignType.Right
+
+        raise ProcessingError("Invalid align value")
 
     @staticmethod
     def __extract_setting(string, regex, group_name):

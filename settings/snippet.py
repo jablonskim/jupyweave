@@ -27,7 +27,7 @@ class Snippet:
                              'code_snippets -> language')
 
         valid_keys = ['language', 'echo', 'output', 'context', 'snippet_id', 'timeout', 'error', 'output_type',
-                      'processor', 'echo_lines']
+                      'processor', 'echo_lines', 'image_name', 'font_size', 'image_width', 'image_height', 'image_align']
         Validator.check_keys(data['settings'], valid_keys, 'code_snippets -> language -> settings')
 
         valid_keys.append('settings')
@@ -64,10 +64,16 @@ class Snippet:
         output_type_regex = self.__create_setting_regex(data, 'output_type', GroupName.OUTPUT_TYPE)
         processor_regex = self.__create_setting_regex(data, 'processor', GroupName.PROCESSOR)
         echo_lines_regex = self.__create_setting_regex(data, 'echo_lines', GroupName.ECHO_LINES)
+        image_name_regex = self.__create_setting_regex(data, 'image_name', GroupName.IMAGE_NAME)
+        font_size_regex = self.__create_setting_regex(data, 'font_size', GroupName.FONT_SIZE)
+        image_width_regex = self.__create_setting_regex(data, 'image_width', GroupName.IMAGE_WIDTH)
+        image_height_regex = self.__create_setting_regex(data, 'image_height', GroupName.IMAGE_HEIGHT)
+        image_align_regex = self.__create_setting_regex(data, 'image_align', GroupName.IMAGE_ALIGN)
 
         self.__regex_patterns = Pattern(entry_regex, default_settings_regex, language_regex, echo_regex, output_regex,
                                         context_regex, id_regex, timeout_regex, error_regex,
-                                        output_type_regex, processor_regex, echo_lines_regex)
+                                        output_type_regex, processor_regex, echo_lines_regex, image_name_regex,
+                                        font_size_regex, image_width_regex, image_height_regex, image_align_regex)
 
     def pattern(self):
         """Returns patterns"""

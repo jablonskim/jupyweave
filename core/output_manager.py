@@ -11,11 +11,15 @@ class OutputManager:
         self.__data_dir_url = output_settings.data_dir_url(input_filename)
         self.__output_filename = output_settings.output_filename(input_filename)
 
-    def save_data(self, data, extension):
+    def save_data(self, data, extension, filename=None):
         """Saves data to file, using output settings for path building"""
         makedirs(self.__data_dir, exist_ok=True)
 
-        filename = str.format('img_{0}{1}', str(uuid.uuid4()), extension)
+        if filename is None:
+            filename = str.format('img_{0}{1}', str(uuid.uuid4()), extension)
+        else:
+            filename = str.format('{0}{1}', filename, extension)
+
         file_path = join(self.__data_dir, filename)
         file_url = join(self.__data_dir_url, filename)
 

@@ -145,7 +145,12 @@ Test `Test` Test
             "error": "allow_error={R}",
             "output_type": "output_type={OT}",
             "processor": "processor={P}",
-            "echo_lines": "lines={EL}"
+            "echo_lines": "lines={EL}",
+            "image_name": "img_name={IN}",
+            "font_size": "font_size={FS}",
+            "image_width": "img_w={IW}",
+            "image_height": "img_h={IH}",
+            "image_align": "img_align={IA}"
         },
 
         "patterns": {
@@ -159,7 +164,12 @@ Test `Test` Test
             "error": "{R}",
             "output_type": "{OT}",
             "processor": "{P}",
-            "echo_lines": "{EL}"
+            "echo_lines": "{EL}",
+            "image_name": "{IN}",
+            "font_size": "{FS}",
+            "image_width": "{IW}",
+            "image_height": "{IH}",
+            "image_align": "{IA}"
         }
     }
 
@@ -179,7 +189,12 @@ Test `Test` Test
             "error": "allow_error=\"{R}\"",
             "output_type": "output_type=\"{OT}\"",
             "processor": "processor=\"{P}\"",
-            "echo_lines": "lines=\"{EL}\""
+            "echo_lines": "lines=\"{EL}\"",
+            "image_name": "img_name=\"{IN}\"",
+            "font_size": "font_size=\"{FS}\"",
+            "image_width": "img_w=\"{IW}\"",
+            "image_height": "img_h=\"{IH}\"",
+            "image_align": "img_align=\"{IA}\""
         },
 
         "patterns": {
@@ -193,7 +208,12 @@ Test `Test` Test
             "error": "{R}",
             "output_type": "{OT}",
             "processor": "{P}",
-            "echo_lines": "{EL}"
+            "echo_lines": "{EL}",
+            "image_name": "{IN}",
+            "font_size": "{FS}",
+            "image_width": "{IW}",
+            "image_height": "{IH}",
+            "image_align": "{IA}"
         }
     }
 
@@ -213,7 +233,12 @@ Test `Test` Test
             "error": "allow_error[@R]",
             "output_type": "output_type[@OT]",
             "processor": "processor[@P]",
-            "echo_lines": "lines[@EL]"
+            "echo_lines": "lines[@EL]",
+            "image_name": "img_name=[@IN]",
+            "font_size": "font_size=[@FS]",
+            "image_width": "img_w=[@IW]",
+            "image_height": "img_h=[@IH]",
+            "image_align": "img_align=[@IA]"
         },
 
         "patterns": {
@@ -227,7 +252,12 @@ Test `Test` Test
             "error": "@R",
             "output_type": "@OT",
             "processor": "@P",
-            "echo_lines": "@EL"
+            "echo_lines": "@EL",
+            "image_name": "@IN",
+            "font_size": "@FS",
+            "image_width": "@IW",
+            "image_height": "@IH",
+            "image_align": "@IA"
         }
     }
 

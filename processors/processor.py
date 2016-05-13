@@ -2,20 +2,24 @@
 class Processor:
     """Base class for language-speciffic and user-defined processors"""
 
-    def __init__(self, output_manager, executor, snippet_language, snippet_settings):
+    def __init__(self, output_manager, executor, snippet_language, snippet_settings, image_settings):
         """Initialization"""
         self.__output_manager = output_manager
         self.__executor = executor
         self.settings = snippet_settings
         self.language = snippet_language
+        self.__image_name = image_settings[0]
+        self.image_width = image_settings[1]
+        self.image_height = image_settings[2]
+        self.image_align = image_settings[3]
 
     def execute(self, code):
         """Executes code. May be called by another method of Processor"""
         return self.__executor(code, self)
 
     def save_to_file(self, data, extension):
-        """Saves data to file with speciffic extension."""
-        return self.__output_manager.save_data(data, extension)
+        """Saves data to file with speciffic extension and optional name."""
+        return self.__output_manager.save_data(data, extension, self.__image_name)
 
     def begin(self):
         """Called before snippet execution. Returns text, which will be pasted in the beginning of the result."""

@@ -9,6 +9,7 @@ from core.output_manager import OutputManager
 from core.result_manager import ResultManager
 from core.processing_manager import ProcessingManager
 from settings.group_names import GroupName
+from settings.align_types import ImageAlignType
 
 
 class DocumentProcessor:
@@ -38,6 +39,10 @@ class DocumentProcessor:
         self.__default_output_type = None
         self.__default_processor = None
         self.__default_echo_lines = None
+        self.__default_image_name = None
+        self.__default_image_width = None
+        self.__default_image_height = None
+        self.__default_image_aligh = ImageAlignType.Default
 
     @staticmethod
     def create_processors(filenames, settings):
@@ -155,6 +160,22 @@ class DocumentProcessor:
         if echo_lines is not None:
             self.__default_echo_lines = echo_lines
 
+        image_name = self.__pattern.image_name(settings_string)
+        if image_name is not None:
+            self.__default_image_name = image_name
+
+        image_width = self.__pattern.image_width(settings_string)
+        if image_width is not None:
+            self.__default_image_width = image_width
+
+        image_height = self.__pattern.image_height(settings_string)
+        if image_height is not None:
+            self.__default_image_height = image_height
+
+        image_align = self.__pattern.image_align(settings_string)
+        if image_align is not None:
+            self.__default_image_align = image_align
+
         return ''
 
     def __process_entry(self, entry):
@@ -223,9 +244,27 @@ class DocumentProcessor:
         if is_output is None:
             is_output = False if snippet_id is not None else True
 
+        image_name = self.__pattern.image_name(snippet_settings)
+        if image_name is None:
+            image_name = self.__default_image_name
+
+        image_width = self.__pattern.image_width(snippet_settings)
+        if image_width is None:
+            image_width = self.__default_image_width
+
+        image_height = self.__pattern.image_height(snippet_settings)
+        if image_height is None:
+            image_height = self.__default_image_height
+
+        image_align = self.__pattern.image_align(snippet_settings)
+        if image_align is None:
+            image_align = self.__default_image_align
+
+        image_settings = (image_name, image_width, image_height, image_align)
+
         executor = lambda code, manager: self.__engine.execute(language, code, context, manager, output_type, None, False)
         processing_manager = ProcessingManager(self.__document_language, language, snippet_settings,
-                                               processor, self.__output_manager, executor)
+                                               processor, self.__output_manager, executor, image_settings)
 
         before_result = processing_manager.execute_before()
         result = self.__engine.execute(language, code, context, processing_manager, output_type, timeout, allow_errors)

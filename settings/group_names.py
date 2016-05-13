@@ -26,3 +26,8 @@ class GroupName:
     OUTPUT_TYPE = R'out_type'
     PROCESSOR = R'proc'
     ECHO_LINES = R'elns'
+    IMAGE_NAME = R'imgn'
+    FONT_SIZE = R'fsize'
+    IMAGE_WIDTH = R'iw'
+    IMAGE_HEIGHT = R'ih'
+    IMAGE_ALIGN = R'ia'
