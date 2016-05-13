@@ -1,4 +1,5 @@
 from processors.processor import Processor as BaseProcessor
+from settings.align_types import ImageAlignType
 from html import escape
 
 
@@ -12,7 +13,7 @@ class Processor(BaseProcessor):
     def text(self, text):
         """Processing text results of code execution"""
         text = escape(text)
-        text = text.replace('\n', '<br />\n')
+        text = text.replace('\n', '<br>\n')
 
         return text
 
@@ -23,4 +24,34 @@ class Processor(BaseProcessor):
     def image(self, data, mime_type):
         """Processing image"""
         url = super(Processor, self).image(data, mime_type)
-        return '<br /><img src="%s"><br />\n' % url
+
+        size = ""
+
+        if self.image_width is not None or self.image_height is not None:
+            size = ' style="'
+
+            if self.image_width is not None:
+                size += "width: " + str(self.image_width) + "px;"
+
+            if self.image_height is not None:
+                size += "height: " + str(self.image_height) + "px;"
+
+            size += '" '
+
+        align = ""
+
+        if self.image_align != ImageAlignType.Default:
+            align = ' style="text-align: '
+
+            if self.image_align == ImageAlignType.Left:
+                align += 'left'
+
+            if self.image_align == ImageAlignType.Right:
+                align += 'right'
+
+            if self.image_align == ImageAlignType.Center:
+                align += 'center'
+
+            align += ';"'
+
+        return str.format('<p{2}><img src="{0}"{1}></p>\n', url, size, align)
