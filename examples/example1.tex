@@ -55,5 +55,19 @@ print('after')
     \end_code
 	End
 	\snippet_output{id[Test]}
+
+	SQL:\\
+	\begin_code{lang[SQL], lines[!1], processor[sql]}
+        !sqlite:///:memory:;
+        CREATE TABLE test (id, aa, bb);
+        INSERT INTO test VALUES (1, 'test1', 'test2');
+        INSERT INTO test VALUES (2, 'test2', 'test2');
+        SELECT * FROM test;
+        SELECT 5;
+        DELETE FROM test WHERE id = 2;
+        SELECT * FROM test;
+    \end_code
+
+    End SQL
 	
 \end{document}

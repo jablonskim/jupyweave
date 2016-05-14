@@ -19,7 +19,7 @@ class Processor(BaseProcessor):
         """Processing image"""
         url = super(Processor, self).image(data, mime_type)
         url = url.replace('\\', '/')
-        # TODO: pdf? label? caption? -> settings?
+
         width = "width=\\linewidth"
         if self.image_width is not None:
             width = "width=" + str(self.image_width) + "px"
