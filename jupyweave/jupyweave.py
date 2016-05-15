@@ -13,7 +13,7 @@ from .settings.settings import Settings
 class JuPyWeave:
     """Applications main class"""
 
-    DEFAULT_CONFIG_FILE_NAME = 'configs/defconfig.json'
+    DEFAULT_CONFIG_FILE_NAME = 'defconfig.json'
 
     def __init__(self, args):
         """Loads settings and filenames"""

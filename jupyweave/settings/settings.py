@@ -1,4 +1,5 @@
 import json
+from os import path
 
 from .output_settings import OutputSettings
 from .timeouts import Timeouts
@@ -6,6 +7,7 @@ from .validator import Validator
 
 from jupyweave.exceptions.settings_errors import InvalidConfigurationError
 from .snippets import Snippets
+from .environment import Environment
 
 
 class Settings:
@@ -14,8 +16,7 @@ class Settings:
     def __init__(self, config_file):
         """Parses settings from config_file"""
         try:
-            with open(config_file, 'r') as f:
-                data = json.load(f)
+            data = self.__read_settings(config_file)
         except json.JSONDecodeError as e:
             raise InvalidConfigurationError('Invalid configuration format: %s' % e)
         except FileNotFoundError:
@@ -80,3 +81,27 @@ class Settings:
             raise InvalidConfigurationError("Key 'extensions' must be a dictionary")
 
         return extensions
+
+    @staticmethod
+    def __read_settings(name):
+        try:
+            with open(name, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError as e:
+            exc = e
+
+        local_path, system_path = Environment.get_paths()
+
+        try:
+            with open(path.join(local_path, 'config/' + name), 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            pass
+
+        try:
+            with open(path.join(system_path, 'config/' + name), 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            pass
+
+        raise exc
