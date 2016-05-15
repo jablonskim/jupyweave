@@ -1,5 +1,6 @@
 from unittest import TestCase
-from settings.output_types import OutputTypes
+
+from jupyweave.settings.output_types import OutputTypes
 
 
 class TestOutputTypes(TestCase):

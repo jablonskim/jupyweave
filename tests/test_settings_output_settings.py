@@ -1,7 +1,8 @@
-from unittest import TestCase
 from copy import deepcopy
-from settings.output_settings import OutputSettings
-from exceptions.settings_errors import InvalidConfigurationError
+from unittest import TestCase
+
+from jupyweave.exceptions import InvalidConfigurationError
+from jupyweave.settings import OutputSettings
 
 
 class TestOutputSettings(TestCase):

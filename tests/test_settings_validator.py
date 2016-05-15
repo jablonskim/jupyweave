@@ -1,6 +1,7 @@
 from unittest import TestCase
-from settings.validator import Validator
-from exceptions.settings_errors import InvalidConfigurationError
+
+from jupyweave.exceptions import InvalidConfigurationError
+from jupyweave.settings.validator import Validator
 
 
 class TestValidator(TestCase):

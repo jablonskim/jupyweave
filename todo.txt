@@ -1,4 +1,0 @@
-- Testy
-- LaTeX
-- Markdown: błędy
-- SQL: shutdown?

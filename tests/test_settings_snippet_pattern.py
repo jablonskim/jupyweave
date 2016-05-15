@@ -1,9 +1,11 @@
-from unittest import TestCase
 from copy import deepcopy
-from settings.snippet import Snippet
+from unittest import TestCase
+
 from settings.group_names import GroupName
-from exceptions.settings_errors import InvalidConfigurationError
-from exceptions.processor_errors import InvalidBoolValueError, TimeoutValueError
+
+from jupyweave.exceptions import InvalidBoolValueError, TimeoutValueError
+from jupyweave.exceptions import InvalidConfigurationError
+from jupyweave.settings.snippet import Snippet
 
 
 class TestSnippetPattern(TestCase):

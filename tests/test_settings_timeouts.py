@@ -1,6 +1,7 @@
 from unittest import TestCase
-from settings.timeouts import Timeouts
-from exceptions.settings_errors import InvalidConfigurationError
+
+from jupyweave.exceptions import InvalidConfigurationError
+from jupyweave.settings import Timeouts
 
 
 class TestTimeouts(TestCase):
