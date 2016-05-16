@@ -71,8 +71,8 @@ setup(
     ],
 
     keywords='jupyweave literate programming',
-    packages=find_packages(),
-    install_requires=[],  # TODO
+    packages=find_packages(exclude=['tests', 'examples']),
+    install_requires=['pygments', 'jupyter', 'jupyter_client'],
     package_data={},  # TODO
 
     entry_points={
