@@ -1,51 +1,11 @@
 from setuptools import setup, find_packages
-from setuptools.command.install import install
-import platform
-from os import makedirs, path, environ, listdir
-from shutil import copy
 
-
-class PostInstall(install):
-
-    def copy_files(self, source_dir, destination_dir, ftype):
-        for file in listdir(source_dir):
-            if file.endswith(ftype):
-                copy(path.join(source_dir, file), destination_dir)
-
-    def run(self):
-        system_path = None
-        local_path = None
-
-        if platform.system() == 'Windows':
-            system_path = environ['PROGRAMDATA']
-            local_path = environ['APPDATA']
-
-        if platform.system() == 'Linux':
-            system_path = '/usr/local/share'
-            local_path = '~/.local/share'
-
-        if system_path is not None and local_path is not None:
-            cfg = 'jupyweave/config/'
-            prc = 'jupyweave/processors/'
-
-            makedirs(path.join(system_path, cfg), exist_ok=True)
-            makedirs(path.join(system_path, prc), exist_ok=True)
-            makedirs(path.join(local_path, cfg), exist_ok=True)
-            makedirs(path.join(local_path, prc), exist_ok=True)
-
-            here = path.dirname(path.realpath(__file__))
-
-            self.copy_files(path.join(here, 'jupyweave/configs/'), path.join(system_path, cfg), '.json')
-            self.copy_files(path.join(here, 'jupyweave/user_processors/'), path.join(system_path, prc), '.py')
-
-        install.run(self)
 
 setup(
     name='jupyweave',
-    version='0.1.0',
+    version='0.1.2',
 
-    description='',  # TODO
-    long_description='',  # TODO
+    description='Dynamic report generator',
 
     url='https://github.com/jablonskim/jupyweave',
 
@@ -75,13 +35,12 @@ setup(
     install_requires=['pygments', 'jupyter', 'jupyter_client'],
     package_data={
         'jupyweave': ['configs/*.json', 'user_processors/*.py', 'processors/*.py']
-    },  # TODO
-
-    entry_points={
-        'console_scripts': ['jupyweave=jupyweave:main']
     },
 
-    cmdclass={
-        'install': PostInstall
+    entry_points={
+        'console_scripts': [
+            'jupyweave=jupyweave:main',
+            'jupyweave_install=jupyweave:install'
+        ]
     }
 )

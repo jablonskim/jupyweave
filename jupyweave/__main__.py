@@ -1,4 +1,5 @@
-from .jupyweave import JuPyWeave
+from jupyweave.jupyweave import JuPyWeave
+from jupyweave.install_files import main as install_main
 from sys import argv
 
 
@@ -6,5 +7,6 @@ def main():
     program = JuPyWeave(argv)
     program.process()
 
-if __name__ == '__main__':
-    main()
+
+def install():
+    install_main()
