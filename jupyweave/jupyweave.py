@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from sys import exit
+from sys import exit, path
+import os
 
 from .document_processor import DocumentProcessor
 from .exceptions.settings_errors import InvalidConfigurationError
@@ -8,6 +9,7 @@ from .exceptions.engine_errors import InvalidLanguageNameError
 from .exceptions.processor_errors import ProcessingError
 from .exceptions.snippet_errors import SnippetSyntaxError
 from .settings.settings import Settings
+from .settings.environment import Environment
 
 
 class JuPyWeave:
@@ -17,6 +19,10 @@ class JuPyWeave:
 
     def __init__(self, args):
         """Loads settings and filenames"""
+        path.append(os.path.join(Environment.get_paths()[0], 'processors/'))
+        path.append(os.path.join(Environment.get_paths()[1], 'processors/'))
+        path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'processors/'))
+
         self.__arguments = args
         self.__config_file, self.__filenames = self.__parse_args()
         self.__document_processors = []
@@ -48,7 +54,6 @@ class JuPyWeave:
                 print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
             except Exception as e:
                 print(JuPyWeave.__add_indentation('\n\nError: %s' % e))
-                raise
 
         print()
 

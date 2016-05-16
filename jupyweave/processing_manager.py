@@ -7,22 +7,18 @@ class ProcessingManager:
     def __init__(self, document_language, snippet_language, snippet_settings, user_processor_name, output_manager,
                  executor, image_settings):
         """Initialization"""
-        package_name = str.format('jupyweave.processors.{0}_processor', document_language.lower())
+        loader = lambda name: getattr(import_module(name), 'Processor')(output_manager, executor, snippet_language,
+                                                                        snippet_settings, image_settings)
 
         if user_processor_name is not None:
-            package_name = str.format('jupyweave.processors.{0}_{1}_processor', user_processor_name, document_language.lower())
-            module = import_module(package_name)
-            self.__processor = getattr(module, 'Processor')(output_manager, executor, snippet_language, snippet_settings,
-                                                            image_settings)
+            package_name = str.format('{0}_{1}_processor', user_processor_name, document_language.lower())
+            self.__processor = loader(package_name)
         else:
             try:
-                module = import_module(package_name)
-                self.__processor = getattr(module, 'Processor')(output_manager, executor, snippet_language,
-                                                                snippet_settings, image_settings)
+                package_name = str.format('{0}_processor', document_language.lower())
+                self.__processor = loader(package_name)
             except (ImportError, AttributeError):
-                module = import_module('jupyweave.processors.processor')
-                self.__processor = getattr(module, 'Processor')(output_manager, executor, snippet_language,
-                                                                snippet_settings, image_settings)
+                self.__processor = loader('processor')
 
     def code(self, code):
         """Processing source code"""

@@ -1,4 +1,4 @@
-from jupyweave.processors.markdown_processor import Processor as BaseProcessor
+from markdown_processor import Processor as BaseProcessor
 
 
 class Processor(BaseProcessor):

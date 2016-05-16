@@ -1,4 +1,4 @@
-from jupyweave.processors.html_processor import Processor as BaseProcesor
+from html_processor import Processor as BaseProcesor
 
 
 class Processor(BaseProcesor):

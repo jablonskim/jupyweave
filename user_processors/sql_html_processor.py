@@ -1,6 +1,6 @@
 from html import escape
 
-from jupyweave.processors.html_processor import Processor as BaseProcessor
+from html_processor import Processor as BaseProcessor
 
 
 class Processor(BaseProcessor):

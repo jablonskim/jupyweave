@@ -1,4 +1,4 @@
-from jupyweave.processors.latex_processor import Processor as BaseProcessor
+from latex_processor import Processor as BaseProcessor
 
 
 class Processor(BaseProcessor):

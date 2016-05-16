@@ -2,7 +2,7 @@ from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
-from jupyweave.processors.html_processor import Processor as BaseProcessor
+from html_processor import Processor as BaseProcessor
 
 
 class Processor(BaseProcessor):
