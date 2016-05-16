@@ -35,8 +35,8 @@ class PostInstall(install):
 
             here = path.dirname(path.realpath(__file__))
 
-            self.copy_files(path.join(here, 'configs/'), path.join(system_path, cfg), '.json')
-            self.copy_files(path.join(here, 'user_processors/'), path.join(system_path, prc), '.py')
+            self.copy_files(path.join(here, 'jupyweave/configs/'), path.join(system_path, cfg), '.json')
+            self.copy_files(path.join(here, 'jupyweave/user_processors/'), path.join(system_path, prc), '.py')
 
         install.run(self)
 
@@ -73,7 +73,9 @@ setup(
     keywords='jupyweave literate programming',
     packages=find_packages(exclude=['tests', 'examples']),
     install_requires=['pygments', 'jupyter', 'jupyter_client'],
-    package_data={},  # TODO
+    package_data={
+        'jupyweave': ['configs/*.json', 'user_processors/*.py', 'processors/*.py']
+    },  # TODO
 
     entry_points={
         'console_scripts': ['jupyweave=jupyweave:main']
