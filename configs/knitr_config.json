@@ -8,7 +8,7 @@
   },
 
   "output": {
-    "results_base": "examples/outputs/",
+    "results_base": "jupyweave_outputs/",
     "filename": "{NAME}.{EXT}",
     "data_dir": "{NAME}_{EXT}_data",
 
