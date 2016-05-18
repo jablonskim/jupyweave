@@ -17,7 +17,7 @@ class Settings:
         """Parses settings from config_file"""
         try:
             data = self.__read_settings(config_file)
-        except json.JSONDecodeError as e:
+        except ValueError as e:
             raise InvalidConfigurationError('Invalid configuration format: %s' % e)
         except FileNotFoundError:
             raise InvalidConfigurationError('Configuration file %s not found.' % config_file)
