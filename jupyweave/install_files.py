@@ -22,7 +22,7 @@ def main():
 
     if platform.system() == 'Linux':
         system_path = '/usr/local/share'
-        local_path = '~/.local/share'
+        local_path = path.join(environ['HOME'], '.local/share')
         from os import getuid
         is_admin = getuid() == 0
 
