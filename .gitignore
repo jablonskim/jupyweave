@@ -68,3 +68,4 @@ target/
 kernel-*.json
 
 examples/outputs/
+docs/build/
