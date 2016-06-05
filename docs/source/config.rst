@@ -134,7 +134,6 @@ The ``settings`` option consists of:
     * ``processor``
     * ``echo_lines``
     * ``image_name``
-    * ``font_size``
     * ``image_width``
     * ``image_height``
     * ``image_align``
@@ -156,7 +155,6 @@ during execution. It consists of:
     * ``processor``
     * ``echo_lines``
     * ``image_name``
-    * ``font_size``
     * ``image_width``
     * ``image_height``
     * ``image_align``
