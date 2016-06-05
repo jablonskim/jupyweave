@@ -145,7 +145,8 @@ For default tags see :ref:`def-config-files`.
 Processing results
 ~~~~~~~~~~~~~~~~~~
 
-TODO: processors
+Results are processed by Processors (written in Python) before pasting them into final document.
+For more information, see :doc:`processors`.
 
 
 Changing configuration
