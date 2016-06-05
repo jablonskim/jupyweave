@@ -129,7 +129,7 @@ They are inherited from :ref:`base processor <structure-of-processors>`.
 `html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/html_processor.py>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Used for processing HTML documents. It redefines the following methods:
+Used for processing `HTML <https://www.w3.org/html/>`_ documents. It redefines the following methods:
 
     * ``source``
         Puts the source code into raw code tag.
@@ -149,13 +149,13 @@ Used for processing HTML documents. It redefines the following methods:
 `latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/latex_processor.py>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Used for processing LaTeX documents. It redefines the following methods:
+Used for processing `LaTeX <https://www.latex-project.org/>`_ documents. It redefines the following methods:
 
     * ``source``
         Returns the code inside raw code section.
 
     * ``text``
-        Escapes LaTeX instructions and adds new lines.
+        Escapes `LaTeX <https://www.latex-project.org/>`_ instructions and adds new lines.
 
     * ``image``
         Uses image method from base class to save image and get its path, then using it creates image section.
@@ -166,7 +166,8 @@ Used for processing LaTeX documents. It redefines the following methods:
 `markdown_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/markdown_processor.py>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Used for processing HTML documents. It redefines the following methods:
+Used for processing `Markdown <http://daringfireball.net/projects/markdown/>`_ documents.
+It redefines the following methods:
 
     * ``source``
         Puts source code into code section.
@@ -201,16 +202,17 @@ class.
 There are some user defined processors provided with the package to simplify usage of Jupyweave:
 
     * `highlight_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/highlight_html_processor.py>`_
-        Highlights source code pasted into HTML documents.
+        Highlights source code pasted into `HTML <https://www.w3.org/html/>`_ documents.
 
     * `no_escape_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_html_processor.py>`_
-        Allows to dynamically generate HTML document by removing escaping of results.
+        Allows to dynamically generate `HTML <https://www.w3.org/html/>`_ document by removing escaping of results.
 
     * `no_escape_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_latex_processor.py>`_
-        Allows to dynamically generate LaTeX document by removing escaping of results.
+        Allows to dynamically generate `LaTeX <https://www.latex-project.org/>`_ document by removing escaping of results.
 
     * `no_escape_markdown_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_markdown_processor.py>`_
-        Allows to dynamically generate Markdown document by removing escaping of results.
+        Allows to dynamically generate `Markdown <http://daringfireball.net/projects/markdown/>`_ document by
+        removing escaping of results.
 
     * `python_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/python_latex_processor.py>`_
         Defines LaTeX processor speciffic for Python snippets. It allows to save images to PDF files instead of PNG.
@@ -219,7 +221,9 @@ There are some user defined processors provided with the package to simplify usa
         Defines LaTeX processor speciffic for R snippets. It allows to save images to PDF files instead of PNG.
 
     * `sql_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/sql_html_processor.py>`_
-        It allows to use proof-of-concept SQL Jupyter kernel with HTML.
+        It allows to use proof-of-concept `SQL Jupyter kernel <https://github.com/jablonskim/jupyter-sql>`_
+        with `HTML <https://www.w3.org/html/>`_.
 
     * `sql_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/sql_latex_processor.py>`_
-        It allows to use proof-of-concept SQL Jupyter kernel with LaTeX.
+        It allows to use proof-of-concept `SQL Jupyter kernel <https://github.com/jablonskim/jupyter-sql>`_
+        with `LaTeX <https://www.latex-project.org/>`_.
