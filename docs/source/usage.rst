@@ -146,6 +146,7 @@ Processing results
 ~~~~~~~~~~~~~~~~~~
 
 Results are processed by Processors (written in Python) before pasting them into final document.
+Processors may also parse user defined settings from snippets.
 For more information, see :doc:`processors`.
 
 

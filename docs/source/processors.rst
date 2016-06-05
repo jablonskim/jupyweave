@@ -1,6 +1,9 @@
 Document processing
 ===================
 
+
+.. _about-processing:
+
 About processing
 ----------------
 
@@ -104,7 +107,7 @@ Base processor class contains following methods and fields:
 
     * ``image_align``
         Contains image align type that can be used to format image or *None* if not specified.
-        
+
 
 Every method may be overriden in derived processor. If there is no overrided method, the one from base class will be
 called. This allows to define :ref:`user processors <user-processors>` for speciffic operations on
@@ -119,7 +122,63 @@ Default implementation of base processor can be found
 Default processors
 ------------------
 
-TODO: html, markdown, latex
+There are one default processor for each defined `markup language <https://en.wikipedia.org/wiki/Markup_language>`_.
+They are inherited from :ref:`base processor <structure-of-processors>`.
+
+
+`html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/html_processor.py>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Used for processing HTML documents. It redefines the following methods:
+
+    * ``source``
+        Puts the source code into raw code tag.
+
+    * ``result``
+        Puts the result of snippet execution into html paragraph tag.
+
+    * ``text``
+        It escapes all html tags, so that all tags will be displayed in final document (and not intepreted as tags).
+        It also replaces new lines with new line tags.
+
+    * ``image``
+        Uses image method from base class to save image and get its path, then puts this path into html image tag
+        and adds some styles according to image formatting settings provided in ``settings`` tag.
+
+
+`latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/latex_processor.py>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Used for processing LaTeX documents. It redefines the following methods:
+
+    * ``source``
+        Returns the code inside raw code section.
+
+    * ``text``
+        Escapes LaTeX instructions and adds new lines.
+
+    * ``image``
+        Uses image method from base class to save image and get its path, then using it creates image section.
+        It also uses image formatting settings from ``settings`` tag and parses user defined settings ``img_caption``
+        and ``img_label`` that **allows to define caption and label** of the image.
+
+
+`markdown_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/markdown_processor.py>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Used for processing HTML documents. It redefines the following methods:
+
+    * ``source``
+        Puts source code into code section.
+
+    * ``result``
+        Adds some new lines.
+
+    * ``text``
+        Adds new lines.
+
+    * ``image``
+        Uses image method from base class to save image and get its path, then using it pastes image into document.
 
 
 .. _user-processors:
@@ -127,4 +186,40 @@ TODO: html, markdown, latex
 User processors
 ---------------
 
-TODO
+User processors are defined by creating a Python file with class ``Processor``. The file must be in
+:ref:`system directory or user directory <about-processing>`. The file has to be inherited from one of
+:ref:`markup processors <default-processors>`. The proposed solution is to use import like:
+
+    ::
+
+        from latex_processor import Processor as BaseProcessor
+
+This import will work if used only by Jupyweave core.
+User processor then will be derived from ``BaseProcessor``. It may overload one or more methods from ``BaseProcessor``
+class.
+
+There are some user defined processors provided with the package to simplify usage of Jupyweave:
+
+    * `highlight_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/highlight_html_processor.py>`_
+        Highlights source code pasted into HTML documents.
+
+    * `no_escape_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_html_processor.py>`_
+        Allows to dynamically generate HTML document by removing escaping of results.
+
+    * `no_escape_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_latex_processor.py>`_
+        Allows to dynamically generate LaTeX document by removing escaping of results.
+
+    * `no_escape_markdown_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/no_escape_markdown_processor.py>`_
+        Allows to dynamically generate Markdown document by removing escaping of results.
+
+    * `python_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/python_latex_processor.py>`_
+        Defines LaTeX processor speciffic for Python snippets. It allows to save images to PDF files instead of PNG.
+
+    * `r_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/r_latex_processor.py>`_
+        Defines LaTeX processor speciffic for R snippets. It allows to save images to PDF files instead of PNG.
+
+    * `sql_html_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/sql_html_processor.py>`_
+        It allows to use proof-of-concept SQL Jupyter kernel with HTML.
+
+    * `sql_latex_processor.py <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/user_processors/sql_latex_processor.py>`_
+        It allows to use proof-of-concept SQL Jupyter kernel with LaTeX.
