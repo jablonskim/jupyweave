@@ -48,7 +48,70 @@ For defining own processors, see :ref:`user-processors`.
 Structure of processors
 -----------------------
 
-TODO
+Processors are Python files with single class named ``Processor`` defined inside it. This class can be inherited from
+other processors.
+
+Base processor class contains following methods and fields:
+
+    * ``execute``
+        Method with one parameter. The parameter is code for execution in context of currently executed code snippet.
+        It can be used from other methods for executing arbitrary code. It returns results of execution.
+
+    * ``save_to_file``
+        Method with two parameters. The first of them is data to be saved to file, second, the file's extension.
+        It saves data to file with generated name with provided extension and returns relative path to that file.
+        The path may be used in finel document.
+
+    * ``begin``
+        Method with no arguments. It is callec by implementation before execution of every snippet. It allows to
+        execute user-defined code before snippets. It should return results of execution, which will be pasted into
+        final document. Default implementation of this method in base class is empty and returns empty string.
+
+    * ``end``
+        Method with no arguments. It is callec by implementation after execution of every snippet. It allows to
+        execute user-defined code after snippets. It should return results of execution, which will be pasted into
+        final document. Default implementation of this method in base class is empty and returns empty string.
+
+    * ``source``
+        Method with one argument - the source code. It processes source code before pasting into final document.
+        It can be used for highlighting, line numbering etc. It is called by implementation and returns
+        processed code.
+
+    * ``text``
+        Method with single text argument. It may be called multiple times durign processing single snippet with
+        partial results as its argument. It may be used for escaping, reformatting etc. Returns processed text.
+
+    * ``image``
+        Method with two arguments. First of them is image data, second, the
+        `mime type <https://en.wikipedia.org/wiki/Media_type>`_ of that data. It is used for
+        saving images. Base implementation returns path to the saved image.
+
+    * ``result``
+        Method with single argument. The argument is result of whole execution. It may be used for formatting
+        results. It contains processed image data (paths). It returns processed results.
+
+    * ``language``
+        Field that contains language name used in code snippet.
+
+    * ``settings``
+        Contains settings string form ``settings`` field from ``begin`` snippet tag.
+
+    * ``image_width``
+        Contains integer that can be used as image width or *None* if no width was defined in ``settings`` tag.
+
+    * ``image_height``
+        Contains integer that can be used as image height or *None* if no height was defined in ``settings`` tag.
+
+    * ``image_align``
+        Contains image align type that can be used to format image or *None* if not specified.
+        
+
+Every method may be overriden in derived processor. If there is no overrided method, the one from base class will be
+called. This allows to define :ref:`user processors <user-processors>` for speciffic operations on
+selected types of results.
+
+Default implementation of base processor can be found
+`here <https://github.com/jablonskim/jupyweave/blob/master/jupyweave/processors/processor.py>`_
 
 
 .. _default-processors:
