@@ -23,7 +23,7 @@ class Environment:
 
         if platform.system() == 'Linux':
             Environment.SYSTEM_PATH = path.join('/usr/local/share', 'jupyweave/')
-            Environment.LOCAL_PATH = path.join(path.join(environ['PROGRAMDATA'], '.local/share'), 'jupyweave/')
+            Environment.LOCAL_PATH = path.join(path.join(environ['HOME'], '.local/share'), 'jupyweave/')
             return
 
         raise SystemError('System not supported')
