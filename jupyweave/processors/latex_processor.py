@@ -68,6 +68,8 @@ class Processor(BaseProcessor):
             :return: the message escaped to appear correctly in LaTeX
         """
         conv = {
+            '  ': r'\-\ ~',
+            '--': r'-{-}',
             '&': r'\&',
             '%': r'\%',
             '$': r'\$',

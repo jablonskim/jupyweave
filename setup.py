@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='jupyweave',
-    version='0.2.5',
+    version='0.2.6',
 
     description='Dynamic report generator',
 
